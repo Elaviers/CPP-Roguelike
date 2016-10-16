@@ -10,7 +10,8 @@
 
 [Dd]ebug/
 [Rr]elease/
-x64/
+x64/[Dd]ebug/
+x64/[Rr]elease
 build/
 [Bb]in/
 [Oo]bj/
@@ -147,3 +148,4 @@ $RECYCLE.BIN/
 
 # Mac crap
 .DS_Store
+Solution.VC.db
