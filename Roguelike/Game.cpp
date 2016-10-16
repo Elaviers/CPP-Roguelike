@@ -1,43 +1,32 @@
 #include "Game.h"
-#include "Playerr.h"
 #include <iostream>
 
-
-
-void Playerr::mousestate() {
-	
-	std::cout << mouseX;
-	std::cout << mouseY;
-
-	}
-
-<<<<<<< HEAD
-Game::Game() : _running(true)
-{
-
-}
-=======
 Game::Game() : _running(true) {}
->>>>>>> origin/master
-
-
 
 void Game::start() {
 	SDL_Init(SDL_INIT_EVERYTHING);
-	_window.create("The Window of Hope", 1280, 720, 0);
+	_window.create("The Window of Hope", WIDTH, HEIGHT, 0);
 
 	SDL_GL_SetSwapInterval(0);
 
 	std::printf("You're still running OpenGL version %s? What a noob!\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 	//////////////////init shaders
-	_shader.compileShaders("Shaders/DRUGS.frag", "Shaders/DRUGS.vert");
+	_shader.compileShaders("Shaders/sprite.frag", "Shaders/sprite.vert");
 	_shader.addAttribute("vertPosition");
 	_shader.addAttribute("vertColour");
 	_shader.addAttribute("vertUV");
 	_shader.linkShaders();
-	/////////////////
 
+	_shaderlsd.compileShaders("Shaders/DRUGS.frag", "Shaders/DRUGS.vert");
+	_shaderlsd.addAttribute("vertPosition");
+	_shaderlsd.addAttribute("vertColour");
+	_shaderlsd.addAttribute("vertUV");
+	_shaderlsd.linkShaders();
+	/////////////////
+	_camera.init(WIDTH,HEIGHT);
+
+	_player.init(0, 0, 64, "crosshair.png");
 	_sprite.init(-1, -1, 2, 2);
 	loop();
 	}
@@ -49,25 +38,27 @@ void Game::loop() {
 
 		_frameTimer.begin();
 		handleInput();
-<<<<<<< HEAD
-
-=======
+		_player.updateMousePosition();
 		render();
-		time += _frameTimer.deltaTime;
 		_frameTimer.end();
 
-		std::printf("%f\n",time);
-
+		time += _frameTimer.deltaTime;
+		std::printf("TIME:%f     MOUSEPOS:%d|%d\n",time,_player.mouseX,_player.mouseY);
 		if (frameNumber % 10 == 0)_window.setTitle("The phsychedelic window of hope, running at a buttery smooth "+std::to_string(_frameTimer.getFramerate())+" frames a second!");
->>>>>>> origin/master
 	}
 }
 
 void Game::render() {
-	_shader.useProgram();
-	GLint shaderTime = _shader.getUniformLocation("time");
+	_camera.update();
+
+	_shaderlsd.useProgram();
+	GLint shaderTime = _shaderlsd.getUniformLocation("time");
 	glUniform1f(shaderTime, time);
 	_sprite.render();
+	_shaderlsd.unUseProgram();
+
+	_shader.useProgram();
+	_player.render(_shader,_camera);
 	_shader.unUseProgram();
 
 	_window.swapBuffer();
