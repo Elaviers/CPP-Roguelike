@@ -8,6 +8,6 @@ class Player {
 		void updateCursorLocation(float x,float y);
 		void render(GLSLShading shader,Camera2D,float);
 private:
-	Sprite _sprite;
+	Sprite _crosshair;
 	float _angle;
 };

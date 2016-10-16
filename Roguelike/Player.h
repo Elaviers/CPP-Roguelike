@@ -6,7 +6,7 @@
 class Player
 {
 private:
-	Sprite _sprite;
+	Sprite _crosshair,_sprite;
 public:
 	void init(int XPosition,int YPosition,int Size,std::string TexturePath);
 	int mouseX;
