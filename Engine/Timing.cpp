@@ -11,11 +11,11 @@ void Timing::begin() {
 
 void Timing::end() {
 	_frametime = SDL_GetTicks() - _start;
-	deltaTime = (float)_frametime / 1000;
 	if (_CAP > 0 && 1000.0f / _CAP > _frametime) {
 		deltaTime += (1000.0f / _CAP - _frametime) / 1000;
 		SDL_Delay(1000 / _CAP - _frametime);
 	}
+	deltaTime = (float)_frametime / 1000;
 }
 
 float Timing::getFramerate() {
