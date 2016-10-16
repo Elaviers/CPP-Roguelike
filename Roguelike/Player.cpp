@@ -15,7 +15,7 @@ void Player::init(int x,int y,int size,std::string texture) {
 
 void Player::updateMousePosition() {
 	SDL_GetMouseState(&mouseX, &mouseY);
-	mouseY = 720-mouseY;
+	mouseY = HEIGHT-mouseY;
 }
 
 void Player::render(GLSLShading shader,Camera2D& cam) {

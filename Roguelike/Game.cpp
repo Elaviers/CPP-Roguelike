@@ -48,11 +48,9 @@ void Game::loop() {
 		time += _frameTimer.deltaTime;
 		//std::printf("TIME:%f     MOUSEPOS:%d|%d\n",time,_player.mouseX,_player.mouseY);
 		if (frameNumber % 10 == 0)_window.setTitle("The phsychedelic window of hope, running at a buttery smooth "+std::to_string(_frameTimer.getFramerate())+" frames a second!");
-		
-
 	}
 }
-
+#include "Collision.h"
 void Game::render() {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClearDepth(1);
@@ -68,6 +66,8 @@ void Game::render() {
 	_shader.useProgram();
 	_player.render(_shader,_camera);
 	_shader.unUseProgram();
+
+	rectangle(_player.mouseX,_player.mouseY,_player.mouseX+_player.mouseY,_player.mouseY+_player.mouseX,1,1,1);
 
 	_window.swapBuffer();
 }
