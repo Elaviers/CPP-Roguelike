@@ -5,7 +5,7 @@
 
 class Game
 {
-private:	
+private:
 	Window _window;
 	bool _running;
 public:
@@ -14,5 +14,6 @@ public:
 	void start();
 	void loop();
 	void handleInput();
+;
 };
 
