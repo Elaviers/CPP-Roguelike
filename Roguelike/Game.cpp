@@ -48,6 +48,8 @@ void Game::loop() {
 		time += _frameTimer.deltaTime;
 		//std::printf("TIME:%f     MOUSEPOS:%d|%d\n",time,_player.mouseX,_player.mouseY);
 		if (frameNumber % 10 == 0)_window.setTitle("The phsychedelic window of hope, running at a buttery smooth "+std::to_string(_frameTimer.getFramerate())+" frames a second!");
+		
+
 	}
 }
 

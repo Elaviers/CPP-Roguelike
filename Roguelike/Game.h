@@ -11,6 +11,7 @@
 #define HEIGHT 720
 
 #include "Player.h"
+#include "Collision.h"
 
 class Game
 {
@@ -23,6 +24,10 @@ private:
 	Player _player;
 	Sprite _sprite;
 	GLSLShading _shaderlsd,_shader;
+
+	SDL_Rect FillRect;
+	SDL_Renderer *gRenderer;
+
 public:
 	float time;
 
