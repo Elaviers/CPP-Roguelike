@@ -24,10 +24,6 @@ private:
 	Player _player;
 	Sprite _sprite;
 	GLSLShading _shaderlsd,_shader;
-
-	SDL_Rect FillRect;
-	SDL_Renderer *gRenderer;
-
 public:
 	float time;
 
@@ -37,7 +33,7 @@ public:
 	void start();
 	void loop();
 
-	void render();
+	void render(float);
 
 	void handleInput();
 ;

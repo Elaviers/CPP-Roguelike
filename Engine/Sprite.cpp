@@ -84,6 +84,10 @@ void Sprite::setPosition(float xp,float yp) {
 	updateVertices();
 }
 
+void Sprite::move(float xp,float yp) {
+	if (!(xp == 0 && yp == 0))setPosition(x+xp,y+yp);
+}
+
 void Sprite::swapUVs(int textureIndex) {
 	if (UVGridDivisions <= 1) {
 		setUVS(0, 0, 1, 1);

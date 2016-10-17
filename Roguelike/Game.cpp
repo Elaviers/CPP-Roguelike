@@ -4,17 +4,19 @@
 Game::Game() : _running(true) {}
 
 void Game::start() {
+	////////////SDL
 	SDL_Init(SDL_INIT_EVERYTHING);
 	_window.create("The Window of Hope", WIDTH, HEIGHT, 0);
-	SDL_GL_SetSwapInterval(0);
+	SDL_GL_SetSwapInterval(0);//vsync
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_ShowCursor(false);
 
+	////////////GL
 	std::printf("You're still running OpenGL version %s? What a noob!\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	//////////////////init shaders
+	////////////init shaders
 	_shader.compileShaders("Shaders/sprite.frag", "Shaders/sprite.vert");
 	_shader.addAttribute("vertPosition");
 	_shader.addAttribute("vertColour");
@@ -26,8 +28,8 @@ void Game::start() {
 	_shaderlsd.addAttribute("vertColour");
 	_shaderlsd.addAttribute("vertUV");
 	_shaderlsd.linkShaders();
-	/////////////////
 
+	////////////init
 	_camera.init(WIDTH,HEIGHT);
 	_player.init(0, 0, 64, "crosshair.png");
 	_sprite.init(-1, -1, 2, 2);
@@ -41,18 +43,18 @@ void Game::loop() {
 
 		_frameTimer.begin();
 		handleInput();
-		_player.updateMousePosition();
-		render();
+		_player.update(time);
+		render(_frameTimer.deltaTime);
 		_frameTimer.end();
 
 		time += _frameTimer.deltaTime;
-		//std::printf("TIME:%f     MOUSEPOS:%d|%d\n",time,_player.mouseX,_player.mouseY);
 		if (frameNumber % 10 == 0)_window.setTitle("The phsychedelic window of hope, running at a buttery smooth "+std::to_string(_frameTimer.getFramerate())+" frames a second!");
 	}
 }
 #include "Collision.h"
-void Game::render() {
-	glClear(GL_COLOR_BUFFER_BIT);
+
+void Game::render(float deltaTime) {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearDepth(1);
 
 	_camera.update();
@@ -64,10 +66,8 @@ void Game::render() {
 	_shaderlsd.unUseProgram();
 
 	_shader.useProgram();
-	_player.render(_shader,_camera);
+	_player.render(_shader,_camera,deltaTime);
 	_shader.unUseProgram();
-
-	rectangle(_player.mouseX,_player.mouseY,_player.mouseX+_player.mouseY,_player.mouseY+_player.mouseX,1,1,1);
 
 	_window.swapBuffer();
 }
@@ -75,6 +75,16 @@ void Game::render() {
 void Game::handleInput() {
 	SDL_Event event;
 	if (SDL_PollEvent(&event) == 1)
-		if (event.type == SDL_QUIT)
+		switch (event.type) {
+		case SDL_QUIT:
 			_running = false;
+		case SDL_MOUSEBUTTONDOWN:
+			_player.setShooting(true); break;
+		case SDL_MOUSEBUTTONUP:
+			_player.setShooting(false); break;
+		case SDL_KEYDOWN:
+			_player.keyDown(event); break;
+		case SDL_KEYUP:
+			_player.keyUp(event); break;
+		}
 }

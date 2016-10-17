@@ -21,6 +21,7 @@ public:
 
 	void init(float x, float y, float width, float height,bool isStatic = true, std::string texturePath = "");
 	void setPosition(float x, float y);
+	void move(float x,float y);
 	void swapUVs(int textureIndex);
 	void render(GLSLShading shader, glm::mat4 cMat);
 	void render(GLSLShading shader);
