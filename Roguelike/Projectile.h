@@ -12,7 +12,7 @@ public:
 
 	Projectile();
 
-	void init(int, int, int, std::string);
+	void init(float x, float y, float size, std::string);
 	void setDirection(float Angle);
 	void render(float DeltaTime);
 };

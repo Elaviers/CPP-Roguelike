@@ -1,43 +1,44 @@
 #include "Player.h"
-#include "Game.h"
 #include <math.h>
 #include <Engine/ResourceManager.h>
 
-int s;
 bool u, d, l, r;
 
-void Player::init(int x,int y,int size,std::string texture) {
-	_crosshair.init(x, y, size, size, false, texture);
-	_pointer.init(WIDTH / 2-64, HEIGHT / 2-64, 128, 128, false, "pointer.png");
-	ResourceManager::getTexture("proj.png");
-	s = size;
+void Player::init(int x,int y,int size,int crosshairSize,std::string texture, std::string texture1) {
+	_crosshair.init(0, 0, (float)crosshairSize, (float)crosshairSize, false, texture);
+	_crosshair.setOrigin(0,0);
+	_pointer.init((float)x, (float)y, (float)size, (float)size, false, texture1);
+	_pointer.setOrigin(0, 0);
+	ResourceManager::getTexture("Game/Top Quality Textures/proj.png");//Cache projectile texture
 }
 
-void Player::update(float gameTime) {
+void Player::update(float gameTime,float wheight) {
 	SDL_GetMouseState(&mouseX, &mouseY);
-	mouseY = HEIGHT-mouseY;
+	mouseY = (int)wheight - mouseY;
 
 	if (_shooting && gameTime - _lastShot > fireRate) {
-			_lastShot = gameTime;
-			shoot();
+		_lastShot = gameTime;
+		shoot();
 	}
 }
 
 void Player::render(GLSLShading shader, Camera2D& cam, float frameTime) {
+	//////////
 	GLint textureLocation = shader.getUniformLocation("sTexture");
 	glUniform1i(textureLocation, 0);
 
 	GLint matLocation = shader.getUniformLocation("p");
 	glUniformMatrix4fv(matLocation, 1, GL_FALSE, &(cam.getCameraMatrix()[0][0]));
+	//////////Copied from Sprite.cpp's render calls to prevent getting recalled and be neat.
 
 	_pointer.move(_moveX * moveSpeed * frameTime,_moveY * moveSpeed * frameTime);
-	_pointer.rotation = std::atan2(mouseY - _pointer.y - _pointer.height/2, mouseX - _pointer.x - _pointer.width/2) * 180 / M_PI;
+	_pointer.setRotation(std::atan2(mouseY - _pointer.y, mouseX - _pointer.x) * 180 / (float)M_PI);
 	_pointer.render();
 
-	_crosshair.setPosition(mouseX-(s/2), mouseY-(s/2));
+	_crosshair.setPosition((float)mouseX, (float)mouseY);
 	_crosshair.render();
 
-	for (int i = 0; i < _projectiles.size(); i++) {
+	for (unsigned int i = 0; i < _projectiles.size(); i++) {
 		_projectiles[i].render(frameTime);
 	}
 
@@ -46,7 +47,7 @@ void Player::render(GLSLShading shader, Camera2D& cam, float frameTime) {
 
 void  Player::shoot() {
 	Projectile p;
-	p.init(_pointer.x + _pointer.width / 2 - 32, _pointer.y + _pointer.height / 2 - 32, 64, "proj.png");
+	p.init(_pointer.x, _pointer.y, 64, "Game/Top Quality Textures/proj.png");
 	p.setDirection(_pointer.rotation);
 	p.speed = 512;
 	_projectiles.emplace(_projectiles.begin(), p);

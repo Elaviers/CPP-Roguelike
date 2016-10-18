@@ -7,11 +7,7 @@
 #include <Engine/Sprite.h>
 #include <Engine/Camera2D.h>
 
-#define WIDTH 1280
-#define HEIGHT 720
-
 #include "Player.h"
-#include "Collision.h"
 
 class Game
 {
@@ -26,7 +22,7 @@ private:
 	GLSLShading _shaderlsd,_shader;
 public:
 	float time;
-
+	int ScreenWidth, ScreenHeight;
 
 	Game();
 

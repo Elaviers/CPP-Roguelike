@@ -24,10 +24,13 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Collision.cpp">
+    <ClCompile Include="Projectile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Projectile.cpp">
+    <ClCompile Include="FileManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Misc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,10 +41,13 @@
     <ClInclude Include="Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.h">
+    <ClInclude Include="Projectile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Projectile.h">
+    <ClInclude Include="FileManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Misc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

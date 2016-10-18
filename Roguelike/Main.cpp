@@ -1,8 +1,8 @@
 #include "Game.h"
 
 int main(int argsc, char** argsv) {
-	Game koolgame;
-	koolgame.start();
+	Game interestingGame;
+	interestingGame.start();
 
 	return 0;
 }

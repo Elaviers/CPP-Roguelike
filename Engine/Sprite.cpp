@@ -56,8 +56,6 @@ void Sprite::render(GLSLShading shader) {
 }
 
 void Sprite::render() {
-	if (rotation != _LastUpdatedRotation)updateVertices();
-
 	glBindTexture(GL_TEXTURE_2D, _texture.ID);
 	glBindBuffer(GL_ARRAY_BUFFER, _vboID);
 
@@ -76,6 +74,12 @@ void Sprite::render() {
 	glDisableVertexAttribArray(2);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void Sprite::setOrigin(float offsetx,float offsety) {
+	_xOffset = -width/2 * (offsetx + 1);
+	_yOffset = -height/2 * (offsety + 1);
+	updateVertices();
 }
 
 void Sprite::setPosition(float xp,float yp) {
@@ -131,13 +135,18 @@ void Sprite::setUVS(float startX,float startY,float UVwidth,float UVheight) {
 	updateVertices();
 }
 
+void Sprite::setRotation(float a) {
+	rotation = a;
+	updateVertices();
+}
+
 void Sprite::updateVertices() {
 	if (dbg) std::cout << "updating...\n";
 
 	float rSin = glm::sin(glm::radians(rotation)), rCos = glm::cos(glm::radians(rotation));
 	float x1 = -width/2.0f, y1 = -height/2.0f;
 	float x2 = width / 2.0f, y2 = height / 2.0f;
-	float offsetX = x + x2, offsetY = y + y2;
+	float offsetX = x + x2 + _xOffset, offsetY = y + y2 + _yOffset;
 
 	vertices[0].setPosition(x2 * rCos - y2 * rSin + offsetX,x2 * rSin + y2 * rCos + offsetY);
 	vertices[1].setPosition(x1 * rCos - y2 * rSin + offsetX,x1 * rSin + y2 * rCos + offsetY);
@@ -145,8 +154,6 @@ void Sprite::updateVertices() {
 	vertices[3].setPosition(x1 * rCos - y1 * rSin + offsetX,x1 * rSin + y1 * rCos + offsetY);
 	vertices[4].setPosition(x2 * rCos - y1 * rSin + offsetX,x2 * rSin + y1 * rCos + offsetY);
 	vertices[5].setPosition(x2 * rCos - y2 * rSin + offsetX,x2 * rSin + y2 * rCos + offsetY);
-
-	_LastUpdatedRotation = rotation;
 
 	glBindBuffer(GL_ARRAY_BUFFER, _vboID);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, _static ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);

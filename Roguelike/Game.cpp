@@ -1,13 +1,21 @@
 #include "Game.h"
 #include <iostream>
 
+#include "FileManager.h"
+using namespace FileManager;
+
 Game::Game() : _running(true) {}
 
 void Game::start() {
+	std::vector<StringPair> properties = readFile("Game/wololo.zestyconfig");
+
+	ScreenWidth = readInt(properties,"resx");
+	ScreenHeight = readInt(properties, "resy");
+
 	////////////SDL
 	SDL_Init(SDL_INIT_EVERYTHING);
-	_window.create("The Window of Hope", WIDTH, HEIGHT, 0);
-	SDL_GL_SetSwapInterval(0);//vsync
+	_window.create("The Window of Hope", ScreenWidth, ScreenHeight,readBool(properties,"fullscreen") ? FULLSCREEN : 0);
+	SDL_GL_SetSwapInterval(readBool(properties, "vsync"));//vsync
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_ShowCursor(false);
 
@@ -17,21 +25,21 @@ void Game::start() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	////////////init shaders
-	_shader.compileShaders("Shaders/sprite.frag", "Shaders/sprite.vert");
+	_shader.compileShaders("Game/Shaders/sprite.frag", "Game/Shaders/sprite.vert");
 	_shader.addAttribute("vertPosition");
 	_shader.addAttribute("vertColour");
 	_shader.addAttribute("vertUV");
 	_shader.linkShaders();
 
-	_shaderlsd.compileShaders("Shaders/DRUGS.frag", "Shaders/DRUGS.vert");
+	_shaderlsd.compileShaders("Game/Shaders/DRUGS.frag", "Game/Shaders/DRUGS.vert");
 	_shaderlsd.addAttribute("vertPosition");
 	_shaderlsd.addAttribute("vertColour");
 	_shaderlsd.addAttribute("vertUV");
 	_shaderlsd.linkShaders();
 
 	////////////init
-	_camera.init(WIDTH,HEIGHT);
-	_player.init(0, 0, 64, "crosshair.png");
+	_camera.init(ScreenWidth, ScreenHeight);
+	_player.init(ScreenWidth/2, ScreenHeight/2, 128, 64, "Game/Top Quality Textures/crosshair.png", "Game/Top Quality Textures/pointer.png");
 	_sprite.init(-1, -1, 2, 2);
 	loop();
 	}
@@ -43,15 +51,14 @@ void Game::loop() {
 
 		_frameTimer.begin();
 		handleInput();
-		_player.update(time);
+		_player.update(time,(float)ScreenHeight);
 		render(_frameTimer.deltaTime);
 		_frameTimer.end();
 
 		time += _frameTimer.deltaTime;
-		if (frameNumber % 10 == 0)_window.setTitle("The phsychedelic window of hope, running at a buttery smooth "+std::to_string(_frameTimer.getFramerate())+" frames a second!");
+		if (frameNumber % 10 == 0)_window.setTitle("The politically correct window of promise, running at an eye popping "+std::to_string(_frameTimer.getFramerate())+" frames a second! "+std::to_string(time));
 	}
 }
-#include "Collision.h"
 
 void Game::render(float deltaTime) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -83,6 +90,7 @@ void Game::handleInput() {
 		case SDL_MOUSEBUTTONUP:
 			_player.setShooting(false); break;
 		case SDL_KEYDOWN:
+			if (event.key.keysym.sym == SDLK_ESCAPE) { _running = false; break; }
 			_player.keyDown(event); break;
 		case SDL_KEYUP:
 			_player.keyUp(event); break;
