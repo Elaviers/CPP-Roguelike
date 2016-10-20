@@ -18,6 +18,7 @@ public:
 
 	void set1i(const char* name, int value);
 	void set1f(const char* name, float value);
+	void set2f(const char* name, float,float);
 	void setMat4(const char* name,glm::mat4);
 
 private:

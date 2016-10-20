@@ -110,7 +110,7 @@ void Shader::unUseProgram() {
 
 GLuint Shader::getUniformLocation(const char* dir) {
 	GLint location = glGetUniformLocation(_programID,dir);
-	if (location == GL_INVALID_INDEX)error("Hey moron, check your uniform variables!");
+	if (location == GL_INVALID_INDEX)error("Hey moron, check your uniform variables!\nI couldn't find one of them!");
 	return location;
 }
 
@@ -122,6 +122,10 @@ void Shader::set1f(const char* name, float value) {
 	glUniform1f(getUniformLocation(name),value);
 }
 
+void Shader::set2f(const char* name, float x,float y) {
+	glUniform2f(getUniformLocation(name), x, y);
+}
+
 void Shader::setMat4(const char* name,glm::mat4 mat) {
-	glUniformMatrix4fv(glGetUniformLocation(_programID, name), 1, GL_FALSE, &mat[0][0]);
+	glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &mat[0][0]);
 }

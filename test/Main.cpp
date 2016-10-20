@@ -1,7 +1,0 @@
-#include "Game.h"
-
-int main(int argc,char** argv) {
-	Game process;
-	process.open();
-	return 0;
-}

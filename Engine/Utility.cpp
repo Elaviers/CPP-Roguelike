@@ -46,6 +46,18 @@ void Utility::sheetUV(Vertex (&v)[6],int index,int divX,int divY) {
 	}
 }
 
+glm::vec2 Utility::getOffsetOfUVIndex(int index,int divisions) {
+	float x, y = divisions - 1;
+	while (index > (divisions - 1)) {
+		y -= 1;
+		index -= divisions;
+	}
+
+	x = (float)index / (float)divisions;
+	y /= divisions;
+	return glm::vec2(x,y);
+}
+
 using namespace std;
 
 void Utility::splitString(const string& s, char c, vector<string>& v) {

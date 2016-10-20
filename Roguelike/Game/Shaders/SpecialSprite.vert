@@ -8,6 +8,7 @@ out vec2 fragPosition;
 out vec4 fragColour;
 out vec2 fragUV;
 
+uniform vec2 UVOffset;
 uniform mat4 p;
 uniform mat4 transform;
 
@@ -16,5 +17,5 @@ void main() {
 	
 	fragPosition = vertPosition;
 	fragColour = vertColour;
-	fragUV = vec2(vertUV.x,1-vertUV.y);
+	fragUV = vec2(vertUV.x + UVOffset.x,1-(vertUV.y+UVOffset.y));
 }
