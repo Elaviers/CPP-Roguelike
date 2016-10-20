@@ -2,6 +2,8 @@
 #include "FileManager.h"
 
 #include <Engine/ErrorHandling.h>
+#include <Engine/Font.h>
+
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -9,6 +11,8 @@
 using namespace FileManager;
 
 Game::Game() : _running(true) {}
+
+Font f,cool;
 
 void Game::start() {
 	std::vector<StringPair> properties = readFile("Game/wololo.zestyconfig");
@@ -32,10 +36,10 @@ void Game::start() {
 
 	///////////FREETYPE
 	FT_Library FtLib;
-	FT_Face face;
 
 	if (FT_Init_FreeType(&FtLib))error("Could not initialise FreeType!");
-	if (FT_New_Face(FtLib, "Game/Fonts/font.ttf", 0, &face))error("I could load a font, noooooooob\a\a\a\a!!!");
+	f.init(FtLib, "Game/Fonts/arial.ttf",32);
+	FT_Done_FreeType(FtLib);
 
 	////////////init shaders
 	_shader.compile("Game/Shaders/sprite.frag", "Game/Shaders/sprite.vert");
@@ -44,17 +48,16 @@ void Game::start() {
 	_shader.addAttribute("vertUV");
 	_shader.link();
 
+	_fontshader.compile("Game/Shaders/font.frag", "Game/Shaders/font.vert");
+	_fontshader.addAttribute("vertPosition");
+	_fontshader.addAttribute("vertUV");
+	_fontshader.link();
+
 	_shaderlsd.compile("Game/Shaders/DRUGS.frag", "Game/Shaders/DRUGS.vert");
 	_shaderlsd.addAttribute("vertPosition");
 	_shaderlsd.addAttribute("vertColour");
 	_shaderlsd.addAttribute("vertUV");
 	_shaderlsd.link();
-
-	_coolshader.compile("Game/Shaders/SpecialSprite.frag","Game/Shaders/SpecialSprite.vert");
-	_coolshader.addAttribute("vertPosition");
-	_coolshader.addAttribute("vertColour");
-	_coolshader.addAttribute("vertUV");
-	_coolshader.link();
 
 	////////////init
 	_camera.init(ScreenWidth, ScreenHeight);
@@ -94,22 +97,26 @@ void Game::render(float deltaTime) {
 	_shaderlsd.set1f("time",time);
 	_sprite.render();
 	_shaderlsd.unUseProgram();
-	/////////////////////////////////////////////////
-	_coolshader.useProgram();
-	_coolshader.set1i("sTexture", 0);
-	_coolshader.setMat4("p", _camera.getCameraMatrix());
-	_level.render(_coolshader);
-
-	_coolshader.unUseProgram();
 	////////////////////////////////////////////////
 	_shader.useProgram();
 	_shader.set1i("sTexture",0);
-	_shader.setMat4("p", _camera.getCameraMatrix());
+	_shader.setMat4("projection", _camera.getCameraMatrix());
 
+	_level.render(_shader);
+
+	_shader.setMat4("transform",glm::mat4());
+	_shader.set2f("UVOffset", 0, 0);
 	_player.render(_camera,deltaTime);
 
 	_shader.unUseProgram();
 	////////////////////////////////////////////////
+	_fontshader.useProgram();
+	_fontshader.set1i("sTexture", 0);
+	_fontshader.setMat4("projection", _camera.getScreenMatrix());
+
+	f.drawString("The qUiCk Br0Wn D0gE jumPeD 0veR tHeth lEeaszZy F0xe", 0, 0, glm::vec4(1,1,1,1), _fontshader);
+
+	_fontshader.unUseProgram();
 
 
 	_window.swapBuffer();

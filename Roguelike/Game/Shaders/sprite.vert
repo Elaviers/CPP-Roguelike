@@ -8,12 +8,15 @@ out vec2 fragPosition;
 out vec4 fragColour;
 out vec2 fragUV;
 
-uniform mat4 p;
+uniform mat4 projection;
+uniform mat4 transform;
+uniform vec2 UVOffset;
 
 void main() {
-	gl_Position = (p * vec4(vertPosition.x,vertPosition.y,0,1));
+	gl_Position = (projection * transform * vec4(vertPosition.xy,1,1));
 	
 	fragPosition = vertPosition;
 	fragColour = vertColour;
-	fragUV = vec2(vertUV.x,1-vertUV.y);
+	
+	fragUV = vec2(vertUV.x+UVOffset.x,1-(vertUV.y+UVOffset.y));
 }

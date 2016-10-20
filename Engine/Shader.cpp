@@ -126,6 +126,10 @@ void Shader::set2f(const char* name, float x,float y) {
 	glUniform2f(getUniformLocation(name), x, y);
 }
 
+void Shader::set4f(const char* name, float r, float g,float b,float a) {
+	glUniform4f(getUniformLocation(name), r, g, b, a);
+}
+
 void Shader::setMat4(const char* name,glm::mat4 mat) {
 	glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &mat[0][0]);
 }

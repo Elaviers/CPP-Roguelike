@@ -16,6 +16,7 @@ public:
 	void setScale(float s) { _scale = s; _hasChanged = true; };
 	float getScale() { return _scale; };
 	glm::mat4 getCameraMatrix() { return _CameraMatrix; };
+	glm::mat4 getScreenMatrix();
 
 	void init(int screenWidth, int screenHeight);
 	void update();

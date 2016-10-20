@@ -18,6 +18,10 @@ void Camera2D::init(int screenX, int screenY) {
 	_hasChanged = true;
 }
 
+glm::mat4 Camera2D::getScreenMatrix() {
+	return ortho;
+}
+
 void Camera2D::update() {
 
 	if (_hasChanged) {

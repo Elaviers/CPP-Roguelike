@@ -21,7 +21,7 @@ private:
 	Level _level;
 	Player _player;
 	Sprite _sprite;
-	Shader _shaderlsd,_shader,_coolshader;
+	Shader _shaderlsd,_shader,_fontshader;
 public:
 	float time;
 	int ScreenWidth, ScreenHeight;
