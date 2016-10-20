@@ -7,9 +7,6 @@
     <ClCompile Include="ErrorHandling.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GLSLShading.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ImageIO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -40,15 +37,24 @@
     <ClCompile Include="Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera2D.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="ErrorHandling.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="GLSLShading.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="ImageIO.h">
@@ -85,6 +91,15 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Window.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteRenderer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

@@ -22,7 +22,7 @@ void Player::init(float x,float y) {
 	tID = _playerSprite.getTextureID();
 }
 
-void Player::render(GLSLShading shader,Camera2D &camera,float deltaTime) {
+void Player::render(Shader shader,Camera2D &camera,float deltaTime) {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D,tID);
 

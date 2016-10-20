@@ -1,8 +1,10 @@
 #include "FileManager.h"
 
+#include <Engine/Utility.h>
+
 using namespace std;
 
-vector<StringPair> FileManager::readFile(char* Path)
+vector<StringPair> FileManager::readFile(const char* Path)
 {
 	ifstream stream(Path);
 	string str;
@@ -14,8 +16,38 @@ vector<StringPair> FileManager::readFile(char* Path)
 		StringPair s;
 		int i = str.find("=");
 		s.Property = str.substr(0, i);
-		s.Value = str.substr(i+1,str.back());
+		s.Value = str.substr(i+1,str.length() - i);
 		returnvalue.push_back(s);
+	}
+
+	stream.close();
+	return returnvalue;
+}
+#include <iostream>
+vector<Tile> FileManager::readLevelFile(const char* Path,int unitSize)
+{
+	ifstream stream(Path);
+	string str;
+
+	if (!stream.is_open())return (vector<Tile>)NULL;
+
+	vector<Tile> returnvalue;
+	while (getline(stream, str)) {
+		if (str.length() > 0 && str[0] != '-') {
+			vector<string> elements;
+			Utility::splitString(str, ' ', elements);
+			if (elements.size() >= 3) {
+				Tile t;
+				t.TileID = stoi(elements[0].c_str());
+				t.x = unitSize * stoi(elements[1].c_str());
+				t.y = unitSize * stoi(elements[2].c_str());
+				if (elements.size() >= 4)
+					t.flag = elements[3][0];
+				else t.flag = 0;
+
+				returnvalue.push_back(t);
+			}
+		}
 	}
 
 	stream.close();

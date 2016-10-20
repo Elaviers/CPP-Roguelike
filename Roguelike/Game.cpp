@@ -1,7 +1,11 @@
 #include "Game.h"
-#include <iostream>
-
 #include "FileManager.h"
+
+#include <Engine/ErrorHandling.h>
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
+#include <iostream>
 using namespace FileManager;
 
 Game::Game() : _running(true) {}
@@ -24,22 +28,41 @@ void Game::start() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	glClearColor(0,0,0,1);
+
+	///////////FREETYPE
+	FT_Library FtLib;
+	FT_Face face;
+
+	if (FT_Init_FreeType(&FtLib))error("Could not initialise FreeType!");
+	if (FT_New_Face(FtLib, "Game/Fonts/font.ttf", 0, &face))error("I could load a font, noooooooob\a\a\a\a!!!");
+
 	////////////init shaders
-	_shader.compileShaders("Game/Shaders/sprite.frag", "Game/Shaders/sprite.vert");
+	_shader.compile("Game/Shaders/sprite.frag", "Game/Shaders/sprite.vert");
 	_shader.addAttribute("vertPosition");
 	_shader.addAttribute("vertColour");
 	_shader.addAttribute("vertUV");
-	_shader.linkShaders();
+	_shader.link();
 
-	_shaderlsd.compileShaders("Game/Shaders/DRUGS.frag", "Game/Shaders/DRUGS.vert");
+	_shaderlsd.compile("Game/Shaders/DRUGS.frag", "Game/Shaders/DRUGS.vert");
 	_shaderlsd.addAttribute("vertPosition");
 	_shaderlsd.addAttribute("vertColour");
 	_shaderlsd.addAttribute("vertUV");
-	_shaderlsd.linkShaders();
+	_shaderlsd.link();
+
+	_coolshader.compile("Game/Shaders/SpecialSprite.frag","Game/Shaders/SpecialSprite.vert");
+	_coolshader.addAttribute("vertPosition");
+	_coolshader.addAttribute("vertColour");
+	_coolshader.addAttribute("vertUV");
+	_coolshader.link();
 
 	////////////init
 	_camera.init(ScreenWidth, ScreenHeight);
-	_player.init(ScreenWidth/2, ScreenHeight/2, 128, 64, "Game/Top Quality Textures/crosshair.png", "Game/Top Quality Textures/pointer.png");
+	_level.init("Game/lvl.zestylevel");
+	SpawnPoint spawn = _level.getSpawnPoint();
+
+	_camera.setPosition(glm::vec2(spawn.x-ScreenWidth/2,spawn.y-ScreenHeight/2));
+	_player.init(spawn.x, spawn.y, 128, 64, "Game/Top Quality Textures/crosshair.png", "Game/Top Quality Textures/pointer.png");
 	_sprite.init(-1, -1, 2, 2);
 	loop();
 	}
@@ -66,15 +89,28 @@ void Game::render(float deltaTime) {
 
 	_camera.update();
 
+	/////////////////////////////////////////////////
 	_shaderlsd.useProgram();
-	GLint shaderTime = _shaderlsd.getUniformLocation("time");
-	glUniform1f(shaderTime, time);
+	_shaderlsd.set1f("time",time);
 	_sprite.render();
 	_shaderlsd.unUseProgram();
+	/////////////////////////////////////////////////
+	_coolshader.useProgram();
+	_coolshader.set1i("sTexture", 0);
+	_coolshader.setMat4("p", _camera.getCameraMatrix());
+	_level.render(_coolshader);
 
+	_coolshader.unUseProgram();
+	////////////////////////////////////////////////
 	_shader.useProgram();
-	_player.render(_shader,_camera,deltaTime);
+	_shader.set1i("sTexture",0);
+	_shader.setMat4("p", _camera.getCameraMatrix());
+
+	_player.render(_camera,deltaTime);
+
 	_shader.unUseProgram();
+	////////////////////////////////////////////////
+
 
 	_window.swapBuffer();
 }
@@ -91,6 +127,9 @@ void Game::handleInput() {
 			_player.setShooting(false); break;
 		case SDL_KEYDOWN:
 			if (event.key.keysym.sym == SDLK_ESCAPE) { _running = false; break; }
+			if (event.key.keysym.sym == SDLK_i) { _camera.setAngle(_camera.getAngle() + .1f); break; }
+			if (event.key.keysym.sym == SDLK_o) { _camera.setAngle(_camera.getAngle() - .1f); break; }
+			if (event.key.keysym.sym == SDLK_f) { SDL_SetWindowFullscreen(_window.GetWindowID(),true); break; }
 			_player.keyDown(event); break;
 		case SDL_KEYUP:
 			_player.keyUp(event); break;

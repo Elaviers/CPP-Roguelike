@@ -17,7 +17,7 @@ void Player::updateCursorLocation(float x,float y) {
 	_crosshair.rotation = glm::atan(_crosshair.y,_crosshair.x) * 180 / M_PI;
 }
 
-void Player::render(GLSLShading shader,Camera2D cam,float deltaTime) {
+void Player::render(Shader shader,Camera2D cam,float deltaTime) {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, ID);
 	_crosshair.render(shader,cam.getCameraMatrix());

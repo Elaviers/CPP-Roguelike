@@ -22,7 +22,7 @@ private:
 	Window _WINDOW;
 	GameState _state;
 	Timing _frameLimiter;
-	GLSLShading _spriteShader, _rShader;
+	Shader _spriteShader, _rShader;
 	Player _Player;
 	Camera2D _Camera;
 

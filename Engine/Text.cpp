@@ -39,14 +39,14 @@ void Text::init(int pos_x, int pos_y, char tex[],int fontSize) {
 	font.init(x, y, (float)size, (float)size, false, texture);
 }
 
-void Text::render(GLSLShading shader, glm::mat4 cMat) {
+void Text::render() {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, font.getTextureID());
 	for (unsigned int i = 0; i < _len; i++) {
 		if (indices[i] > -1) {
 			font.swapUVs(indices[i]);
 			font.setPosition((float)i*size,64);
-			font.render(shader, cMat);
+			font.render();
 		}
 	}
 	glBindTexture(GL_TEXTURE_2D, 0);

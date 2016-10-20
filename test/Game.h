@@ -10,7 +10,7 @@ class Game {
 private:
 	Window _window;
 	Timing _timing;
-	GLSLShading _shader;
+	Shader _shader;
 
 	float _width, _height;
 

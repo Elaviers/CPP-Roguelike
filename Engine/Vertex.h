@@ -12,6 +12,7 @@ struct UV {
 class Colour { 
 public:
 	GLubyte r, g, b, a;
+	Colour() : r(255),g(255),b(255),a(255) {};
 };
 
 struct Vertex {

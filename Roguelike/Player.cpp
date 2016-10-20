@@ -22,35 +22,34 @@ void Player::update(float gameTime,float wheight) {
 	}
 }
 
-void Player::render(GLSLShading shader, Camera2D& cam, float frameTime) {
-	//////////
-	GLint textureLocation = shader.getUniformLocation("sTexture");
-	glUniform1i(textureLocation, 0);
-
-	GLint matLocation = shader.getUniformLocation("p");
-	glUniformMatrix4fv(matLocation, 1, GL_FALSE, &(cam.getCameraMatrix()[0][0]));
-	//////////Copied from Sprite.cpp's render calls to prevent getting recalled and be neat.
-
-	_pointer.move(_moveX * moveSpeed * frameTime,_moveY * moveSpeed * frameTime);
-	_pointer.setRotation(std::atan2(mouseY - _pointer.y, mouseX - _pointer.x) * 180 / (float)M_PI);
-	_pointer.render();
-
-	_crosshair.setPosition((float)mouseX, (float)mouseY);
-	_crosshair.render();
+void Player::render(Camera2D& cam, float frameTime) {
+	float movex = _moveX * moveSpeed * frameTime;
+	float movey = _moveY * moveSpeed * frameTime;
 
 	for (unsigned int i = 0; i < _projectiles.size(); i++) {
 		_projectiles[i].render(frameTime);
 	}
+
+	cam.move(movex, movey);
+	_pointer.move(movex, movey);
+
+	
+
+	_crosshair.setPosition((float)mouseX + cam.getPosition().x, (float)mouseY + cam.getPosition().y);
+	_pointer.setRotation(std::atan2(_crosshair.y - _pointer.y, _crosshair.x - _pointer.x) * 180 / (float)M_PI);
+	_pointer.render();
+
+	_crosshair.render();
 
 	glBindTexture(GL_TEXTURE_2D,0);
 }
 
 void  Player::shoot() {
 	Projectile p;
-	p.init(_pointer.x, _pointer.y, 64, "Game/Top Quality Textures/proj.png");
-	p.setDirection(_pointer.rotation);
-	p.speed = 512;
-	_projectiles.emplace(_projectiles.begin(), p);
+	_projectiles.push_back(p);
+	_projectiles.back().init(_pointer.x, _pointer.y, 64, "Game/Top Quality Textures/proj.png");
+	_projectiles.back().setDirection(_pointer.rotation);
+	_projectiles.back().speed = 512;
 }
 
 void Player::keyUp(SDL_Event action) {

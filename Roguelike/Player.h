@@ -1,7 +1,6 @@
 #pragma once
 #include <Engine/Sprite.h>
 #include <Engine/Camera2D.h>
-#include <Engine/GLSLShading.h>
 #include <SDL/SDL.h>
 
 #include "Projectile.h"
@@ -27,7 +26,7 @@ public:
 	int mouseX,mouseY;
 
 	void update(float gameTime,float);
-	void render(GLSLShading Shader,Camera2D& Camera,float DeltaTime);
+	void render(Camera2D& Camera,float DeltaTime);
 
 	void keyUp(SDL_Event a);
 	void keyDown(SDL_Event a);

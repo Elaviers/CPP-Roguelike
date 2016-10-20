@@ -1,8 +1,8 @@
-#version 130
+#version 450
 
-in vec2 vertPosition;
-in vec4 vertColour;
-in vec2 vertUV;
+layout (location = 0)in vec2 vertPosition;
+layout (location = 1)in vec4 vertColour;
+layout (location = 2)in vec2 vertUV;
 
 out vec2 fragPosition;
 out vec4 fragColour;

@@ -161,32 +161,37 @@
   <ItemGroup>
     <ClCompile Include="Camera2D.cpp" />
     <ClCompile Include="ErrorHandling.cpp" />
-    <ClCompile Include="GLSLShading.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ImageIO.cpp" />
     <ClCompile Include="IOManager.cpp" />
     <ClCompile Include="PicoPNG.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteBatch.cpp" />
+    <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="Text.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureCache.cpp" />
     <ClCompile Include="Timing.cpp" />
+    <ClCompile Include="Utility.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera2D.h" />
     <ClInclude Include="ErrorHandling.h" />
-    <ClInclude Include="GLSLShading.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="ImageIO.h" />
     <ClInclude Include="IOManager.h" />
     <ClInclude Include="PicoPNG.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteBatch.h" />
+    <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureCache.h" />
     <ClInclude Include="Timing.h" />
+    <ClInclude Include="Utility.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

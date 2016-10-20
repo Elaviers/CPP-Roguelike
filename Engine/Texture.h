@@ -2,7 +2,10 @@
 #include "PicoPNG.h"
 #include <Gl/glew.h>
 
-struct Texture {
+class Texture {
+public:
 	GLuint ID;
 	int Width, Height;
+
+	void bind();
 };

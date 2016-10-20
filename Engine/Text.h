@@ -12,7 +12,7 @@ public:
 	char *texture;
 	void operator=(std::string str);
 	void init(int x,int y,char texture[], int fontSize = 16);
-	void render(GLSLShading shader, glm::mat4 cMat);
+	void render();
 	void setText(std::string text);
 	Colour colour;
 	Sprite font;

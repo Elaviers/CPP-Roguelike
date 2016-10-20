@@ -49,17 +49,17 @@ void Game::init() {
 }
 
 void Game::shaderSetup() {
-	_spriteShader.compileShaders("resource/shaders/sprite.frag", "resource/shaders/sprite.vert");
+	_spriteShader.compile("resource/shaders/sprite.frag", "resource/shaders/sprite.vert");
 	_spriteShader.addAttribute("vertPosition");
 	_spriteShader.addAttribute("vertColour");
 	_spriteShader.addAttribute("vertUV");
-	_spriteShader.linkShaders();
+	_spriteShader.link();
 
-	_rShader.compileShaders("resource/shaders/spritelsd.frag", "resource/shaders/spritelsd.vert");
+	_rShader.compile("resource/shaders/spritelsd.frag", "resource/shaders/spritelsd.vert");
 	_rShader.addAttribute("vertPosition");
 	_rShader.addAttribute("vertColour");
 	_rShader.addAttribute("vertUV");
-	_rShader.linkShaders();
+	_rShader.link();
 }
 
 void Game::loop() {

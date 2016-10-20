@@ -4,7 +4,7 @@
 #include <string>
 #include "Vertex.h"
 #include "Texture.h"
-#include "GLSLShading.h"
+#include "Shader.h"
 #include "SpriteBatch.h"
 
 class Sprite
@@ -23,22 +23,21 @@ public:
 	void setOrigin(float x,float y);//Sets the origin of the sprite. For each axis, 0 is the centre,-1 is left edge, and 1 is right edge. Only affects location for now.
 	void setPosition(float x, float y);
 	void setRotation(float angle);
+	void setColour(GLbyte r, GLbyte g, GLbyte b, GLbyte a);
 	void move(float x,float y);
 	void swapUVs(int textureIndex);
-	void render(GLSLShading shader, glm::mat4 cMat);
-	void render(GLSLShading shader);
 	void render();
-	void renderToBatch(SpriteBatch &batch);
+	//void renderToBatch(SpriteBatch &batch);
 
 	GLuint getTextureID() { return _texture.ID; };
 private:
 	bool _static;
-	GLuint _vboID;
+	GLuint _vboID, _vaoID;
 	Texture _texture;
-	glm::vec4 _uvdata;
 
 	float _xOffset, _yOffset;
 	
+	void setVAO();
 	void updateVertices();
 	void setUVS(float,float,float,float);
 };

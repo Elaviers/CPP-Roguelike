@@ -13,7 +13,7 @@ public:
 	~Player();
 
 	void init(float x,float y);
-	void render(GLSLShading shader,Camera2D &camera,float deltaTime);
+	void render(Shader shader,Camera2D &camera,float deltaTime);
 	void keyDown(SDL_Keycode scancode);
 	void keyUp(SDL_Keycode scancode);
 private:

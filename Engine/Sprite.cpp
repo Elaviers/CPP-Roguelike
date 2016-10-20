@@ -11,12 +11,14 @@ Sprite::Sprite(int divisions) : _vboID(0) {
 	UVGridDivisions = divisions;
 }
 
-
 Sprite::~Sprite() {
 	if (_vboID != 0)
 		glDeleteBuffers(1, &_vboID);
+	if (_vaoID != 0)
+		glDeleteVertexArrays(1, &_vaoID);
 }
 
+#include <iostream>
 void Sprite::init(float xp, float yp,float w,float h,bool isStatic,std::string path) {
 	_static = isStatic;
 	x = xp;
@@ -31,49 +33,56 @@ void Sprite::init(float xp, float yp,float w,float h,bool isStatic,std::string p
 
 	if (_vboID == 0)
 		glGenBuffers(1, &_vboID);
-
-	for (int i = 0; i < 6; i++)
-		vertices[i].setColour(255,255,255,255);
+	if (_vaoID == 0)
+		glGenVertexArrays(1, &_vaoID);
 
 	swapUVs(0);
 }
 
-void Sprite::render(GLSLShading shader, glm::mat4 cMat) {
-	GLint textureLocation = shader.getUniformLocation("sTexture");
-	glUniform1i(textureLocation, 0);
-
-	GLint matLocation = shader.getUniformLocation("p");
-	glUniformMatrix4fv(matLocation, 1, GL_FALSE, &(cMat[0][0]));
-
-	render();
-}
-
-void Sprite::render(GLSLShading shader) {
-	GLint textureLocation = shader.getUniformLocation("sTexture");
-	glUniform1i(textureLocation, 0);
-
-	render();
+void Sprite::setVAO() {
+	glBindVertexArray(_vaoID);//bind Vertex Array Object
+		glBindBuffer(GL_ARRAY_BUFFER, _vboID);//bind Vertex Buffer Object
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, _static ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);		//Update buffer data
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, position));		//0-position
+		glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, colour));	//1-colour
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, uv));				//2-uvs
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);//unbind Vertex Buffer Object
+	glBindVertexArray(0);//unbind Vertex Array Object
 }
 
 void Sprite::render() {
-	glBindTexture(GL_TEXTURE_2D, _texture.ID);
-	glBindBuffer(GL_ARRAY_BUFFER, _vboID);
-
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glEnableVertexAttribArray(2);
-
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
-	glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void*)offsetof(Vertex, colour));
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
-
+	glActiveTexture(GL_TEXTURE_2D);
+	//std::cout << "Bind texture...";
+	_texture.bind();
+	//std::cout << "Bind vao...";
+	glBindVertexArray(_vaoID);
+	//std::cout << "Draw...";
 	glDrawArrays(GL_TRIANGLES, 0, 6);
+	//std::cout << "Unbind vao!\n";
+	glBindVertexArray(0);
 
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(2);
+	glActiveTexture(0);
+}
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+void Sprite::updateVertices() {
+	if (dbg) std::cout << "updating...\n";
+
+	float rSin = glm::sin(glm::radians(rotation)), rCos = glm::cos(glm::radians(rotation));
+	float x1 = -width / 2.0f, y1 = -height / 2.0f;
+	float x2 = width / 2.0f, y2 = height / 2.0f;
+	float offsetX = x + x2 + _xOffset, offsetY = y + y2 + _yOffset;
+
+	vertices[0].setPosition(x2 * rCos - y2 * rSin + offsetX, x2 * rSin + y2 * rCos + offsetY);
+	vertices[1].setPosition(x1 * rCos - y2 * rSin + offsetX, x1 * rSin + y2 * rCos + offsetY);
+	vertices[2].setPosition(x1 * rCos - y1 * rSin + offsetX, x1 * rSin + y1 * rCos + offsetY);
+	vertices[3].setPosition(x1 * rCos - y1 * rSin + offsetX, x1 * rSin + y1 * rCos + offsetY);
+	vertices[4].setPosition(x2 * rCos - y1 * rSin + offsetX, x2 * rSin + y1 * rCos + offsetY);
+	vertices[5].setPosition(x2 * rCos - y2 * rSin + offsetX, x2 * rSin + y2 * rCos + offsetY);
+
+	setVAO();
 }
 
 void Sprite::setOrigin(float offsetx,float offsety) {
@@ -116,15 +125,13 @@ void Sprite::swapUVs(int textureIndex) {
 	UVy /= UVGridDivisions;
 
 	if (!flipped) {
-		_uvdata = glm::vec4(UVx,UVy,inc,inc);
+		setUVS(UVx,UVy,inc,inc);
 	}
 	else {
-		_uvdata = glm::vec4(UVx+inc, UVy, -inc, inc);
+		setUVS(UVx+inc, UVy, -inc, inc);
 	}
-
-	setUVS(_uvdata.x,_uvdata.y,_uvdata.z,_uvdata.w);
 }
-#include <iostream>
+
 void Sprite::setUVS(float startX,float startY,float UVwidth,float UVheight) {
 	vertices[0].setUv(startX + UVwidth, startY + UVheight);
 	vertices[1].setUv(startX, startY + UVheight);
@@ -140,26 +147,13 @@ void Sprite::setRotation(float a) {
 	updateVertices();
 }
 
-void Sprite::updateVertices() {
-	if (dbg) std::cout << "updating...\n";
+void Sprite::setColour(GLbyte r, GLbyte g, GLbyte b, GLbyte a) {
 
-	float rSin = glm::sin(glm::radians(rotation)), rCos = glm::cos(glm::radians(rotation));
-	float x1 = -width/2.0f, y1 = -height/2.0f;
-	float x2 = width / 2.0f, y2 = height / 2.0f;
-	float offsetX = x + x2 + _xOffset, offsetY = y + y2 + _yOffset;
+	for (int i = 0; i < 6; i++)
+		vertices[i].setColour(r, g, b, a);
 
-	vertices[0].setPosition(x2 * rCos - y2 * rSin + offsetX,x2 * rSin + y2 * rCos + offsetY);
-	vertices[1].setPosition(x1 * rCos - y2 * rSin + offsetX,x1 * rSin + y2 * rCos + offsetY);
-	vertices[2].setPosition(x1 * rCos - y1 * rSin + offsetX,x1 * rSin + y1 * rCos + offsetY);
-	vertices[3].setPosition(x1 * rCos - y1 * rSin + offsetX,x1 * rSin + y1 * rCos + offsetY);
-	vertices[4].setPosition(x2 * rCos - y1 * rSin + offsetX,x2 * rSin + y1 * rCos + offsetY);
-	vertices[5].setPosition(x2 * rCos - y2 * rSin + offsetX,x2 * rSin + y2 * rCos + offsetY);
-
-	glBindBuffer(GL_ARRAY_BUFFER, _vboID);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, _static ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Sprite::renderToBatch(SpriteBatch &batch) {
-	batch.render(glm::vec4(x, y, width, height), _uvdata, _texture.ID, 0, Vertex::colourOf(255,255,255,255));
-}
+//void Sprite::renderToBatch(SpriteBatch &batch) {
+//	batch.render(glm::vec4(x, y, width, height), _uvdata, _texture.ID, 0, Vertex::colourOf(255,255,255,255));
+//}

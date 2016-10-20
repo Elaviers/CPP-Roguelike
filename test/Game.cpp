@@ -31,11 +31,11 @@ void Game::createWindow() {
 }
 
 void Game::createShaders() {
-	_shader.compileShaders("stuff/shaders/sprite.frag", "stuff/shaders/sprite.vert");
+	_shader.compile("stuff/shaders/sprite.frag", "stuff/shaders/sprite.vert");
 	_shader.addAttribute("VertPosition");
 	_shader.addAttribute("VertColour");
 	_shader.addAttribute("VertUV");
-	_shader.linkShaders();
+	_shader.link();
 }
 
 void Game::loop() {
