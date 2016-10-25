@@ -3,7 +3,7 @@
 #include "Vertex.h"
 #include <string>
 #include <vector>
-class Text
+class Text //Use font instead lol
 {
 public:
 	Text();

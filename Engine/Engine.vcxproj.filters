@@ -52,6 +52,9 @@
     <ClCompile Include="Font.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LineRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera2D.h">
@@ -106,6 +109,12 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Font.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderPresets.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="LineRenderer.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

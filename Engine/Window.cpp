@@ -13,14 +13,14 @@ Window::~Window() {
 int Window::create(std::string title, int width, int height, unsigned int flag) {
 	_w = width; _h = height;
 
-	unsigned int windowFlag = SDL_WINDOW_OPENGL;
+	unsigned int windowFlag = SDL_WINDOW_OPENGL | flag;
 
-	if (flag & HIDDEN)
+	/*if (flag & HIDDEN)
 		windowFlag |= SDL_WINDOW_HIDDEN;
 	if (flag & FULLSCREEN)
 		windowFlag |= SDL_WINDOW_FULLSCREEN;
 	if (flag & BORDERLESS)
-		windowFlag |= SDL_WINDOW_BORDERLESS;
+		windowFlag |= SDL_WINDOW_BORDERLESS;*/
 
 	_ID = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _w, _h, windowFlag);
 	if (_ID == nullptr)

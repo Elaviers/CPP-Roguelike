@@ -76,7 +76,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)/dependencies/include</IncludePath>
-    <LibraryPath>$(SolutionDir)/dependencies/libs;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)/dependencies/libs/x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)/dependencies/include</IncludePath>
@@ -84,7 +84,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)/dependencies/include</IncludePath>
-    <LibraryPath>$(SolutionDir)/dependencies/libs;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)/dependencies/libs/x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -162,6 +162,7 @@
     <ClCompile Include="Camera2D.cpp" />
     <ClCompile Include="ErrorHandling.cpp" />
     <ClCompile Include="Font.cpp" />
+    <ClCompile Include="LineRenderer.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ImageIO.cpp" />
     <ClCompile Include="IOManager.cpp" />
@@ -181,11 +182,13 @@
     <ClInclude Include="Camera2D.h" />
     <ClInclude Include="ErrorHandling.h" />
     <ClInclude Include="Font.h" />
+    <ClInclude Include="LineRenderer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ImageIO.h" />
     <ClInclude Include="IOManager.h" />
     <ClInclude Include="PicoPNG.h" />
     <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="ShaderPresets.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteBatch.h" />
     <ClInclude Include="SpriteRenderer.h" />

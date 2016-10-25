@@ -1,7 +1,6 @@
 #pragma once
 
 #include "FileManager.h"
-#include <Engine/Sprite.h>
 #include <Engine/ResourceManager.h>
 #include <Engine/Texture.h>
 #include <Engine/SpriteRenderer.h>
@@ -14,8 +13,6 @@ class Level
 {
 private:
 	std::vector<Tile> _tiles;
-	std::vector<Sprite> _sprites;
-	SpriteRenderer _renderer;
 	Texture _tex;
 public:
 	Level();

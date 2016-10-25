@@ -26,10 +26,12 @@ public:
 	int mouseX,mouseY;
 
 	void update(float gameTime,float);
-	void render(Camera2D& Camera,float DeltaTime);
+	void render(Camera2D& Camera,float DeltaTime,Shader& s);
 
 	void keyUp(SDL_Event a);
 	void keyDown(SDL_Event a);
 	void setShooting(bool state) { _shooting = state; };
 	void shoot();
+
+	void setPointerLocation(float x,float y);
 };

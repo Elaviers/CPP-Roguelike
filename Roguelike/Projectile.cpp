@@ -4,18 +4,17 @@
 
 Projectile::Projectile() {}
 
-void Projectile::init(float x, float y,float s, std::string path) {
-	_sprite.init(x, y, s, s, false, path);
-	_sprite.setOrigin(0,0);
+void Projectile::init(float x, float y,float s,float direction,float speed, std::string path) {
+	_position = glm::vec2(x,y);
+	_size = s;
+	_direction = direction;
+	_speed = speed;
+	_texture = ResourceManager::getTexture(path);
 }
 
-void Projectile::render(float frameTime) {
-	if (frameTime == 0)frameTime = 0.000001f;
+void Projectile::render(float frameTime,Shader& shader) {
+	_position.x += (float)std::cos(_direction * M_PI / 180) * frameTime * _speed;
+	_position.y += (float)std::sin(_direction * M_PI / 180) * frameTime * _speed;
 
-	_sprite.move((float)std::cos(_sprite.rotation * M_PI / 180) * frameTime * speed, (float)std::sin(_sprite.rotation * M_PI / 180) * frameTime * speed);
-	_sprite.render();
-}
-
-void Projectile::setDirection(float a) {
-	_sprite.setRotation(a);
+	SpriteRenderer::drawSprite(shader,_texture, _position.x - _size/2, _position.y - _size/2,_size,_size,_direction * M_PI/180);
 }

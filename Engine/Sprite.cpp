@@ -31,24 +31,29 @@ void Sprite::init(float xp, float yp,float w,float h,bool isStatic,std::string p
 	if (path != "")_texture = ResourceManager::getTexture(path);
 	else _texture.ID = 0;
 
-	if (_vboID == 0)
-		glGenBuffers(1, &_vboID);
 	if (_vaoID == 0)
 		glGenVertexArrays(1, &_vaoID);
+	if (_vboID == 0)
+		glGenBuffers(1, &_vboID);
 
+	std::printf("Sprite initialised (VAO:%d VBO:%d)\n", _vaoID, _vboID);
+
+	setVAO();
 	swapUVs(0);
 }
 
 void Sprite::setVAO() {
 	glBindVertexArray(_vaoID);//bind Vertex Array Object
 		glBindBuffer(GL_ARRAY_BUFFER, _vboID);//bind Vertex Buffer Object
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, _static ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);		//Update buffer data
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, position));		//0-position
-		glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, colour));	//1-colour
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, uv));				//2-uvs
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), nullptr, _static ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);		//Set buffer data
+
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2);
+
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, position));		//0-position
+		glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, colour));	//1-colour
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, uv));				//2-uvs
 		glBindBuffer(GL_ARRAY_BUFFER, 0);//unbind Vertex Buffer Object
 	glBindVertexArray(0);//unbind Vertex Array Object
 }
@@ -82,7 +87,11 @@ void Sprite::updateVertices() {
 	vertices[4].setPosition(x2 * rCos - y1 * rSin + offsetX, x2 * rSin + y1 * rCos + offsetY);
 	vertices[5].setPosition(x2 * rCos - y2 * rSin + offsetX, x2 * rSin + y2 * rCos + offsetY);
 
-	setVAO();
+	glBindVertexArray(_vaoID);//bind Vertex Array Object
+	glBindBuffer(GL_ARRAY_BUFFER, _vboID);//bind Vertex Buffer Object
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);//unbind Vertex Buffer Object
+	glBindVertexArray(0);//unbind Vertex Array Object
 }
 
 void Sprite::setOrigin(float offsetx,float offsety) {
@@ -153,7 +162,3 @@ void Sprite::setColour(GLbyte r, GLbyte g, GLbyte b, GLbyte a) {
 		vertices[i].setColour(r, g, b, a);
 
 }
-
-//void Sprite::renderToBatch(SpriteBatch &batch) {
-//	batch.render(glm::vec4(x, y, width, height), _uvdata, _texture.ID, 0, Vertex::colourOf(255,255,255,255));
-//}

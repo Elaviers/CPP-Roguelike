@@ -31,16 +31,14 @@ vector<Tile> FileManager::readLevelFile(const char* Path,int unitSize)
 
 	if (!stream.is_open())return (vector<Tile>)NULL;
 
-	printf("Loading level\n");
-
 	vector<Tile> returnvalue;
 	while (getline(stream, str)) {
 		if (str.length() > 0 && str[0] != '|') {
 			vector<string> elements;
 			Utility::splitString(str, ' ', elements);
 			if (elements.size() >= 3) {
-				for (string s : elements)
-					printf("%s | ", s);
+				for (int s = 0; s < elements.size(); s++)
+					printf("%s | ", elements[s].c_str());
 				printf("\n");
 
 				Tile t;
@@ -55,8 +53,6 @@ vector<Tile> FileManager::readLevelFile(const char* Path,int unitSize)
 			}
 		}
 	}
-
-	printf("Level loaded!\n");
 
 	stream.close();
 	return returnvalue;

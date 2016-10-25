@@ -2,17 +2,17 @@
 
 #include <Engine/Sprite.h>
 #include <Engine/Camera2D.h>
+#include <Engine/SpriteRenderer.h>
 
 class Projectile
 {
 private:
-	Sprite _sprite;
+	Texture _texture;
+	float _size, _direction, _speed;
+	glm::vec2 _position;
 public:
-	float speed;
-
 	Projectile();
 
-	void init(float x, float y, float size, std::string);
-	void setDirection(float Angle);
-	void render(float DeltaTime);
+	void init(float x, float y, float size,float direction,float speed, std::string);
+	void render(float DeltaTime,Shader& s);
 };

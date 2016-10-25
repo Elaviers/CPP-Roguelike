@@ -7,15 +7,18 @@
 class SpriteRenderer
 {
 private:
-	GLuint _vbo, _vao;
-	int _currentIndex,_divisions;
-	glm::vec2 _UVOffset;
+	static GLuint _vbo, _vao;
+	static int _currentIndex,_divisions;
+	static glm::vec2 _UVOffset;
 
-	void setIndex(int i);
+	static Shader _shader;
+
+	static void setIndex(int i);
+	static void setUVData(int);
 public:
-	SpriteRenderer();
-	~SpriteRenderer();
 		
-	void init(int divisions);
-	void drawSprite(Shader Shader,Texture& Texture,float x,float y,float width,float height,float angle = 0.0f,int Index = 0);
+	static void init();
+	static void SetShaderActive(bool);
+	static void drawSprite(Texture& Texture, float x, float y, float width, float height, float angle = 0.0f, int Divisions = 1, int Index = 0);
+	static void drawSprite(Shader& Shader, Texture& Texture, float x, float y, float width, float height, float angle = 0.0f,int Divisions = 1, int Index = 0);
 };

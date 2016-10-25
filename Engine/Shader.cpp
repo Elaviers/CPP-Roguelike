@@ -12,7 +12,7 @@ Shader::Shader() :_attributeCount(0),  _programID(0), _vertID(0), _fragID(0) {
 Shader::~Shader() {
 }
 
-void Shader::compile(const char* frag, const char* vert) {
+void Shader::generateShaderStuff() {
 	_programID = glCreateProgram();
 
 	_vertID = glCreateShader(GL_VERTEX_SHADER);
@@ -21,15 +21,56 @@ void Shader::compile(const char* frag, const char* vert) {
 	_fragID = glCreateShader(GL_FRAGMENT_SHADER);
 	if (_fragID == 0)
 		error("Fragment shader issues mang");
-
-	load(frag,_fragID);
-	load(vert, _vertID);
 }
 
-void Shader::load(const char* dir,GLuint ID) {
-	std::ifstream ShaderFile(dir);
+void Shader::compile(const char* frag, const char* vert) {
+	generateShaderStuff();
+
+	loadFromFile(frag, _fragID);
+	loadFromFile(vert, _vertID);
+}
+
+void Shader::loadPreset(ShaderPreset::ShaderPreset type) {
+	switch (type) {
+		case ShaderPreset::SPRITE:
+			generateShaderStuff();
+			load(SHADER_PRESETS::SPRITE_FRAG, _fragID);
+			load(SHADER_PRESETS::SPRITE_VERT, _vertID);
+			addAttribute("vertPosition");
+			addAttribute("vertColour");
+			addAttribute("vertUV");
+			break;
+		case ShaderPreset::TRANSFORM_SPRITE:
+			generateShaderStuff();
+			load(SHADER_PRESETS::SPRITE_FRAG, _fragID);
+			load(SHADER_PRESETS::TRANSFORMED_SPRITE_VERT, _vertID);
+			addAttribute("vertPosition");
+			addAttribute("vertColour");
+			addAttribute("vertUV");
+			break;
+		case ShaderPreset::LINE:
+			generateShaderStuff();
+			load(SHADER_PRESETS::LINE_FRAG, _fragID);
+			load(SHADER_PRESETS::LINE_VERT, _vertID);
+			addAttribute("vertPosition");
+			addAttribute("vertColour");
+			break;
+		case ShaderPreset::FONT:
+			generateShaderStuff();
+			load(SHADER_PRESETS::FONT_FRAG, _fragID);
+			load(SHADER_PRESETS::FONT_VERT, _vertID);
+			addAttribute("vertPosition");
+			addAttribute("vertUV");
+			break;
+		default:
+			error("Invalid preset");
+	}
+}
+
+void Shader::loadFromFile(const char* path,GLuint ID) {
+	std::ifstream ShaderFile(path);
 	if (ShaderFile.fail()) {
-		perror(dir);
+		perror(path);
 		error("Ey gaylord, I couldn't open a shader!\n");
 	}
 
@@ -40,7 +81,11 @@ void Shader::load(const char* dir,GLuint ID) {
 	ShaderFile.close();
 
 	const char* readcontents = contents.c_str();
-	glShaderSource(ID, 1, &readcontents, nullptr);
+	load(readcontents, ID);
+}
+
+void Shader::load(const char* content,GLuint ID) {
+	glShaderSource(ID, 1, &content, nullptr);
 	glCompileShader(ID);
 
 	GLint success = 0;

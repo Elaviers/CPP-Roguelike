@@ -2,6 +2,10 @@
 
 #include <GL/glew.h>
 #include <GLM/glm.hpp>
+#include "ShaderPresets.h"
+
+
+namespace ShaderPreset { enum ShaderPreset { SPRITE, TRANSFORM_SPRITE, FONT, LINE }; }
 
 class Shader
 {
@@ -10,6 +14,7 @@ public:
 	~Shader();
 
 	void compile(const char* frag,const char* vert);
+	void loadPreset(ShaderPreset::ShaderPreset preset);
 	void link();
 	void addAttribute(const char* attributeName);
 	GLuint getUniformLocation(const char* uniformName);
@@ -26,6 +31,8 @@ private:
 	int _attributeCount;
 	GLuint _programID,_vertID,_fragID;
 
+	void generateShaderStuff();
+	void loadFromFile(const char* dir,GLuint);
 	void load(const char* dir,GLuint ID);
 };
 
