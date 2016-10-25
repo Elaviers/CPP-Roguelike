@@ -29,7 +29,7 @@ void Camera2D::update() {
 		_CameraMatrix = glm::translate(ortho, glm::vec3(OriginOffset.x, OriginOffset.y, 0));
 		_CameraMatrix = glm::scale(_CameraMatrix, glm::vec3(_scale, _scale, 0));
 		_CameraMatrix = glm::translate(_CameraMatrix, glm::vec3(-_position.x - OriginOffset.x, -_position.y - OriginOffset.y, 0));
-		_CameraMatrix = glm::rotate(_CameraMatrix, _angle, glm::vec3(3.14159265359, 0, 0));
+		_CameraMatrix = glm::rotate(_CameraMatrix, _angle, glm::vec3(1, 0, 0));
 
 		_hasChanged = false;
 	}

@@ -16,6 +16,10 @@ int gridSnap(int i,int snap) {
 
 void Controller::render(float deltaTime,Camera2D& cam) {
 	cam.move(_moveX * speed * deltaTime, _moveY * speed * deltaTime);
+	if (_CameraScale != 0) {
+		cam.scale(_CameraScale, glm::vec2(cam.getWidth() / 2, cam.getHeight() / 2));
+		_CameraScale = 0;
+	}
 	test.setPosition(gridSnap(cam.getPosition().x + _mouseX,64),gridSnap(cam.getPosition().y + _mouseY,64));
 	test.render();
 }
@@ -50,8 +54,8 @@ void Controller::input(SDL_Event event, int screenh)
 	}
 	else if (event.type == SDL_MOUSEWHEEL) {
 		if (event.wheel.y > 0)
-			_CameraScale += 0.1f;
+			_CameraScale = 0.1f;
 		else if (event.wheel.y < 0)
-			_CameraScale -= 0.1f;
+			_CameraScale = -0.1f;
 	}
 }

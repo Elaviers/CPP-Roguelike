@@ -24,6 +24,9 @@ public:
 	glm::mat4 getCameraMatrix() { return _CameraMatrix; }; //Returns the camera matrix
 	glm::mat4 getScreenMatrix(); //Returns the normalised matrix
 
+	int getWidth() { return _screenW; };
+	int getHeight() { return _screenH; };
+
 	void SetViewportSize(int screenWidth, int screenHeight); //Sets width and height of the viewport (does NOT use GLViewport!)
 	void update(); //Will apply any pending changes to the camera
 

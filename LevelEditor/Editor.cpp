@@ -29,17 +29,20 @@ void Editor::start() {
 
 	running = true;
 	while (running) {
+
 		_frameCounter.begin();
 		windowInput();
-		_camera.update();
 		render(_frameCounter.deltaTime);
 		_frameCounter.end();
+
 	}
 
 }
 
 void Editor::render(float deltaTime) {
 	glClear(GL_COLOR_BUFFER_BIT);
+
+	_camera.update();
 
 	LineRenderer::render(_camera);
 

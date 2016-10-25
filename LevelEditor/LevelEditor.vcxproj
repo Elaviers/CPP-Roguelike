@@ -69,20 +69,20 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>D:\Storage\Projects\Github\CPP-Roguelike\dependencies\include;$(SolutionDir);$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Storage\Projects\Github\CPP-Roguelike\dependencies\libs;D:\Storage\Projects\Github\CPP-Roguelike\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\dependencies\include;$(SolutionDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\dependencies\libs;$(SolutionDir)\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>D:\Storage\Projects\Github\CPP-Roguelike\dependencies\include;$(SolutionDir);$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Storage\Projects\Github\CPP-Roguelike\dependencies\libs;D:\Storage\Projects\Github\CPP-Roguelike\Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\dependencies\include;$(SolutionDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\dependencies\libs;$(SolutionDir)\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)/dependencies/include;$(SolutionDir);$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\dependencies\include;$(SolutionDir);$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\dependencies\libs\x64;$(SolutionDir)\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>D:\Storage\Projects\Github\CPP-Roguelike\dependencies\include;$(SolutionDir);$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Storage\Projects\Github\CPP-Roguelike\dependencies\libs\x64;D:\Storage\Projects\Github\CPP-Roguelike\x64\Release;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\dependencies\include;$(SolutionDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\dependencies\libs\x64;$(SolutionDir)\x64\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
