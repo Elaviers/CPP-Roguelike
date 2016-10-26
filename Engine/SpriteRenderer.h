@@ -3,6 +3,7 @@
 #include "Texture.h"
 #include "Shader.h"
 #include <glm/glm.hpp>
+#include "Camera2D.h"
 
 class SpriteRenderer
 {
@@ -18,7 +19,8 @@ private:
 public:
 		
 	static void init();
-	static void SetShaderActive(bool);
+	static void UseProgram(Camera2D&);
+	static void UnuseProgram();
 	static void drawSprite(Texture& Texture, float x, float y, float width, float height, float angle = 0.0f, int Divisions = 1, int Index = 0);
 	static void drawSprite(Shader& Shader, Texture& Texture, float x, float y, float width, float height, float angle = 0.0f,int Divisions = 1, int Index = 0);
 };

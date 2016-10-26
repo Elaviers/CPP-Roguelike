@@ -15,8 +15,11 @@ Shader SpriteRenderer::_shader;
 using namespace glm;
 
 void SpriteRenderer::drawSprite(Shader& shader,Texture &t, float x, float y, float width, float height, float angle, int divisions, int index) {
-	if (_divisions != divisions)setUVData(divisions);
-	if (_currentIndex != index)setIndex(index);
+	if (_divisions != divisions) {
+		setUVData(divisions);
+		setIndex(index);
+	}
+	else if (_currentIndex != index)setIndex(index);
 	
 	mat4 transform;
 	transform = translate(transform, vec3(width/2 + x,height/2 + y,0));
@@ -39,9 +42,13 @@ void SpriteRenderer::drawSprite(Texture& a, float b, float c, float d, float e, 
 	drawSprite(_shader,a,b,c,d,e,f,g,h);
 };
 
-void SpriteRenderer::SetShaderActive(bool active) {
-	if (active)_shader.useProgram();
-	else _shader.unUseProgram();
+void SpriteRenderer::UseProgram(Camera2D& cam) {
+	_shader.useProgram();
+	_shader.setMat4("projection", cam.getCameraMatrix());
+}
+
+void SpriteRenderer::UnuseProgram() {
+	_shader.unUseProgram();
 }
 
 void SpriteRenderer::setIndex(int index) {

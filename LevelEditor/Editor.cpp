@@ -11,6 +11,8 @@ void Editor::start() {
 	_window.create("Level Editor", screenX, screenY,SDL_WINDOW_RESIZABLE);
 
 	glClearColor(.125, .125, .125, 1);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	////////////////////////////////////////////////////////////////////////
 
 	_camera.SetViewportSize(screenX, screenY);
@@ -21,6 +23,7 @@ void Editor::start() {
 	////////////////////////////////////////////////////////////////////////
 
 	LineRenderer::init();
+	SpriteRenderer::init();
 	
 	Colour c;
 
@@ -43,14 +46,12 @@ void Editor::start() {
 }
 
 void Editor::render(float deltaTime) {
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearDepth(1);
 
 	LineRenderer::render(_camera);
 
-	_shader.useProgram();
-	_shader.setMat4("projection",_camera.getCameraMatrix());
 	_controller.render(deltaTime,_camera);
-	_shader.unUseProgram();
 
 	_window.swapBuffer();
 

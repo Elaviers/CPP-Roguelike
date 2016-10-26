@@ -4,6 +4,7 @@
 #include <Engine/Timing.h>
 #include <Engine/Camera2D.h>
 #include <Engine/LineRenderer.h>
+#include <Engine/SpriteRenderer.h>
 #include <SDL/SDL.h>
 
 #include <GL/glew.h>

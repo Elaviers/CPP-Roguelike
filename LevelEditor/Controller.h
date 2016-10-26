@@ -2,14 +2,25 @@
 #include <SDL/SDL.h>
 #include <Engine/Sprite.h>
 #include <Engine/Camera2D.h>
+#include "Level.h"
+
+enum EditMode { NONE, PLACING, DELETING };
 
 class Controller
 {
 private:
-	Sprite _sprite;
+	Tile _currentTile;
+	Level _level;
+	Texture _tiletexture,_symboltexture;
+
+	bool _specialPlacement;
+
 	int _mouseX, _mouseY;
 	float _moveX, _moveY, _CameraScale;
+
+	EditMode PlacementMode;
 public:
+
 	float speed;
 	Controller() : speed(768) {};
 
