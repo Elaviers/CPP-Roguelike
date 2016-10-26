@@ -55,6 +55,9 @@
     <ClCompile Include="LineRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ShaderPresetDefinitions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera2D.h">
@@ -111,9 +114,6 @@
     <ClInclude Include="Font.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderPresets.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="LineRenderer.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -127,5 +127,8 @@
       <UniqueIdentifier>{2e955f03-ac8b-48f4-8bc9-bcd41876b476}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

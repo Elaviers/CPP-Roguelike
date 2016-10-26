@@ -34,31 +34,31 @@ void Shader::loadPreset(ShaderPreset::ShaderPreset type) {
 	switch (type) {
 		case ShaderPreset::SPRITE:
 			generateShaderStuff();
-			load(SHADER_PRESETS::SPRITE_FRAG, _fragID);
-			load(SHADER_PRESETS::SPRITE_VERT, _vertID);
+			load(Presets::SPRITE_FRAG, _fragID);
+			load(Presets::SPRITE_VERT, _vertID);
 			addAttribute("vertPosition");
 			addAttribute("vertColour");
 			addAttribute("vertUV");
 			break;
 		case ShaderPreset::TRANSFORM_SPRITE:
 			generateShaderStuff();
-			load(SHADER_PRESETS::SPRITE_FRAG, _fragID);
-			load(SHADER_PRESETS::TRANSFORMED_SPRITE_VERT, _vertID);
+			load(Presets::SPRITE_FRAG, _fragID);
+			load(Presets::TRANSFORMED_SPRITE_VERT, _vertID);
 			addAttribute("vertPosition");
 			addAttribute("vertColour");
 			addAttribute("vertUV");
 			break;
 		case ShaderPreset::LINE:
 			generateShaderStuff();
-			load(SHADER_PRESETS::LINE_FRAG, _fragID);
-			load(SHADER_PRESETS::LINE_VERT, _vertID);
+			load(Presets::LINE_FRAG, _fragID);
+			load(Presets::LINE_VERT, _vertID);
 			addAttribute("vertPosition");
 			addAttribute("vertColour");
 			break;
 		case ShaderPreset::FONT:
 			generateShaderStuff();
-			load(SHADER_PRESETS::FONT_FRAG, _fragID);
-			load(SHADER_PRESETS::FONT_VERT, _vertID);
+			load(Presets::FONT_FRAG, _fragID);
+			load(Presets::FONT_VERT, _vertID);
 			addAttribute("vertPosition");
 			addAttribute("vertUV");
 			break;

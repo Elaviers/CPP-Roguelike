@@ -2,7 +2,6 @@
 
 #include <GL/glew.h>
 #include <GLM/glm.hpp>
-#include "ShaderPresets.h"
 
 
 namespace ShaderPreset { enum ShaderPreset { SPRITE, TRANSFORM_SPRITE, FONT, LINE }; }
@@ -27,6 +26,17 @@ public:
 	void set4f(const char*name,float,float,float,float);
 	void setMat4(const char* name,glm::mat4);
 
+	class Presets {
+	public:
+		static const char* SPRITE_VERT;
+		static const char* TRANSFORMED_SPRITE_VERT;
+		static const char* SPRITE_FRAG;
+		static const char* FONT_VERT;
+		static const char* FONT_FRAG;
+		static const char* LINE_VERT;
+		static const char* LINE_FRAG;
+	};
+
 private:
 	int _attributeCount;
 	GLuint _programID,_vertID,_fragID;
@@ -35,4 +45,3 @@ private:
 	void loadFromFile(const char* dir,GLuint);
 	void load(const char* dir,GLuint ID);
 };
-

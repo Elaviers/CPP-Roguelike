@@ -1,6 +1,9 @@
 #include "Editor.h"
+#include "FileManager.h"
 
 void Editor::start() {
+	//FileManager::writeLevelFile(std::vector<Tile> {Tile{ 0,1,2 }, Tile{3,4,5}},"poo.poo");//Level loading test
+
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_GL_SetSwapInterval(0);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -11,11 +14,11 @@ void Editor::start() {
 	////////////////////////////////////////////////////////////////////////
 
 	_camera.SetViewportSize(screenX, screenY);
-	_camera.setPosition(-screenX / 2, -screenY / 2);
 	_controller.init();
 
 	_shader.loadPreset(ShaderPreset::SPRITE);
 	_shader.link();
+	////////////////////////////////////////////////////////////////////////
 
 	LineRenderer::init();
 	
@@ -41,8 +44,6 @@ void Editor::start() {
 
 void Editor::render(float deltaTime) {
 	glClear(GL_COLOR_BUFFER_BIT);
-
-	_camera.update();
 
 	LineRenderer::render(_camera);
 

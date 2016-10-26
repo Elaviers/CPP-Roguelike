@@ -34,11 +34,10 @@ void Player::render(Camera2D& cam, float frameTime,Shader& shader) {
 	shader.set2f("UVOffset", 0, 0); 
 	shader.setMat4("transform",glm::mat4());
 
-	cam.move(movex, movey);
 	_pointer.move(movex, movey);
+	cam.setPosition(_pointer.x,_pointer.y);
 
-	MouseWorldPosition.x = (float)mouseX + cam.getPosition().x;
-	MouseWorldPosition.y = (float)mouseY + cam.getPosition().y;
+	MouseWorldPosition = cam.screentoWorld(mouseX, mouseY);
 	_pointer.setRotation(std::atan2(MouseWorldPosition.y - _pointer.y, MouseWorldPosition.x - _pointer.x) * 180 / (float)M_PI);
 	_pointer.render();
 

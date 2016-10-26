@@ -16,11 +16,12 @@ int gridSnap(int i,int snap) {
 
 void Controller::render(float deltaTime,Camera2D& cam) {
 	cam.move(_moveX * speed * deltaTime, _moveY * speed * deltaTime);
-	if (_CameraScale != 0) {
+	/*if (_CameraScale != 0) {
 		cam.scale(_CameraScale, glm::vec2(cam.getWidth() / 2, cam.getHeight() / 2));
 		_CameraScale = 0;
-	}
-	test.setPosition(gridSnap(cam.getPosition().x + _mouseX,64),gridSnap(cam.getPosition().y + _mouseY,64));
+	}*/
+	glm::vec2 f = cam.screentoWorld(_mouseX,_mouseY);
+	test.setPosition(gridSnap(f.x,64),gridSnap(f.y,64));
 	test.render();
 }
 
