@@ -27,7 +27,7 @@ void LineRenderer::init() {
 }
 
 void LineRenderer::drawLine(float x, float y, float x2, float y2, Colour c) {
-	int i = _vertices.size();
+	int i = (int)_vertices.size();
 	_vertices.resize(_vertices.size() + 2);
 
 	_vertices[i].Position = glm::vec2(x,y);
@@ -47,7 +47,7 @@ void LineRenderer::render(Camera2D& c) {
 	_shader.useProgram();
 	_shader.setMat4("projection", c.getCameraMatrix());
 	glBindVertexArray(_vao);
-	glDrawArrays(GL_LINES, 0, _vertices.size());
+	glDrawArrays(GL_LINES, 0, (GLsizei)_vertices.size());
 	glBindVertexArray(0);
 	_shader.unUseProgram();
 }

@@ -5,10 +5,10 @@ void Editor::start() {
 	//FileManager::writeLevelFile(std::vector<Tile> {Tile{ 0,1,2 }, Tile{3,4,5}},"poo.poo");//Level loading test
 
 	SDL_Init(SDL_INIT_EVERYTHING);
+	_window.create("Level Editor", screenX, screenY, SDL_WINDOW_RESIZABLE);
+
 	SDL_GL_SetSwapInterval(0);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-	_window.create("Level Editor", screenX, screenY,SDL_WINDOW_RESIZABLE);
 
 	glClearColor(.125, .125, .125, 1);
 	glEnable(GL_BLEND);
@@ -18,19 +18,19 @@ void Editor::start() {
 	_camera.SetViewportSize(screenX, screenY);
 	_controller.init();
 
-	_shader.loadPreset(ShaderPreset::SPRITE);
-	_shader.link();
 	////////////////////////////////////////////////////////////////////////
 
 	LineRenderer::init();
 	SpriteRenderer::init();
 	
 	Colour c;
+	float unitSize = 64;
 
 	for (int x = -16; x <= 16; x++) {
 		c = (x == 0) ? Colour(32,128,255) : Colour(0,0,0);
-		LineRenderer::drawLine(x * 64, -16 * 64, x * 64, 16 * 64, c);
-		LineRenderer::drawLine(-16 * 64, x * 64, 16 * 64, x * 64, c);
+
+		LineRenderer::drawLine(x * unitSize, -16 * unitSize, x * unitSize, 16 * unitSize, c);
+		LineRenderer::drawLine(-16 * unitSize, x * unitSize, 16 * unitSize, x * unitSize, c);
 	}
 
 	running = true;
@@ -61,6 +61,8 @@ void Editor::windowInput() {
 	SDL_Event event;
 	if (SDL_PollEvent(&event) == 1) {
 		_controller.input(event,screenY);
+		if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
+			running = false;
 		if (event.type == SDL_QUIT)
 			running = false;
 		if (event.type == SDL_WINDOWEVENT)

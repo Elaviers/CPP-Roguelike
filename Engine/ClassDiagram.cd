@@ -7,8 +7,8 @@
       <FileName>Sprite.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="_texture" />
       <Field Name="vertices" />
+      <Field Name="_texture" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Camera2D">
@@ -68,6 +68,13 @@
   </Class>
   <Class Name="Shader">
     <Position X="12" Y="0.5" Width="1.5" />
+    <NestedTypes>
+      <Class Name="Shader::Presets" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Shader.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
     <TypeIdentifier>
       <HashCode>QIAAQAQCAIAIAAABABAAAAAAAAgCEAAABAA4SAEAQEA=</HashCode>
       <FileName>Shader.h</FileName>
@@ -93,7 +100,7 @@
   <Class Name="SpriteRenderer">
     <Position X="8.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAQAAAAIAIAAAAEBAAACABAACAEAIAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAQAgAAAAIAAAAEBAAASABAACAEAIAAAAAAAAAAAA=</HashCode>
       <FileName>SpriteRenderer.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -182,8 +189,8 @@
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="position" />
-      <Field Name="uv" />
       <Field Name="colour" />
+      <Field Name="uv" />
     </ShowAsAssociation>
   </Struct>
   <Enum Name="ShaderPreset::ShaderPreset">

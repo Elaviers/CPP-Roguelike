@@ -18,7 +18,6 @@ private:
 	bool running;
 	int screenX, screenY;
 
-	Shader _shader,_lineshader;
 	Timing _frameCounter;
 	Camera2D _camera;
 	Controller _controller;

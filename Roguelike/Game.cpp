@@ -2,7 +2,6 @@
 #include "FileManager.h"
 
 #include <Engine/ErrorHandling.h>
-#include <Engine/Font.h>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -11,8 +10,6 @@
 using namespace FileManager;
 
 Game::Game() : _running(true) {}
-
-Font f,cool;
 
 void log(std::string l) { printf("%s", l.c_str()); }
 
@@ -41,7 +38,7 @@ void Game::start() {
 	FT_Library FtLib;
 
 	if (FT_Init_FreeType(&FtLib))error("Could not initialise FreeType!");
-	f.init(FtLib, "Game/Fonts/arial.ttf", 16);
+	_font.init(FtLib, "Game/Fonts/arial.ttf", 16);
 	FT_Done_FreeType(FtLib);
 
 	log("done!\n");
@@ -116,7 +113,7 @@ void Game::render(float deltaTime) {
 	_fontshader.set1i("sTexture", 0);
 	_fontshader.setMat4("projection", _camera.getScreenMatrix());
 
-	f.drawString("SAMPLE TEXT SAMPLE TEXT SAMPLE TEXT SAMPL3 T3XT", 0, 256, glm::vec4(1,0,1,1), _fontshader);
+	_font.drawString("SAMPLE TEXT SAMPLE TEXT SAMPLE TEXT SAMPL3 T3XT", 0, 256, glm::vec4(1,0,1,1), _fontshader);
 
 	_fontshader.unUseProgram();
 

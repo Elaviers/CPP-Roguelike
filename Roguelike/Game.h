@@ -6,6 +6,7 @@
 #include <Engine/Shader.h>
 #include <Engine/Sprite.h>
 #include <Engine/Camera2D.h>
+#include <Engine/Font.h>
 
 #include "Player.h"
 #include "Level.h"
@@ -18,6 +19,7 @@ private:
 	bool _running;
 	Camera2D _camera;
 	/////////////////////
+	Font _font;
 	Level _level;
 	Player _player;
 	Sprite _sprite;
