@@ -15,7 +15,7 @@ using namespace FileManager;
 
 void Level::init(const char* p) {
 	_tiles = readLevelFile(p,64);
-	_tex = ResourceManager::getTexture("Game/Top Quality Textures/tiles.png");
+	_tex = ResourceManager::getTexture("Game/Textures/tiles.png");
 }
 
 SpawnPoint Level::getSpawnPoint() {

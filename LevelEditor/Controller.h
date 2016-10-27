@@ -19,6 +19,8 @@ private:
 	float _moveX, _moveY, _CameraScale;
 
 	EditMode PlacementMode;
+
+	bool u, d, l, r;
 public:
 
 	float speed;

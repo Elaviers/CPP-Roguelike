@@ -69,7 +69,7 @@ void Game::start() {
 	SpawnPoint spawn = _level.getSpawnPoint();
 
 	_camera.setPosition(glm::vec2(spawn.x-ScreenWidth/2,spawn.y-ScreenHeight/2));
-	_player.init(spawn.x, spawn.y, 128, 64, "Game/Top Quality Textures/crosshair.png", "Game/Top Quality Textures/pointer.png");
+	_player.init(spawn.x, spawn.y, 128, 64, "Game/Textures/crosshair.png", "Game/Textures/pointer.png");
 	_sprite.init(-1, -1, 2, 2);
 
 	log("Initialised!\n");

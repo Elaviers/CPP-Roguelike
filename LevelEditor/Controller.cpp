@@ -2,11 +2,7 @@
 #include <Engine/SpriteRenderer.h>
 #include <Engine/ResourceManager.h>
 
-bool u, d, l, r;
-
 void Controller::init() {
-	//test.UVGridDivisions = 8;
-	//test.init(0, 0, 64, 64, false, "tiles.png");
 	_tiletexture = ResourceManager::getTexture("Game/Textures/tiles.png");
 	_symboltexture = ResourceManager::getTexture("Game/Textures/symbols.png");
 }
@@ -40,13 +36,9 @@ void Controller::render(float deltaTime,Camera2D& cam) {
 		}
 	
 	SpriteRenderer::UseProgram(cam);
-
 	_level.drawSprites(_tiletexture);
-
 	if (PlacementMode != DELETING && !_specialPlacement)SpriteRenderer::drawSprite(_tiletexture, _currentTile.x, _currentTile.y, 64, 64, 0, 8, _currentTile.TileID);
-
 	_level.drawEditorSprites(_symboltexture);
-
 	SpriteRenderer::UnuseProgram();
 }
 #include <iostream>

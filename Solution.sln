@@ -1,13 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.25807.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "Engine\Engine.vcxproj", "{BB565847-E81E-4C1E-97B3-AF543E9C9764}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Roguelike", "Roguelike\Roguelike.vcxproj", "{B9D5AA7E-6E29-402D-8C4F-AC91A7543364}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BB565847-E81E-4C1E-97B3-AF543E9C9764} = {BB565847-E81E-4C1E-97B3-AF543E9C9764}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LevelEditor", "LevelEditor\LevelEditor.vcxproj", "{A1FF92D7-DFE3-4A7D-B29A-BB12F72E1DCA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BB565847-E81E-4C1E-97B3-AF543E9C9764} = {BB565847-E81E-4C1E-97B3-AF543E9C9764}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

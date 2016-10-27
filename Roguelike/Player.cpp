@@ -10,7 +10,7 @@ void Player::init(int x,int y,int size,int crosshairSize,std::string texture, st
 	_crosshair.setOrigin(0,0);
 	_pointer.init((float)x, (float)y, (float)size, (float)size, false, texture1);
 	_pointer.setOrigin(0, 0);
-	ResourceManager::getTexture("Game/Top Quality Textures/proj.png");//Cache projectile texture
+	ResourceManager::getTexture("Game/Textures/proj.png");//Cache projectile texture
 }
 
 void Player::update(float gameTime,float wheight) {
@@ -51,7 +51,7 @@ void Player::render(Camera2D& cam, float frameTime,Shader& shader) {
 void  Player::shoot() {
 	Projectile p;
 	_projectiles.push_back(p);
-	_projectiles.back().init(_pointer.x,_pointer.y, 64,_pointer.rotation,512, "Game/Top Quality Textures/proj.png");
+	_projectiles.back().init(_pointer.x,_pointer.y, 64,_pointer.rotation,512, "Game/Textures/proj.png");
 }
 
 void Player::keyUp(SDL_Event action) {
