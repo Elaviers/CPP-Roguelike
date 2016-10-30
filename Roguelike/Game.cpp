@@ -7,23 +7,22 @@
 #include FT_FREETYPE_H
 
 #include <iostream>
-using namespace FileManager;
 
 Game::Game() : _running(true) {}
 
 void log(std::string l) { printf("%s", l.c_str()); }
 
 void Game::start() {
-	std::vector<StringPair> properties = readFile("Game/wololo.zestyconfig");
-	ScreenWidth = readInt(properties,"resx");
-	ScreenHeight = readInt(properties, "resy");
+	std::vector<StringPair> properties = FileManager::readFile("Game/wololo.zestyconfig");
+	ScreenWidth = FileManager::readInt(properties,"resx");
+	ScreenHeight = FileManager::readInt(properties, "resy");
 
 	////////////SDL
 	log("Creating window...");
 
 	SDL_Init(SDL_INIT_EVERYTHING);
-	_window.create("The Window of Hope", ScreenWidth, ScreenHeight,(readBool(properties,"fullscreen") ? SDL_WINDOW_FULLSCREEN : 0) | SDL_WINDOW_RESIZABLE);
-	SDL_GL_SetSwapInterval(readBool(properties, "vsync"));//vsync
+	_window.create("The Window of Hope", ScreenWidth, ScreenHeight,(FileManager::readBool(properties,"fullscreen") ? SDL_WINDOW_FULLSCREEN : 0) | SDL_WINDOW_RESIZABLE);
+	SDL_GL_SetSwapInterval(FileManager::readBool(properties, "vsync"));//vsync
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_ShowCursor(false);
 
@@ -55,16 +54,14 @@ void Game::start() {
 	_shaderlsd.addAttribute("vertColour");
 	_shaderlsd.addAttribute("vertUV");
 	_shaderlsd.link();
-
-	SpriteRenderer::init();
 	
 	log("done!\n");
 	////////////init
 	_camera.SetViewportSize(ScreenWidth, ScreenHeight);
 	_level.init("Game/lvl.zestylevel");
 
+	SpriteRenderer::init();
 	SpawnPoint spawn = _level.getSpawnPoint();
-
 	_camera.setPosition(glm::vec2(spawn.x-ScreenWidth/2,spawn.y-ScreenHeight/2));
 	_player.init(spawn.x, spawn.y, 128, 64, "Game/Textures/crosshair.png", "Game/Textures/pointer.png");
 	_sprite.init(-1, -1, 2, 2);
@@ -125,20 +122,33 @@ void Game::handleInput() {
 	SDL_Event event;
 	if (SDL_PollEvent(&event) == 1)
 		switch (event.type) {
+
 		case SDL_QUIT:
 			_running = false;
+
 		case SDL_MOUSEBUTTONDOWN:
 			_player.setShooting(true); break;
+
 		case SDL_MOUSEBUTTONUP:
 			_player.setShooting(false); break;
+
+		case SDL_MOUSEWHEEL:
+			if (event.wheel.y > 0)
+				_camera.scale(0.1f);
+			else
+				_camera.scale(-0.1f);
+			break;
+
 		case SDL_KEYDOWN:
 			if (event.key.keysym.sym == SDLK_ESCAPE) { _running = false; break; }
 			if (event.key.keysym.sym == SDLK_i) { _camera.setAngle(_camera.getAngle() + .1f); break; }
 			if (event.key.keysym.sym == SDLK_o) { _camera.setAngle(_camera.getAngle() - .1f); break; }
 			if (event.key.keysym.sym == SDLK_f) { SDL_SetWindowFullscreen(_window.GetWindowID(), true); break; }
 			_player.keyDown(event); break;
+
 		case SDL_KEYUP:
 			_player.keyUp(event); break;
+
 		case SDL_WINDOWEVENT:
 			if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
 				ScreenWidth = event.window.data1;

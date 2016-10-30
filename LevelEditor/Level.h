@@ -14,6 +14,7 @@ public:
 	void drawSprites(Texture&);
 	void drawEditorSprites(Texture&);
 	void edit(Tile,bool = false);
+	void setFlag(Tile t);
 	void setSpawnPoint(int,int);
 
 	bool save(const char*);

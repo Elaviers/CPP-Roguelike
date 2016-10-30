@@ -11,10 +11,8 @@ Level::~Level()
 {
 }
 
-using namespace FileManager;
-
 void Level::init(const char* p) {
-	_tiles = readLevelFile(p,64);
+	_tiles = FileManager::readLevelFile(p,64);
 	_tex = ResourceManager::getTexture("Game/Textures/tiles.png");
 }
 
@@ -22,8 +20,8 @@ SpawnPoint Level::getSpawnPoint() {
 	SpawnPoint ret;
 	for (Tile t : _tiles)
 		if (t.flag == 's') {
-			ret.x = t.x + 32;
-			ret.y = t.y + 32;
+			ret.x = (int)t.x + 32;
+			ret.y = (int)t.y + 32;
 		}
 	return ret;
 }

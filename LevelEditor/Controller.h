@@ -5,6 +5,7 @@
 #include "Level.h"
 
 enum EditMode { NONE, PLACING, DELETING };
+enum Direction {RIGHT,UP,LEFT,DOWN};
 
 class Controller
 {
@@ -20,7 +21,9 @@ private:
 
 	EditMode PlacementMode;
 
-	bool u, d, l, r;
+	bool MovementInputs[4];
+	
+	void setMovement(Direction,bool);
 public:
 
 	float speed;

@@ -29,7 +29,7 @@ public:
 
 	void SetViewportSize(int screenWidth, int screenHeight); //Sets width and height of the viewport (does NOT use GLViewport!)
 
-	glm::vec2 screentoWorld(float x, float y) { 
+	glm::vec2 screentoWorld(int x, int y) { 
 		float scaleFactor = 1 - (_scale - 1);
 
 		return glm::vec2(
@@ -40,6 +40,7 @@ public:
 private:
 	float _scale,_angle;
 	int _screenW, _screenH;
+	float _scaledW, _scaledH;
 	glm::vec2 _position;
 	glm::mat4 _CameraMatrix;
 

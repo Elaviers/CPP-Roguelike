@@ -20,11 +20,11 @@ void Controller::render(float deltaTime,Camera2D& cam) {
 		_CameraScale = 0;
 	}*/
 	glm::vec2 f = cam.screentoWorld(_mouseX,_mouseY);
-	_currentTile.x = gridSnap(f.x,64);
-	_currentTile.y = gridSnap(f.y,64);
+	_currentTile.x = (float)gridSnap((int)f.x,64);
+	_currentTile.y = (float)gridSnap((int)f.y,64);
 
 	if (_specialPlacement && PlacementMode == PLACING)
-		_level.setSpawnPoint(_currentTile.x, _currentTile.y);
+		_level.setSpawnPoint((int)_currentTile.x, (int)_currentTile.y);
 	else
 		switch (PlacementMode) {
 			case PLACING:
@@ -42,6 +42,14 @@ void Controller::render(float deltaTime,Camera2D& cam) {
 	SpriteRenderer::UnuseProgram();
 }
 #include <iostream>
+
+void Controller::setMovement(Direction dir,bool s) {
+	MovementInputs[dir] = s;
+
+	_moveX = (float)(MovementInputs[LEFT] ? (MovementInputs[RIGHT] ? 0 : -1) : MovementInputs[RIGHT] ? 1 : 0);
+	_moveY = (float)(MovementInputs[UP] ? (MovementInputs[DOWN] ? 0 : 1) : MovementInputs[DOWN] ? -1 : 0);
+}
+
 void Controller::input(SDL_Event event, int screenh)
 {
 	SDL_GetMouseState(&_mouseX,&_mouseY);
@@ -50,14 +58,15 @@ void Controller::input(SDL_Event event, int screenh)
 	if (event.type == SDL_KEYDOWN) {
 		std::string path;
 		switch (event.key.keysym.sym) {
-		case SDLK_w:u = true; break;
-		case SDLK_s:d = true; break;
-		case SDLK_a:l = true; break;
-		case SDLK_d:r = true; break;
+		case SDLK_w:setMovement(UP,true); break;
+		case SDLK_s:setMovement(DOWN, true); break;
+		case SDLK_a:setMovement(LEFT, true); break;
+		case SDLK_d:setMovement(RIGHT, true); break;
 
 		case SDLK_SPACE:_specialPlacement = !_specialPlacement; break;
 		case SDLK_r:_currentTile.TileID--; break;
 		case SDLK_t:_currentTile.TileID++; break;
+
 		case SDLK_TAB:
 			std::printf("(LOAD) Level name:");
 			std::cin >> path;
@@ -71,20 +80,14 @@ void Controller::input(SDL_Event event, int screenh)
 			std::printf("Saved level!\n");
 			break;
 		}
-
-		_moveX = l ? (r ? 0 : -1) : r ? 1 : 0;
-		_moveY = u ? (d ? 0 : 1) : d ? -1 : 0;
 	}
 	else if (event.type == SDL_KEYUP) {
 		switch (event.key.keysym.sym) {
-		case SDLK_w:u = false; break;
-		case SDLK_s:d = false; break;
-		case SDLK_a:l = false; break;
-		case SDLK_d:r = false; break;
+		case SDLK_w:setMovement(UP, false); break;
+		case SDLK_s:setMovement(DOWN, false); break;
+		case SDLK_a:setMovement(LEFT, false); break;
+		case SDLK_d:setMovement(RIGHT, false); break;
 		}
-
-		_moveX = l ? (r ? 0 : -1) : r ? 1 : 0;
-		_moveY = u ? (d ? 0 : 1) : d ? -1 : 0;
 	}
 	else if (event.type == SDL_MOUSEWHEEL) {
 		if (event.wheel.y > 0)

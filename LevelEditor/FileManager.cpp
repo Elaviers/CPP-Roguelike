@@ -2,16 +2,6 @@
 #include <Engine/Utility.h>
 #include <fstream>
 
-
-FileManager::FileManager() {
-
-}
-
-
-FileManager::~FileManager() {
-
-}
-
 using namespace std;
 
 void FileManager::writeLevelFile(std::vector<Tile> tiles,const char* path) {
@@ -19,8 +9,11 @@ void FileManager::writeLevelFile(std::vector<Tile> tiles,const char* path) {
 	ofstream stream(path);
 	if (!stream.is_open())return;
 
+
 	for (Tile t : tiles) {
-		stream << t.TileID << ' ' << t.x / 64 << ' ' << t.y / 64 << (t.flag > 0 ? (char*)t.flag : "") << endl;
+		stream << t.TileID << ' ' << t.x / 64 << ' ' << t.y / 64;
+		if (t.flag > 0)stream << ' ' << t.flag;
+		stream << endl;
 	}
 
 	stream.close();
@@ -45,8 +38,8 @@ vector<Tile> FileManager::readLevelFile(const char* Path, int unitSize)
 
 				Tile t;
 				t.TileID = stoi(elements[0].c_str());
-				t.x = unitSize * stoi(elements[1].c_str());
-				t.y = unitSize * stoi(elements[2].c_str());
+				t.x = (float)unitSize * stoi(elements[1].c_str());
+				t.y = (float)unitSize * stoi(elements[2].c_str());
 				if (elements.size() >= 4)
 					t.flag = elements[3][0];
 				else t.flag = 0;

@@ -96,4 +96,6 @@ void SpriteRenderer::init()
 
 	_shader.loadPreset(ShaderPreset::TRANSFORM_SPRITE);
 	_shader.link();
+
+	std::printf("SpriteRenderer initialised (VAO:%d,VBO:%d)\n",_vao,_vbo);
 }

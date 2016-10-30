@@ -22,8 +22,19 @@ void Level::edit(Tile tile,bool remove) {
 	if (!remove)_tiles.push_back(tile);
 }
 
+void Level::setFlag(Tile tile) {
+	for (int i = 0; i < _tiles.size(); i++) {
+		if (_tiles[i].x == tile.x && _tiles[i].y == tile.y) {
+			_tiles[i].flag = tile.flag;
+			return;
+		}
+	}
+
+	_tiles.push_back(tile);
+}
+
 void Level::setSpawnPoint(int x,int y) {
-	_spawn.x = x; _spawn.y = y;
+	_spawn.x = (float)x; _spawn.y = (float)y;
 }
 
 bool Level::load(const char* path) {
@@ -40,7 +51,7 @@ bool Level::load(const char* path) {
 }
 
 bool Level::save(const char* path) {
-	edit(_spawn);
+	setFlag(_spawn);
 
 	FileManager::writeLevelFile(_tiles,path);
 	return true;
