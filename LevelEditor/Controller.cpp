@@ -1,6 +1,7 @@
 #include "Controller.h"
 #include <Engine/SpriteRenderer.h>
 #include <Engine/ResourceManager.h>
+#include "GUI.h"
 
 void Controller::init() {
 	_tiletexture = ResourceManager::getTexture("Game/Textures/tiles.png");
@@ -37,7 +38,7 @@ void Controller::render(float deltaTime,Camera2D& cam) {
 	
 	SpriteRenderer::UseProgram(cam);
 	_level.drawSprites(_tiletexture);
-	if (PlacementMode != DELETING && !_specialPlacement)SpriteRenderer::drawSprite(_tiletexture, _currentTile.x, _currentTile.y, 64, 64, 0, 8, _currentTile.TileID);
+	if (PlacementMode != DELETING && !_specialPlacement)SpriteRenderer::drawSprite(_tiletexture, _currentTile.x, _currentTile.y, 64, 64, Colour(255,255,255,128), 0, 8, _currentTile.TileID);
 	_level.drawEditorSprites(_symboltexture);
 	SpriteRenderer::UnuseProgram();
 }
@@ -46,7 +47,7 @@ void Controller::render(float deltaTime,Camera2D& cam) {
 void Controller::setMovement(Direction dir,bool s) {
 	MovementInputs[dir] = s;
 
-	_moveX = (float)(MovementInputs[LEFT] ? (MovementInputs[RIGHT] ? 0 : -1) : MovementInputs[RIGHT] ? 1 : 0);
+	_moveX = (float)(MovementInputs[ANCHOR_LEFT] ? (MovementInputs[ANCHOR_RIGHT] ? 0 : -1) : MovementInputs[ANCHOR_RIGHT] ? 1 : 0);
 	_moveY = (float)(MovementInputs[UP] ? (MovementInputs[DOWN] ? 0 : 1) : MovementInputs[DOWN] ? -1 : 0);
 }
 
@@ -55,13 +56,16 @@ void Controller::input(SDL_Event event, int screenh)
 	SDL_GetMouseState(&_mouseX,&_mouseY);
 	_mouseY = screenh - _mouseY;
 
+	Button b;
+	GUI::getActiveButton(_mouseX, _mouseY, b);
+
 	if (event.type == SDL_KEYDOWN) {
 		std::string path;
 		switch (event.key.keysym.sym) {
 		case SDLK_w:setMovement(UP,true); break;
 		case SDLK_s:setMovement(DOWN, true); break;
-		case SDLK_a:setMovement(LEFT, true); break;
-		case SDLK_d:setMovement(RIGHT, true); break;
+		case SDLK_a:setMovement(ANCHOR_LEFT, true); break;
+		case SDLK_d:setMovement(ANCHOR_RIGHT, true); break;
 
 		case SDLK_SPACE:_specialPlacement = !_specialPlacement; break;
 		case SDLK_r:_currentTile.TileID--; break;
@@ -85,8 +89,8 @@ void Controller::input(SDL_Event event, int screenh)
 		switch (event.key.keysym.sym) {
 		case SDLK_w:setMovement(UP, false); break;
 		case SDLK_s:setMovement(DOWN, false); break;
-		case SDLK_a:setMovement(LEFT, false); break;
-		case SDLK_d:setMovement(RIGHT, false); break;
+		case SDLK_a:setMovement(ANCHOR_LEFT, false); break;
+		case SDLK_d:setMovement(ANCHOR_RIGHT, false); break;
 		}
 	}
 	else if (event.type == SDL_MOUSEWHEEL) {

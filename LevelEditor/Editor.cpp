@@ -1,4 +1,5 @@
 #include "Editor.h"
+#include "GUI.h"
 #include "FileManager.h"
 
 void Editor::start() {
@@ -22,16 +23,35 @@ void Editor::start() {
 
 	LineRenderer::init();
 	SpriteRenderer::init();
+
+	_fontShader.loadPreset(ShaderPreset::FONT);
+	_fontShader.link();
+
+	FT_Library ft;
+	FT_Init_FreeType(&ft);
+	_font.init(ft, "Game/Fonts/font.ttf", 64);
+	///////////////////////////////////////////////////////////////////////
 	
 	Colour c;
 	float unitSize = 64;
 
-	for (int x = -16; x <= 16; x++) {
+	for (int x = -128; x <= 128; x++) {
 		c = (x == 0) ? Colour(32,128,255) : Colour(0,0,0);
 
-		LineRenderer::drawLine(x * unitSize, -16 * unitSize, x * unitSize, 16 * unitSize, c);
-		LineRenderer::drawLine(-16 * unitSize, x * unitSize, 16 * unitSize, x * unitSize, c);
+		LineRenderer::drawLine(x * unitSize, -128 * unitSize, x * unitSize, 128 * unitSize, c);
+		LineRenderer::drawLine(-128 * unitSize, x * unitSize, 128 * unitSize, x * unitSize, c);
 	}
+
+	GUI::setCam(_camera);
+	GUI::addButton(
+		Button {
+		Anchor::BOTTOM_LEFT, //Anchor point
+		0,0, //Starting Coords
+		1,0.1f, //Ending Coords
+		"sample text", //Label
+		NormalisedColour(),NormalisedColour(1,0,0),NormalisedColour(0,0,0,1) //Colour,Hover Colour,Text Colour
+	});
+
 
 	running = true;
 	while (running) {
@@ -52,6 +72,13 @@ void Editor::render(float deltaTime) {
 	LineRenderer::render(_camera);
 
 	_controller.render(deltaTime,_camera);
+
+	GUI::render(_camera);
+
+	_fontShader.useProgram();
+	_fontShader.setMat4("projection",_camera.getScreenMatrix());
+	GUI::renderText(_font,_fontShader);
+	_fontShader.unUseProgram();
 
 	_window.swapBuffer();
 

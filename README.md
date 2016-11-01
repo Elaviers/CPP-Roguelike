@@ -1,3 +1,9 @@
 # CPP-Roguelike
 
-Stop reading the readme and commit some ***dank shiz*, yo!**
+Wololo
+Wololo
+*Wololo*
+*Wololo*
+***Ayo yo yo***
+***Ayo yo yo***
+Wololo

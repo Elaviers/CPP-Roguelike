@@ -12,8 +12,9 @@ Font::~Font()
 }
 
 void Font::init(FT_Library& lib,const char* path, int size) {
-	if (FT_New_Face(lib, path, 0, &_face))error("I could load a font, noooooooob\a\a\a\a!!!");
+	if (FT_New_Face(lib, path, 0, &_face))error("I could not load a font, noooooooob\a\a\a\a!!!");
 
+	_pointsize = size;
 	FT_Set_Pixel_Sizes(_face, 0, size);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
@@ -63,12 +64,12 @@ void Font::init(FT_Library& lib,const char* path, int size) {
 	glBindVertexArray(0);
 }
 
-void Font::drawString(std::string text,float x,float y, glm::vec4 colour, Shader shader) {
+void Font::drawString(std::string text,float x,float y, int s, glm::vec4 colour, Shader shader) {
 	shader.set4f("TextColour",colour.r, colour.g, colour.b, colour.a);
-	drawString(text, x, y);
+	drawString(text, x, y, s / _pointsize);
 }
 
-void Font::drawString(std::string text,float x,float y) {
+void Font::drawString(std::string text,float x,float y,float size) {
 	glBindVertexArray(_vao);
 
 	std::string::const_iterator c;
@@ -76,11 +77,12 @@ void Font::drawString(std::string text,float x,float y) {
 	{
 		Character ch = _chars[*c];
 
-		GLfloat xpos = x + ch.Bearing.x;
-		GLfloat ypos = y - (ch.Size.y - ch.Bearing.y);
+		GLfloat w = ch.Size.x * size;
+		GLfloat h = ch.Size.y * size;
 
-		GLfloat w = ch.Size.x;
-		GLfloat h = ch.Size.y;
+		GLfloat xpos = x + ch.Bearing.x * size;
+		GLfloat ypos = y - (ch.Size.y - ch.Bearing.y) * size;
+
 		// Update VBO for each character
 		Vertex vertices[6];
 		vertices[0].setPosition(xpos,		ypos + h);	vertices[0].setUv(0,1);
@@ -98,7 +100,7 @@ void Font::drawString(std::string text,float x,float y) {
 
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
-		x += ch.Advance >> 6; // Bitshift to pixel value
+		x += (ch.Advance >> 6) * size; // Bitshift to pixel value
 	}
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);

@@ -1,5 +1,4 @@
 #include "SpriteRenderer.h"
-#include "Vertex.h"
 #include "Utility.h"
 
 #include <cstddef>
@@ -9,26 +8,27 @@
 
 GLuint SpriteRenderer::_vbo, SpriteRenderer::_vao;
 int SpriteRenderer::_currentIndex, SpriteRenderer::_divisions;
+Colour SpriteRenderer::_lastColour;
 glm::vec2 SpriteRenderer::_UVOffset;
 Shader SpriteRenderer::_shader;
 
 using namespace glm;
 
-void SpriteRenderer::drawSprite(Shader& shader,Texture &t, float x, float y, float width, float height, float angle, int divisions, int index) {
-	if (_divisions != divisions) {
-		setUVData(divisions);
+void SpriteRenderer::drawSprite(Shader& shader, Texture &t, float x, float y, float width, float height, Colour c, float angle, int divisions, int index) {
+	if (_divisions != divisions || _lastColour.a != c.a) {
+		setUVData(divisions,c);
 		setIndex(index);
 	}
 	else if (_currentIndex != index)setIndex(index);
-	
+
 	mat4 transform;
-	transform = translate(transform, vec3(width/2 + x,height/2 + y,0));
+	transform = translate(transform, vec3(width / 2 + x, height / 2 + y, 0));
 	transform = rotate(transform, angle * pi<float>() / 180, vec3(0, 0, 1));
-	transform = translate(transform,vec3(-width/2,-height/2,0));
+	transform = translate(transform, vec3(-width / 2, -height / 2, 0));
 	transform = scale(transform, vec3(width, height, 1));
-	
-	shader.setMat4("transform",transform);
-	shader.set2f("UVOffset",_UVOffset.x,_UVOffset.y);
+
+	shader.setMat4("transform", transform);
+	shader.set2f("UVOffset", _UVOffset.x, _UVOffset.y);
 
 	glActiveTexture(GL_TEXTURE_2D);
 	t.bind();
@@ -38,8 +38,16 @@ void SpriteRenderer::drawSprite(Shader& shader,Texture &t, float x, float y, flo
 	glActiveTexture(0);
 }
 
+void SpriteRenderer::drawSprite(Shader& a,Texture &b, float c, float d, float e, float f, float g, int h, int i) {
+	drawSprite(a,b,c,d,e,f,Colour(),g,h,i);
+}
+
 void SpriteRenderer::drawSprite(Texture& a, float b, float c, float d, float e, float f, int g, int h) {
 	drawSprite(_shader,a,b,c,d,e,f,g,h);
+};
+
+void SpriteRenderer::drawSprite(Texture& a, float b, float c, float d, float e, Colour f, float g, int h, int i) {
+	drawSprite(_shader, a, b, c, d, e, f, g, h, i);
 };
 
 void SpriteRenderer::UseProgram(Camera2D& cam) {
@@ -56,17 +64,17 @@ void SpriteRenderer::setIndex(int index) {
 	_UVOffset = Utility::getOffsetOfUVIndex(index,_divisions);
 }
 
-void SpriteRenderer::setUVData(int divisions) {
+void SpriteRenderer::setUVData(int divisions,Colour c) {
 	_divisions = divisions;
 	Vertex poo[6];
 
 	float uv = 1.0f / divisions;
-	poo[0].setPosition(0, 1); poo[0].setUv(0, uv);
-	poo[1].setPosition(1, 0); poo[1].setUv(uv, 0);
-	poo[2].setPosition(0, 0); poo[2].setUv(0, 0);
-	poo[3].setPosition(0, 1); poo[3].setUv(0, uv);
-	poo[4].setPosition(1, 1); poo[4].setUv(uv, uv);
-	poo[5].setPosition(1, 0); poo[5].setUv(uv, 0);
+	poo[0].setPosition(0, 1); poo[0].setUv(0, uv); poo[0].colour = c;
+	poo[1].setPosition(1, 0); poo[1].setUv(uv, 0); poo[1].colour = c;
+	poo[2].setPosition(0, 0); poo[2].setUv(0, 0); poo[2].colour = c;
+	poo[3].setPosition(0, 1); poo[3].setUv(0, uv); poo[3].colour = c;
+	poo[4].setPosition(1, 1); poo[4].setUv(uv, uv); poo[4].colour = c;
+	poo[5].setPosition(1, 0); poo[5].setUv(uv, 0); poo[5].colour = c;
 
 	glBindVertexArray(_vao);
 	glBindBuffer(GL_ARRAY_BUFFER,_vbo);

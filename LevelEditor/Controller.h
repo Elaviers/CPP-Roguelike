@@ -5,7 +5,7 @@
 #include "Level.h"
 
 enum EditMode { NONE, PLACING, DELETING };
-enum Direction {RIGHT,UP,LEFT,DOWN};
+enum Direction {ANCHOR_RIGHT,UP,ANCHOR_LEFT,DOWN};
 
 class Controller
 {

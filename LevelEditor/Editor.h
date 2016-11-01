@@ -5,6 +5,7 @@
 #include <Engine/Camera2D.h>
 #include <Engine/LineRenderer.h>
 #include <Engine/SpriteRenderer.h>
+#include <Engine/Font.h>
 #include <SDL/SDL.h>
 
 #include <GL/glew.h>
@@ -21,6 +22,9 @@ private:
 	Timing _frameCounter;
 	Camera2D _camera;
 	Controller _controller;
+
+	Shader _fontShader;
+	Font _font;
 
 	void render(float);
 public:
