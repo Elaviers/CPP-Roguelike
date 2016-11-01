@@ -4,8 +4,10 @@
 #include <Engine/Camera2D.h>
 #include "Level.h"
 
-enum EditMode { NONE, PLACING, DELETING };
-enum Direction {ANCHOR_RIGHT,UP,ANCHOR_LEFT,DOWN};
+namespace PlayerEnums {
+	enum EditMode { NONE, PLACING, DELETING };
+	enum Direction { RIGHT, UP, LEFT, DOWN };
+}
 
 class Controller
 {
@@ -19,11 +21,11 @@ private:
 	int _mouseX, _mouseY;
 	float _moveX, _moveY, _CameraScale;
 
-	EditMode PlacementMode;
+	PlayerEnums::EditMode PlacementMode;
 
 	bool MovementInputs[4];
 	
-	void setMovement(Direction,bool);
+	void setMovement(PlayerEnums::Direction,bool);
 public:
 
 	float speed;

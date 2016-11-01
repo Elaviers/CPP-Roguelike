@@ -3,6 +3,8 @@
 #include <Engine/ResourceManager.h>
 #include "GUI.h"
 
+using namespace PlayerEnums;
+
 void Controller::init() {
 	_tiletexture = ResourceManager::getTexture("Game/Textures/tiles.png");
 	_symboltexture = ResourceManager::getTexture("Game/Textures/symbols.png");
@@ -47,7 +49,7 @@ void Controller::render(float deltaTime,Camera2D& cam) {
 void Controller::setMovement(Direction dir,bool s) {
 	MovementInputs[dir] = s;
 
-	_moveX = (float)(MovementInputs[ANCHOR_LEFT] ? (MovementInputs[ANCHOR_RIGHT] ? 0 : -1) : MovementInputs[ANCHOR_RIGHT] ? 1 : 0);
+	_moveX = (float)(MovementInputs[LEFT] ? (MovementInputs[RIGHT] ? 0 : -1) : MovementInputs[RIGHT] ? 1 : 0);
 	_moveY = (float)(MovementInputs[UP] ? (MovementInputs[DOWN] ? 0 : 1) : MovementInputs[DOWN] ? -1 : 0);
 }
 
@@ -64,8 +66,8 @@ void Controller::input(SDL_Event event, int screenh)
 		switch (event.key.keysym.sym) {
 		case SDLK_w:setMovement(UP,true); break;
 		case SDLK_s:setMovement(DOWN, true); break;
-		case SDLK_a:setMovement(ANCHOR_LEFT, true); break;
-		case SDLK_d:setMovement(ANCHOR_RIGHT, true); break;
+		case SDLK_a:setMovement(LEFT, true); break;
+		case SDLK_d:setMovement(RIGHT, true); break;
 
 		case SDLK_SPACE:_specialPlacement = !_specialPlacement; break;
 		case SDLK_r:_currentTile.TileID--; break;
@@ -89,8 +91,8 @@ void Controller::input(SDL_Event event, int screenh)
 		switch (event.key.keysym.sym) {
 		case SDLK_w:setMovement(UP, false); break;
 		case SDLK_s:setMovement(DOWN, false); break;
-		case SDLK_a:setMovement(ANCHOR_LEFT, false); break;
-		case SDLK_d:setMovement(ANCHOR_RIGHT, false); break;
+		case SDLK_a:setMovement(LEFT, false); break;
+		case SDLK_d:setMovement(RIGHT, false); break;
 		}
 	}
 	else if (event.type == SDL_MOUSEWHEEL) {
