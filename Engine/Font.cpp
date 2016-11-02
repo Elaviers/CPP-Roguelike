@@ -66,7 +66,7 @@ void Font::init(FT_Library& lib,const char* path, int size) {
 
 void Font::drawString(std::string text,float x,float y, int s, glm::vec4 colour, Shader shader) {
 	shader.set4f("TextColour",colour.r, colour.g, colour.b, colour.a);
-	drawString(text, x, y, s / _pointsize);
+	drawString(text, x, y, (float)s / _pointsize);
 }
 
 void Font::drawString(std::string text,float x,float y,float size) {

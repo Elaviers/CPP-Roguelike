@@ -13,8 +13,9 @@ GUI::~GUI()
 {
 }
 
-void GUI::addButton(Button b) {
+Button* GUI::addButton(Button b) {
 	_buttons.push_back(b);
+	return &_buttons.back();
 }
 
 void GUI::render(Camera2D& cam) {
@@ -53,13 +54,16 @@ void GUI::render(Camera2D& cam) {
 
 		if (b.active)  glColor3f(b.hoverColour.r,b.hoverColour.g,b.hoverColour.b);
 		else glColor3f(b.colour.r, b.colour.g, b.colour.b);
-		glRectd(b.x * 2 + ox, b.y * 2 + oy, b.x2 * 2 + ox, b.y2 * 2 + oy);
+		glRectd(b.x * 2 + ox, b.y * 2 + oy, b.x * 2 + b.width * 2 + ox, b.y * 2 + b.height * 2 + oy);
 	}
 }
 
 void GUI::renderText(Font& f,Shader& s) {
-	for (Button b : _buttons)
-		f.drawString(b.label, b.x, b.y, b.y2 - b.y < b.x2 - b.x ? (b.y2 - b.y) * _camera->getHeight() : (b.x2 - b.x) * _camera->getWidth() / strlen(b.label), b.textColour.vec4(), s);
+	for (Button b : _buttons) {
+		f.drawString(b.label, b.x * _camera->getWidth(), b.y * _camera->getHeight(),
+			(b.height * _camera->getHeight()) < f.getPointSize() ? b.height * _camera->getHeight() : (b.width * _camera->getWidth()) / strlen(b.label),
+			b.textColour.vec4(), s);
+	}
 }
 
 bool GUI::getActiveButton(float x,float y,Button& ret) {
@@ -67,7 +71,7 @@ bool GUI::getActiveButton(float x,float y,Button& ret) {
 	y /= _camera->getHeight();
 
 	for (Button &b : _buttons)
-		if (x >= b.x && x <= b.x2 && y >= b.y && y <= b.y2) {
+		if (x >= b.x && x <= b.x + b.width && y >= b.y && y <= b.y + b.height) {
 			b.active = true;
 			ret = b;
 			return true;

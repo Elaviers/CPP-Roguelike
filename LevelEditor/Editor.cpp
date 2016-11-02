@@ -33,25 +33,21 @@ void Editor::start() {
 	///////////////////////////////////////////////////////////////////////
 	
 	Colour c;
-	float unitSize = 64;
+	float unitSize = 64, lineCount = 256;
 
-	for (int x = -128; x <= 128; x++) {
+	for (int x = -lineCount; x <= lineCount; x++) {
 		c = (x == 0) ? Colour(32,128,255) : Colour(0,0,0);
-
-		LineRenderer::drawLine(x * unitSize, -128 * unitSize, x * unitSize, 128 * unitSize, c);
-		LineRenderer::drawLine(-128 * unitSize, x * unitSize, 128 * unitSize, x * unitSize, c);
+		LineRenderer::drawLine(x * unitSize, -lineCount * unitSize, x * unitSize, lineCount * unitSize, c);
+		LineRenderer::drawLine(-lineCount * unitSize, x * unitSize, lineCount * unitSize, x * unitSize, c);
 	}
 
 	GUI::setCam(_camera);
-	GUI::addButton(
-		Button {
-		Anchor::BOTTOM_LEFT, //Anchor point
-		0,0, //Starting Coords
-		1,0.1f, //Ending Coords
-		"sample text", //Label
-		NormalisedColour(),NormalisedColour(1,0,0),NormalisedColour(0,0,0,1) //Colour,Hover Colour,Text Colour
-	});
-
+	Button* b = GUI::addButton(Button(0.25,0.25,.25,.25));
+	b->anchor = Anchor::BOTTOM_LEFT;
+	b->colour = NormalisedColour(1,1,0);
+	b->hoverColour = NormalisedColour(1,0,0);
+	b->textColour = NormalisedColour(0,0,0,1);
+	b->label = "ayy test";
 
 	running = true;
 	while (running) {

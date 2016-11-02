@@ -28,7 +28,7 @@ private:
 
 	void render(float);
 public:
-	Editor() : screenX(1280), screenY(720) {};
+	Editor() : screenX(1024), screenY(768) {};
 	~Editor() {};
 
 	void start();
