@@ -16,7 +16,7 @@ private:
 	Level _level;
 	Texture _tiletexture,_symboltexture;
 
-	bool _specialPlacement;
+	bool _specialPlacement,_usingUI;
 
 	int _mouseX, _mouseY;
 	float _moveX, _moveY, _CameraScale;

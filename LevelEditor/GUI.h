@@ -30,10 +30,13 @@ public:
 	const char* label;
 	NormalisedColour colour, hoverColour, textColour;
 
-	bool active;
+	bool active,normalised,normalise2;
 
 	Button() {};
 	Button(float x, float y, float w, float h) : x(x),y(y),width(w),height(h) {};
+
+	void (*onClick)();
+	void render(Camera2D&);
 };
 
 class GUI
@@ -46,9 +49,11 @@ public:
 	~GUI();
 
 	static void setCam(Camera2D& c) { _camera = &c; };
-	static bool getActiveButton(float,float,Button&);
+	static bool update(float,float);
 	static Button* addButton(Button);
-	static void render(Camera2D&);
+	static void render();
 	static void renderText(Font&,Shader&);
+
+	static void click();
 };
 

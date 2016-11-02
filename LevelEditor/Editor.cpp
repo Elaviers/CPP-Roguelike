@@ -2,6 +2,10 @@
 #include "GUI.h"
 #include "FileManager.h"
 
+void buttonClickTest() {
+	std::printf("\a\nAYY L M A O\n");
+}
+
 void Editor::start() {
 	//FileManager::writeLevelFile(std::vector<Tile> {Tile{ 0,1,2 }, Tile{3,4,5}},"poo.poo");//Level loading test
 
@@ -42,12 +46,14 @@ void Editor::start() {
 	}
 
 	GUI::setCam(_camera);
-	Button* b = GUI::addButton(Button(0.25,0.25,.25,.25));
+	Button* b = GUI::addButton(Button(64,64,256,64));
 	b->anchor = Anchor::BOTTOM_LEFT;
 	b->colour = NormalisedColour(1,1,0);
 	b->hoverColour = NormalisedColour(1,0,0);
 	b->textColour = NormalisedColour(0,0,0,1);
 	b->label = "ayy test";
+	b->onClick = &buttonClickTest;
+	b->normalised = false;
 
 	running = true;
 	while (running) {
@@ -69,7 +75,7 @@ void Editor::render(float deltaTime) {
 
 	_controller.render(deltaTime,_camera);
 
-	GUI::render(_camera);
+	GUI::render();
 
 	_fontShader.useProgram();
 	_fontShader.setMat4("projection",_camera.getScreenMatrix());

@@ -40,7 +40,7 @@ void Controller::render(float deltaTime,Camera2D& cam) {
 	
 	SpriteRenderer::UseProgram(cam);
 	_level.drawSprites(_tiletexture);
-	if (PlacementMode != DELETING && !_specialPlacement)SpriteRenderer::drawSprite(_tiletexture, _currentTile.x, _currentTile.y, 64, 64, Colour(255,255,255,128), 0, 8, _currentTile.TileID);
+	if (PlacementMode != DELETING && !_specialPlacement && !_usingUI)SpriteRenderer::drawSprite(_tiletexture, _currentTile.x, _currentTile.y, 64, 64, Colour(255,255,255,128), 0, 8, _currentTile.TileID);
 	_level.drawEditorSprites(_symboltexture);
 	SpriteRenderer::UnuseProgram();
 }
@@ -59,7 +59,7 @@ void Controller::input(SDL_Event event, int screenh)
 	_mouseY = screenh - _mouseY;
 
 	Button b;
-	GUI::getActiveButton(_mouseX, _mouseY, b);
+	_usingUI = GUI::update(_mouseX, _mouseY);
 
 	if (event.type == SDL_KEYDOWN) {
 		std::string path;
@@ -102,12 +102,14 @@ void Controller::input(SDL_Event event, int screenh)
 			_CameraScale = -0.1f;
 	}
 	else if (event.type == SDL_MOUSEBUTTONDOWN) {
-		switch (event.button.button) {
-		case SDL_BUTTON_LEFT:
-			PlacementMode = PLACING; break;
-		case SDL_BUTTON_RIGHT:
-			PlacementMode = DELETING; break;
-		}
+		if (!_usingUI)
+			switch (event.button.button) {
+			case SDL_BUTTON_LEFT:
+				PlacementMode = PLACING; break;
+			case SDL_BUTTON_RIGHT:
+				PlacementMode = DELETING; break;
+			}
+		else GUI::click();
 	}
 	else if (event.type == SDL_MOUSEBUTTONUP) {
 		PlacementMode = NONE;
