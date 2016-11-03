@@ -26,7 +26,10 @@ private:
 	bool MovementInputs[4];
 	
 	void setMovement(PlayerEnums::Direction,bool);
+
+	static void save(), load();
 public:
+	static Level* currentLevel;
 
 	float speed;
 	Controller() : speed(768) {};

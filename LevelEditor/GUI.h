@@ -32,8 +32,8 @@ public:
 
 class Button {
 public:
-	Anchor::AnchorPoint anchor;
 	float x, y, width, height;
+	int offset_x, offset_y;
 	const char* label;
 	NormalisedColour colour, hoverColour, textColour;
 	unsigned char normalised;
@@ -45,6 +45,7 @@ public:
 
 	void (*onClick)();
 	void render(Camera2D&);
+	void setAnchor(Anchor::AnchorPoint);
 };
 
 class GUI
@@ -58,7 +59,7 @@ public:
 
 	static void setCam(Camera2D& c) { _camera = &c; };
 	static bool update(float,float);
-	static Button* addButton(Button);
+	static Button* addButton(Button&);
 	static void render();
 	static void renderText(Font&,Shader&);
 

@@ -20,6 +20,17 @@ void Editor::start() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	////////////////////////////////////////////////////////////////////////
 
+	GUI::setCam(_camera);
+
+	Button b(0, 0, 1, 64, NORMALISED_WIDTH);
+	b.setAnchor(Anchor::BOTTOM_LEFT);
+	b.colour = NormalisedColour(1, 1, 0);
+	b.hoverColour = NormalisedColour(1, 0, 0);
+	b.textColour = NormalisedColour(0, 0, 0, 1);
+	//b.label = "ayy test";
+	b.onClick = &buttonClickTest;
+	GUI::addButton(b);
+
 	_camera.SetViewportSize(screenX, screenY);
 	_controller.init();
 
@@ -44,15 +55,6 @@ void Editor::start() {
 		LineRenderer::drawLine(x * unitSize, -lineCount * unitSize, x * unitSize, lineCount * unitSize, c);
 		LineRenderer::drawLine(-lineCount * unitSize, x * unitSize, lineCount * unitSize, x * unitSize, c);
 	}
-
-	GUI::setCam(_camera);
-	Button* b = GUI::addButton(Button(0,0,1,64,NORMALISED_WIDTH));
-	b->anchor = Anchor::BOTTOM_LEFT;
-	b->colour = NormalisedColour(1,1,0);
-	b->hoverColour = NormalisedColour(1,0,0);
-	b->textColour = NormalisedColour(0,0,0,1);
-	b->label = "ayy test";
-	b->onClick = &buttonClickTest;
 
 	running = true;
 	while (running) {

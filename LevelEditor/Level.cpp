@@ -1,7 +1,6 @@
 #include "Level.h"
 #include <Engine/SpriteRenderer.h>
 
-
 Level::Level() : _spawn(Tile {-1,0,0,'s'})
 {
 }

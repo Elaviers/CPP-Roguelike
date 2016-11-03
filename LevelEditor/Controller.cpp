@@ -2,12 +2,54 @@
 #include <Engine/SpriteRenderer.h>
 #include <Engine/ResourceManager.h>
 #include "GUI.h"
+#include <iostream>
+
+Level* Controller::currentLevel;
 
 using namespace PlayerEnums;
+
+void Controller::save() {
+	std::string path;
+	std::printf("(SAVE) Level name:");
+	std::cin >> path;
+	currentLevel->save(path.c_str());
+	std::printf("Saved level!\n");
+}
+
+void Controller::load() {
+	std::string path;
+	std::printf("(LOAD) Level name:");
+	std::cin >> path;
+	currentLevel->load(path.c_str());
+	std::printf("Loaded level!\n");
+}
 
 void Controller::init() {
 	_tiletexture = ResourceManager::getTexture("Game/Textures/tiles.png");
 	_symboltexture = ResourceManager::getTexture("Game/Textures/symbols.png");
+
+	currentLevel = &_level;
+
+	Button b(.5, -32, .25, 32, NORMALISED_X | NORMALISED_WIDTH);
+	b.setAnchor(Anchor::TOP_LEFT);
+	b.colour = NormalisedColour(1, 1, 0);
+	b.hoverColour = NormalisedColour(1, 0, 0);
+	b.textColour = NormalisedColour(0, 0, 0, 1);
+	b.label = "Load";
+	b.onClick = load;
+
+	GUI::addButton(b);
+
+	b = Button(.75, -32, .25, 32, NORMALISED_X | NORMALISED_WIDTH);
+	b.setAnchor(Anchor::TOP_LEFT);
+	b.colour = NormalisedColour(1, 1, 0);
+	b.hoverColour = NormalisedColour(1, 0, 0);
+	b.textColour = NormalisedColour(0, 0, 0, 1);
+	b.label = "Save";
+	b.onClick = save;
+
+	GUI::addButton(b);
+	
 }
 
 int gridSnap(int i, int snap) {
@@ -44,7 +86,6 @@ void Controller::render(float deltaTime,Camera2D& cam) {
 	_level.drawEditorSprites(_symboltexture);
 	SpriteRenderer::UnuseProgram();
 }
-#include <iostream>
 
 void Controller::setMovement(Direction dir,bool s) {
 	MovementInputs[dir] = s;
@@ -72,19 +113,6 @@ void Controller::input(SDL_Event event, int screenh)
 		case SDLK_SPACE:_specialPlacement = !_specialPlacement; break;
 		case SDLK_r:_currentTile.TileID--; break;
 		case SDLK_t:_currentTile.TileID++; break;
-
-		case SDLK_TAB:
-			std::printf("(LOAD) Level name:");
-			std::cin >> path;
-			_level.load(path.c_str());
-			std::printf("Loaded level!\n");
-			break;
-		case SDLK_RETURN:
-			std::printf("(SAVE) Level name:");
-			std::cin >> path;
-			_level.save(path.c_str());
-			std::printf("Saved level!\n");
-			break;
 		}
 	}
 	else if (event.type == SDL_KEYUP) {
