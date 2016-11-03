@@ -37,8 +37,10 @@ void Button::render(Camera2D& cam) {
 	if (active)  glColor3f(hoverColour.r, hoverColour.g, hoverColour.b);
 	else glColor3f(colour.r, colour.g, colour.b);
 	
-	if (normalised)glRectd(x * 2 + ox, y * 2 + oy, (x + width) * 2 + ox, (y + height) * 2 + oy);
-	else glRectd(x * 2 / cam.getWidth() + ox, y * 2 / cam.getHeight() + oy, (x + width) * 2 / cam.getWidth() + ox, (y + height) * 2 / cam.getHeight() + oy);
+	glRectd(x / (normalised & NORMALISED_X ? 1 : cam.getWidth())  * 2 + ox,
+			y / (normalised & NORMALISED_Y ? 1 : cam.getHeight()) * 2 + oy,
+			(x / (normalised & NORMALISED_X ? 1 : cam.getWidth()) + width / (normalised & NORMALISED_WIDTH ? 1 : cam.getWidth())) * 2 + ox,
+			(y / (normalised & NORMALISED_Y ? 1 : cam.getHeight()) + height / (normalised & NORMALISED_HEIGHT ? 1 : cam.getHeight())) * 2 + oy);
 }
 
 std::vector<Button> GUI::_buttons;
@@ -66,10 +68,10 @@ void GUI::render() {
 
 void GUI::renderText(Font& f,Shader& s) {
 	for (Button b : _buttons) {
-		int psize = (b.normalised ? b.width * _camera->getWidth() : b.width) / strlen(b.label);
+		int psize = (b.normalised & NORMALISED_WIDTH ? b.width * _camera->getWidth() : b.width) / strlen(b.label);
 		f.drawString(b.label, 
-			b.normalised ? b.x * _camera->getWidth() : b.x, b.normalised ? b.y * _camera->getHeight() : b.y,
-			(b.normalised ? b.height * _camera->getHeight() : b.height) < psize ? (b.normalised ? b.height * _camera->getHeight() : b.height) : psize,
+			b.normalised & NORMALISED_X ? b.x * _camera->getWidth() : b.x, b.normalised * NORMALISED_Y ? b.y * _camera->getHeight() : b.y,
+			(b.normalised & NORMALISED_HEIGHT ? b.height * _camera->getHeight() : b.height) < psize ? (b.normalised & NORMALISED_HEIGHT ? b.height * _camera->getHeight() : b.height) : psize,
 			b.textColour.vec4(), s);
 	}
 }
@@ -77,9 +79,11 @@ void GUI::renderText(Font& f,Shader& s) {
 bool GUI::update(float x,float y) {
 
 	for (Button& b : _buttons) {
-		if ((b.normalised ? x / _camera->getWidth() >= b.x && x / _camera->getWidth() <= b.x + b.width :  x >= b.x && x <= b.x + b.width) &&
-			(b.normalised ? y / _camera->getHeight()>= b.y && y / _camera->getHeight()<= b.y + b.height : y >= b.y && y <= b.y + b.height)) {
-
+		if (x >= (b.normalised & NORMALISED_X ? b.x * _camera->getWidth() : b.x) &&
+			y >= (b.normalised & NORMALISED_Y ? b.y * _camera->getHeight() : b.y) &&
+			x <= (b.normalised & NORMALISED_WIDTH ? (b.x + b.width) * _camera->getWidth() : b.x + b.width) &&
+			y <= (b.normalised & NORMALISED_HEIGHT ? (b.y + b.height) * _camera->getHeight() : b.y + b.height))
+		{
 			b.active = true;
 			return true;
 		}

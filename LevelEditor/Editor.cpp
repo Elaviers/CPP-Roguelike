@@ -46,14 +46,13 @@ void Editor::start() {
 	}
 
 	GUI::setCam(_camera);
-	Button* b = GUI::addButton(Button(64,64,256,64));
+	Button* b = GUI::addButton(Button(0,0,1,64,NORMALISED_WIDTH));
 	b->anchor = Anchor::BOTTOM_LEFT;
 	b->colour = NormalisedColour(1,1,0);
 	b->hoverColour = NormalisedColour(1,0,0);
 	b->textColour = NormalisedColour(0,0,0,1);
 	b->label = "ayy test";
 	b->onClick = &buttonClickTest;
-	b->normalised = false;
 
 	running = true;
 	while (running) {

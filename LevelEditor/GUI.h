@@ -12,6 +12,13 @@ namespace Anchor {
 	};
 }
 
+	enum Lock {
+		NORMALISED_X = 0x01,
+		NORMALISED_Y = 0x02,
+		NORMALISED_WIDTH = 0x04,
+		NORMALISED_HEIGHT = 0x08
+	};
+
 class NormalisedColour {
 public:
 	float r, g, b, a;
@@ -29,11 +36,12 @@ public:
 	float x, y, width, height;
 	const char* label;
 	NormalisedColour colour, hoverColour, textColour;
+	unsigned char normalised;
 
-	bool active,normalised,normalise2;
+	bool active;
 
 	Button() {};
-	Button(float x, float y, float w, float h) : x(x),y(y),width(w),height(h) {};
+	Button(float x, float y, float w, float h,unsigned char normalisedCoords) : x(x),y(y),width(w),height(h),normalised(normalisedCoords) {};
 
 	void (*onClick)();
 	void render(Camera2D&);
