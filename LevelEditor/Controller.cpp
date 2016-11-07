@@ -1,7 +1,7 @@
 #include "Controller.h"
+
 #include <Engine/SpriteRenderer.h>
 #include <Engine/ResourceManager.h>
-#include "GUI.h"
 #include <iostream>
 
 Level* Controller::currentLevel;
@@ -25,31 +25,29 @@ void Controller::load() {
 }
 
 void Controller::init() {
+	_loadButton = Button(.5f, -32, .25f, 32, NORMALISED_X | NORMALISED_WIDTH);
+	_loadButton.setAnchor(Anchor::TOP_LEFT);
+	_loadButton.colour = NormalisedColour(1, 1, 0);
+	_loadButton.hoverColour = NormalisedColour(1, 0, 0);
+	_loadButton.textColour = NormalisedColour(0, 0, 0, 1);
+	_loadButton.label = "Load";
+	_loadButton.onClick = &load;
+
+	_saveButton = Button(.75f, -32, .25f, 32, NORMALISED_X | NORMALISED_WIDTH);
+	_saveButton.setAnchor(Anchor::TOP_LEFT);
+	_saveButton.colour = NormalisedColour(1, 1, 0);
+	_saveButton.hoverColour = NormalisedColour(1, 0, 0);
+	_saveButton.textColour = NormalisedColour(0, 0, 0, 1);
+	_saveButton.label = "Save";
+	_saveButton.onClick = &save;
+
+	GUI::addButton(_loadButton);
+	GUI::addButton(_saveButton);
+
 	_tiletexture = ResourceManager::getTexture("Game/Textures/tiles.png");
 	_symboltexture = ResourceManager::getTexture("Game/Textures/symbols.png");
 
 	currentLevel = &_level;
-
-	Button b(.5, -32, .25, 32, NORMALISED_X | NORMALISED_WIDTH);
-	b.setAnchor(Anchor::TOP_LEFT);
-	b.colour = NormalisedColour(1, 1, 0);
-	b.hoverColour = NormalisedColour(1, 0, 0);
-	b.textColour = NormalisedColour(0, 0, 0, 1);
-	b.label = "Load";
-	b.onClick = load;
-
-	GUI::addButton(b);
-
-	b = Button(.75, -32, .25, 32, NORMALISED_X | NORMALISED_WIDTH);
-	b.setAnchor(Anchor::TOP_LEFT);
-	b.colour = NormalisedColour(1, 1, 0);
-	b.hoverColour = NormalisedColour(1, 0, 0);
-	b.textColour = NormalisedColour(0, 0, 0, 1);
-	b.label = "Save";
-	b.onClick = save;
-
-	GUI::addButton(b);
-	
 }
 
 int gridSnap(int i, int snap) {
@@ -99,7 +97,6 @@ void Controller::input(SDL_Event event, int screenh)
 	SDL_GetMouseState(&_mouseX,&_mouseY);
 	_mouseY = screenh - _mouseY;
 
-	Button b;
 	_usingUI = GUI::update(_mouseX, _mouseY);
 
 	if (event.type == SDL_KEYDOWN) {

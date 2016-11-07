@@ -30,36 +30,47 @@ public:
 	glm::vec4 vec4() { return glm::vec4(r, g, b, a); };
 };
 
-class Button {
+class UIElement {
 public:
 	float x, y, width, height;
 	int offset_x, offset_y;
-	const char* label;
-	NormalisedColour colour, hoverColour, textColour;
 	unsigned char normalised;
 
-	bool active;
+	virtual bool update(float, float, Camera2D&) = 0;
+	virtual void render(Camera2D&) = 0;
+	virtual void renderLabel(Font&,Shader&,Camera2D&) = 0;
 
-	Button() {};
-	Button(float x, float y, float w, float h,unsigned char normalisedCoords) : x(x),y(y),width(w),height(h),normalised(normalisedCoords) {};
+	void setAnchor(Anchor::AnchorPoint);
+
+	UIElement(float x, float y, float w, float h,unsigned char flags) : x(x), y(y), width(w), height(h), normalised(flags) {};
+};
+
+class Button : public UIElement {
+public:
+	const char* label;
+	NormalisedColour colour, hoverColour, textColour;
+
+	bool active;
+	
+	Button() : UIElement(0,0,0,0,0) {};
+	Button(float x, float y, float w, float h, unsigned char normalisedCoords) : UIElement(x,y,w,h,normalisedCoords) {};
 
 	void (*onClick)();
-	void render(Camera2D&);
-	void setAnchor(Anchor::AnchorPoint);
+
+	bool update(float x,float y,Camera2D&) override;
+	void render(Camera2D&) override;
+	void renderLabel(Font&, Shader&, Camera2D&) override;
 };
 
 class GUI
 {
 private:
-	static std::vector<Button> _buttons;
+	static std::vector<UIElement*> _elements;
 	static Camera2D* _camera;
 public:
-	GUI();
-	~GUI();
-
 	static void setCam(Camera2D& c) { _camera = &c; };
 	static bool update(float,float);
-	static Button* addButton(Button&);
+	static void addButton(Button&);
 	static void render();
 	static void renderText(Font&,Shader&);
 

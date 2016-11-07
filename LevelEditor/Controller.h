@@ -3,6 +3,7 @@
 #include <Engine/Sprite.h>
 #include <Engine/Camera2D.h>
 #include "Level.h"
+#include "GUI.h"
 
 namespace PlayerEnums {
 	enum EditMode { NONE, PLACING, DELETING };
@@ -12,6 +13,8 @@ namespace PlayerEnums {
 class Controller
 {
 private:
+	Button _loadButton,_saveButton;
+
 	Tile _currentTile;
 	Level _level;
 	Texture _tiletexture,_symboltexture;
