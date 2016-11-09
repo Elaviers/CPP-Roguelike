@@ -33,13 +33,6 @@ void UIElement::setAnchor(Anchor::AnchorPoint anchor) {
 }
 
 bool Button::update(float mx, float my, Camera2D& cam) {
-	/*if (debug)printf("BUTTON (%s)...\nX\n%f > %f\n%f < %f\nY\n%f > %f\n%f < %f\n\n", label, x, (normalised & NORMALISED_X ? (x + (offset_x + 1) / 2) * _camera->getWidth() : x + (offset_x + 1) / 2 * _camera->getWidth()),
-	x, (normalised & NORMALISED_X ? (normalised & NORMALISED_WIDTH ? (x + width + (offset_x + 1) / 2) * _camera->getWidth() : (x + (offset_x + 1) / 2) * _camera->getWidth() + width) :
-	normalised & NORMALISED_WIDTH ? x + (width + (offset_x + 1) / 2) * _camera->getWidth() : x + width + offset_x / 2 * _camera->getWidth()),
-	y, (normalised & NORMALISED_Y ? (y + (offset_y + 1) / 2) * _camera->getHeight() : y + (offset_y + 1) / 2 * _camera->getHeight()),
-	y, (normalised & NORMALISED_Y ? (normalised & NORMALISED_HEIGHT ? (y + height + (offset_y + 1) / 2) * _camera->getHeight() : (y + (offset_y + 1) / 2) * _camera->getHeight() + height) :
-	normalised & NORMALISED_HEIGHT ? y + (width + (offset_y + 1) / 2) * _camera->getHeight() : y + height + (offset_y + 1) / 2 * _camera->getHeight())); //Debug stuff*/
-
 	if (mx >= (normalised & NORMALISED_X ? (x + (offset_x + 1) / 2) * cam.getWidth() : x + (offset_x + 1) / 2 * cam.getWidth()) &&
 		my >= (normalised & NORMALISED_Y ? (y + (offset_y + 1) / 2) * cam.getHeight() : y + (offset_y + 1) / 2 * cam.getHeight()) &&
 		mx <= (normalised & NORMALISED_X ? (normalised & NORMALISED_WIDTH ? (x + width + (offset_x + 1) / 2) * cam.getWidth() : (x + (offset_x + 1) / 2) * cam.getWidth() + width) :
@@ -73,11 +66,58 @@ void Button::renderLabel(Font&f,Shader&s,Camera2D&cam) {
 		textColour.vec4(), s);
 }
 
+bool TextBox::update(float mx,float my, Camera2D& cam) {
+	if (	mx >= (normalised & NORMALISED_X ? (x + (offset_x + 1) / 2) * cam.getWidth() : x + (offset_x + 1) / 2 * cam.getWidth()) &&
+			my >= (normalised & NORMALISED_Y ? (y + (offset_y + 1) / 2) * cam.getHeight() : y + (offset_y + 1) / 2 * cam.getHeight()) &&
+			mx <= (normalised & NORMALISED_X ? (normalised & NORMALISED_WIDTH ? (x + width + (offset_x + 1) / 2) * cam.getWidth() : (x + (offset_x + 1) / 2) * cam.getWidth() + width) :
+			normalised & NORMALISED_WIDTH ? x + (width + (offset_x + 1) / 2) * cam.getWidth() : x + width + offset_x / 2 * cam.getWidth()) &&
+			my <= (normalised & NORMALISED_Y ? (normalised & NORMALISED_HEIGHT ? (y + height + (offset_y + 1) / 2) * cam.getHeight() : (y + (offset_y + 1) / 2) * cam.getHeight() + height) :
+			normalised & NORMALISED_HEIGHT ? y + (width + (offset_y + 1) / 2) * cam.getHeight() : y + height + (offset_y + 1) / 2 * cam.getHeight()))
+		hover = true;
+	else
+		hover = false;
+
+	return hover;
+}
+
+void TextBox::render(Camera2D& cam) {
+	if (active) glColor3f(colour2.r, colour2.g, colour2.b);
+	else glColor3f(colour.r, colour.g, colour.b);
+
+	glRectd(x / (normalised & NORMALISED_X ? 1 : cam.getWidth()) * 2 + offset_x,
+		y / (normalised & NORMALISED_Y ? 1 : cam.getHeight()) * 2 + offset_y,
+		(x / (normalised & NORMALISED_X ? 1 : cam.getWidth()) + width / (normalised & NORMALISED_WIDTH ? 1 : cam.getWidth())) * 2 + offset_x,
+		(y / (normalised & NORMALISED_Y ? 1 : cam.getHeight()) + height / (normalised & NORMALISED_HEIGHT ? 1 : cam.getHeight())) * 2 + offset_y);
+}
+
+void TextBox::renderLabel(Font&f, Shader&s, Camera2D&cam) {
+	if (text.c_str() == nullptr)return;
+	int psize = (normalised & NORMALISED_WIDTH ? width * cam.getWidth() : width) / text.length();
+	f.drawString(text,
+		normalised & NORMALISED_X ? (x + (offset_x + 1) / 2) * cam.getWidth() : x + (offset_x + 1) / 2 * cam.getWidth(),
+		normalised & NORMALISED_Y ? (y + (offset_y + 1) / 2) * cam.getHeight() : y + (offset_y + 1) / 2 * cam.getHeight(),
+		(normalised & NORMALISED_HEIGHT ? height * cam.getHeight() : height) < psize ? (normalised & NORMALISED_HEIGHT ? height *cam.getHeight() : height) : psize,
+		textColour.vec4(), s);
+}
+
+void TextBox::click() {
+	if (active != hover) {
+		active = hover;
+		onStateChanged(active);
+	}
+}
+
+void TextBox::textInput(char ch) {
+	if (active) {
+		text += ch;
+	}
+}
+
 std::vector<UIElement*> GUI::_elements;
 Camera2D* GUI::_camera;
 
-void GUI::addButton(Button& b) {
-	_elements.push_back(&b);
+void GUI::add(UIElement& e) {
+	_elements.push_back(&e);
 }
 
 void GUI::render() {
@@ -104,8 +144,6 @@ bool GUI::update(float x,float y) {
 
 void GUI::click() {
 	for (UIElement* e : _elements) {
-		Button& b = dynamic_cast<Button&>(*e);
-		if (b.active)
-			b.onClick();
+		e->click();
 	}
 }

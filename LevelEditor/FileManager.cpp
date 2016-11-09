@@ -6,15 +6,53 @@ using namespace std;
 
 void FileManager::writeLevelFile(std::vector<Tile> tiles,const char* path) {
 
-	ofstream stream(path);
+	ofstream stream(path, ios::binary | ios::out);
 	if (!stream.is_open())return;
 
+	int currentIndex = 0, currentX = 0, currentY = 0;
+	bool force = true;
+
+	printf("(DEBUG) saved %d tiles\n",tiles.size());
+
+	vector<char> buffer;
 
 	for (Tile t : tiles) {
-		stream << t.TileID << ' ' << t.x / 64 << ' ' << t.y / 64;
-		if (t.flag > 0)stream << ' ' << t.flag;
-		stream << endl;
+		/*if (t.TileID != currentIndex || force) {
+			stream << t.TileID << endl;
+			currentIndex = t.TileID;
+		}
+		if (t.x != currentX || force) {
+			stream << "\t" << t.x / 64 << endl;
+			currentX = t.x;
+			force = true;
+		}
+		if (t.y != currentY || force) {
+			stream << "\t\t" << t.y / 64 << endl;
+			currentY = t.y;
+			force = false;
+		}*///OLD
+
+		//Values 0-7 are load flags
+		if (t.TileID != currentIndex || force) {
+			buffer.push_back(0);//Flag : new TileID
+			buffer.push_back(t.TileID + 8);
+			currentIndex = t.TileID;
+			force = true;
+		}
+		if (t.x != currentX || force) {
+			if (!force)buffer.push_back(1);//Flag : new X value
+			buffer.push_back(t.x / 64 + 8 + 127 / 2);//Offset by 8 for flag count
+			currentX = t.x;
+			force = true;
+		}
+		if (t.y != currentY || force) {
+			buffer.push_back(t.y / 64 + 8 + 127 / 2);//Offset by 8 for flag count
+			currentY = t.y;
+			force = false;
+		}
 	}
+
+	stream.write(buffer.data(),buffer.size());
 
 	stream.close();
 }
@@ -22,33 +60,41 @@ void FileManager::writeLevelFile(std::vector<Tile> tiles,const char* path) {
 vector<Tile> FileManager::readLevelFile(const char* Path, int unitSize)
 {
 	ifstream stream(Path);
-	string str;
 
 	if (!stream.is_open())return (vector<Tile>)NULL;
+	std::string str((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
 
-	vector<Tile> returnvalue;
-	while (getline(stream, str)) {
-		if (str.length() > 0 && str[0] != '|') {
-			vector<string> elements;
-			Utility::splitString(str, ' ', elements);
-			if (elements.size() >= 3) {
-				for (int s = 0; s < elements.size(); s++)
-					printf("%s | ", elements[s].c_str());
-				printf("\n");
+	Tile current;
+	vector <Tile> returnvalue;
 
-				Tile t;
-				t.TileID = stoi(elements[0].c_str());
-				t.x = (float)unitSize * stoi(elements[1].c_str());
-				t.y = (float)unitSize * stoi(elements[2].c_str());
-				if (elements.size() >= 4)
-					t.flag = elements[3][0];
-				else t.flag = 0;
-
-				returnvalue.push_back(t);
+	int i = 0;
+	bool first = true;
+	while (i < str.length()) {
+		if (str[i] < 8) {
+			switch (str[i]) {
+			case 0://New TileID
+				current.TileID = str[++i] - 8;
+			case 1://New X
+				//Comes here after case 0
+				current.x = (str[++i] - (8 + 127/2)) * 64;
+				i++;
+				break;
 			}
+			continue;
 		}
+
+		current.y = (str[i++] - (8 + 127/2)) * 64;
+		returnvalue.push_back(current);
 	}
 
 	stream.close();
 	return returnvalue;
+	return (vector<Tile>)NULL;
+}
+
+int tabCount(string str) {
+	int i = 0;
+	while (str[i] == '\t')
+		i++;
+	return i;
 }

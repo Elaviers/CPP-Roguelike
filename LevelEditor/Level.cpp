@@ -18,7 +18,16 @@ void Level::edit(Tile tile,bool remove) {
 			return;
 		}
 
-	if (!remove)_tiles.push_back(tile);
+	if (!remove) {
+		int index = 0;
+		for (Tile t : _tiles) {
+			if (!(tile.TileID != t.TileID || tile.x < t.x || (tile.x == t.x && tile.y < t.y)))
+				index++;
+			else continue;
+		}
+		_tiles.emplace(_tiles.begin() + index, tile);
+		if (index > 0)printf("Tile edited and placed at %d (after %d: %f, %f)\n",index,_tiles[index-1].TileID, _tiles[index - 1].x / 64, _tiles[index - 1].y / 64);
+	}
 }
 
 void Level::setFlag(Tile tile) {

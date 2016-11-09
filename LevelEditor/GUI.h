@@ -23,6 +23,9 @@ class NormalisedColour {
 public:
 	float r, g, b, a;
 
+	void set(float red, float green, float blue) { r = red; g = green; b = blue; };
+	void set(float red, float green, float blue, float alpha) { r = red; g = green; b = blue; a = alpha; };
+
 	NormalisedColour() : r(1), g(1), b(1), a(1) {};
 	NormalisedColour(float r, float g, float b) : r(r), g(g), b(b) {};
 	NormalisedColour(float r, float g, float b, float a) : r(r), g(g), b(b), a(a) {};
@@ -36,9 +39,10 @@ public:
 	int offset_x, offset_y;
 	unsigned char normalised;
 
-	virtual bool update(float, float, Camera2D&) = 0;
 	virtual void render(Camera2D&) = 0;
-	virtual void renderLabel(Font&,Shader&,Camera2D&) = 0;
+	virtual void click() {};
+	virtual bool update(float, float, Camera2D&) { return false; };
+	virtual void renderLabel(Font&, Shader&, Camera2D&) {};
 
 	void setAnchor(Anchor::AnchorPoint);
 
@@ -60,6 +64,27 @@ public:
 	bool update(float x,float y,Camera2D&) override;
 	void render(Camera2D&) override;
 	void renderLabel(Font&, Shader&, Camera2D&) override;
+	void click() { if(active)onClick(); };
+};
+
+class TextBox : public UIElement {
+public:
+	std::string text;
+	NormalisedColour colour,colour2,textColour;
+
+	bool hover,active;
+
+	void (*onStateChanged)(bool state);
+
+	TextBox() : UIElement(0,0,0,0,0) {};
+	TextBox(float x, float y, float w, float h, unsigned char flags) : UIElement(x, y, w, h, flags), active(false) {};
+
+	bool update(float x, float y, Camera2D&) override;
+	void render(Camera2D&) override;
+	void renderLabel(Font&, Shader&, Camera2D&) override;
+	void click() override;
+
+	void textInput(char newchar);
 };
 
 class GUI
@@ -70,7 +95,7 @@ private:
 public:
 	static void setCam(Camera2D& c) { _camera = &c; };
 	static bool update(float,float);
-	static void addButton(Button&);
+	static void add(UIElement&);
 	static void render();
 	static void renderText(Font&,Shader&);
 

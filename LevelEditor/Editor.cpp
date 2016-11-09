@@ -1,18 +1,6 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include "Editor.h"
 
 #include "FileManager.h"
-
-Button* Editor::ayytest;
-
-void Editor::buttonClickTest() {
-	static std::string str = "Wololo";
-
-	std::printf("\a\nAYY L M A O\n");
-	str += "lo";
-
-	ayytest->label = str.c_str();
-}
 
 void Editor::start() {
 	//FileManager::writeLevelFile(std::vector<Tile> {Tile{ 0,1,2 }, Tile{3,4,5}},"poo.poo");//Level loading test
@@ -30,17 +18,6 @@ void Editor::start() {
 
 	_camera.SetViewportSize(screenX, screenY);
 	GUI::setCam(_camera);
-
-	Button b(0, 0, 1, 64, NORMALISED_WIDTH);
-	GUI::addButton(b);
-	b.setAnchor(Anchor::BOTTOM_LEFT);
-	b.colour = NormalisedColour(1, 1, 0);
-	b.hoverColour = NormalisedColour(1, 0, 0);
-	b.textColour = NormalisedColour(0, 0, 0, 1);
-	b.label = "Wololo";
-	b.onClick = &buttonClickTest;
-
-	ayytest = &b;
 
 
 	_controller.init();

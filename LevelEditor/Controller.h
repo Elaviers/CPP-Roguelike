@@ -14,6 +14,9 @@ class Controller
 {
 private:
 	Button _loadButton,_saveButton;
+	TextBox _namebox;
+	static bool _inputLock;
+	static const char* levelname;
 
 	Tile _currentTile;
 	Level _level;
@@ -30,7 +33,7 @@ private:
 	
 	void setMovement(PlayerEnums::Direction,bool);
 
-	static void save(), load();
+	static void save(), load(), setInputState(bool);
 public:
 	static Level* currentLevel;
 

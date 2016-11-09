@@ -16,8 +16,6 @@
 class Editor
 {
 private:
-	static Button* ayytest;
-
 	Window _window;
 	bool running;
 	int screenX, screenY;
@@ -30,7 +28,6 @@ private:
 	Font _font;
 
 	void render(float);
-	static void buttonClickTest();
 public:
 	Editor() : screenX(1024), screenY(768) {};
 	~Editor() {};
