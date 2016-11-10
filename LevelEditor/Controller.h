@@ -3,7 +3,7 @@
 #include <Engine/Sprite.h>
 #include <Engine/Camera2D.h>
 #include "Level.h"
-#include "GUI.h"
+#include <Engine/GUI.h>
 
 namespace PlayerEnums {
 	enum EditMode { NONE, PLACING, DELETING };

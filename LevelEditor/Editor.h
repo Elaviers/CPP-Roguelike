@@ -10,7 +10,6 @@
 
 #include <GL/glew.h>
 
-#include "GUI.h"
 #include "Controller.h"
 
 class Editor

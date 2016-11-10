@@ -58,6 +58,9 @@
     <ClCompile Include="ShaderPresetDefinitions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera2D.h">
@@ -115,6 +118,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="LineRenderer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

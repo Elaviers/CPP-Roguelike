@@ -144,7 +144,6 @@
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="FileManager.cpp" />
-    <ClCompile Include="GUI.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
@@ -152,7 +151,6 @@
     <ClInclude Include="Controller.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="FileManager.h" />
-    <ClInclude Include="GUI.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Resource.h" />
   </ItemGroup>

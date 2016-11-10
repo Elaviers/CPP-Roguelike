@@ -1,6 +1,7 @@
 #pragma once
 #include "FileManager.h"
 #include <Engine/Texture.h>
+#include <Engine/CAMERA2D.H>
 
 class Level
 {
@@ -11,7 +12,7 @@ public:
 	Level();
 	~Level();
 
-	void drawSprites(Texture&);
+	void drawSprites(Texture&,Camera2D&);
 	void drawEditorSprites(Texture&);
 	void edit(Tile,bool = false);
 	void setFlag(Tile t);

@@ -2,6 +2,8 @@
 
 #include <Engine/Utility.h>
 
+#define CHAR_OFFSET (8 + 127 / 2)
+
 using namespace std;
 
 vector<StringPair> FileManager::readFile(const char* Path)
@@ -27,31 +29,37 @@ vector<StringPair> FileManager::readFile(const char* Path)
 vector<Tile> FileManager::readLevelFile(const char* Path,int unitSize)
 {
 	ifstream stream(Path);
-	string str;
 
 	if (!stream.is_open())return (vector<Tile>)NULL;
+	std::string str((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
 
-	vector<Tile> returnvalue;
-	while (getline(stream, str)) {
-		if (str.length() > 0 && str[0] != '|') {
-			vector<string> elements;
-			Utility::splitString(str, ' ', elements);
-			if (elements.size() >= 3) {
-				for (int s = 0; s < elements.size(); s++)
-					printf("%s | ", elements[s].c_str());
-				printf("\n");
+	Tile current;
+	vector <Tile> returnvalue;
 
-				Tile t;
-				t.TileID = stoi(elements[0].c_str());
-				t.x = unitSize * stoi(elements[1].c_str());
-				t.y = unitSize * stoi(elements[2].c_str());
-				if (elements.size() >= 4)
-					t.flag = elements[3][0];
-				else t.flag = 0;
-
-				returnvalue.push_back(t);
+	int i = 0;
+	bool first = true;
+	while (i < str.length()) {
+		if (str[i] < 8) {
+			switch (str[i]) {
+			case 0://New TileID
+				current.TileID = str[++i] - CHAR_OFFSET;
+			case 1://New X
+				   //Comes here after case 0
+				current.x = (str[++i] - CHAR_OFFSET) * 64;
+				i++;
+				break;
+			case 2:
+				returnvalue.back().flag = str[++i] - 8;//Subtract 8 instead of offset
+				break;
 			}
+			continue;
 		}
+
+		current.y = (str[i++] - CHAR_OFFSET) * 64;
+		returnvalue.push_back(current);
+
+		if (current.flag > 0)
+			current.flag = 0;
 	}
 
 	stream.close();

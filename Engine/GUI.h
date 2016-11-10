@@ -1,8 +1,8 @@
 #pragma once
-#include <Engine/Camera2D.h>
+#include "Camera2D.h"
+#include "Vertex.h"
+#include "Font.h"
 #include <vector>
-#include <Engine/Vertex.h>
-#include <Engine/Font.h>
 
 namespace Anchor {
 	enum AnchorPoint {

@@ -2,6 +2,8 @@
 #include <Engine/Utility.h>
 #include <fstream>
 
+#define CHAR_OFFSET (8 + 127 / 2)
+
 using namespace std;
 
 void FileManager::writeLevelFile(std::vector<Tile> tiles,const char* path) {
@@ -17,43 +19,31 @@ void FileManager::writeLevelFile(std::vector<Tile> tiles,const char* path) {
 	vector<char> buffer;
 
 	for (Tile t : tiles) {
-		/*if (t.TileID != currentIndex || force) {
-			stream << t.TileID << endl;
-			currentIndex = t.TileID;
-		}
-		if (t.x != currentX || force) {
-			stream << "\t" << t.x / 64 << endl;
-			currentX = t.x;
-			force = true;
-		}
-		if (t.y != currentY || force) {
-			stream << "\t\t" << t.y / 64 << endl;
-			currentY = t.y;
-			force = false;
-		}*///OLD
-
 		//Values 0-7 are load flags
 		if (t.TileID != currentIndex || force) {
 			buffer.push_back(0);//Flag : new TileID
-			buffer.push_back(t.TileID + 8);
+			buffer.push_back(t.TileID + CHAR_OFFSET);
 			currentIndex = t.TileID;
 			force = true;
 		}
 		if (t.x != currentX || force) {
 			if (!force)buffer.push_back(1);//Flag : new X value
-			buffer.push_back(t.x / 64 + 8 + 127 / 2);//Offset by 8 for flag count
+			buffer.push_back(t.x / 64 + CHAR_OFFSET);//Offset by 8 for flag count
 			currentX = t.x;
 			force = true;
 		}
 		if (t.y != currentY || force) {
-			buffer.push_back(t.y / 64 + 8 + 127 / 2);//Offset by 8 for flag count
+			buffer.push_back(t.y / 64 + CHAR_OFFSET);//Offset by 8 for flag count
 			currentY = t.y;
 			force = false;
+			if (t.flag > 0) {
+				buffer.push_back(2);//Flag : set Tile Flag
+				buffer.push_back(t.flag + 8);//Add 8 instead of char offset because we don't have negative values
+			}
 		}
 	}
 
 	stream.write(buffer.data(),buffer.size());
-
 	stream.close();
 }
 
@@ -73,23 +63,28 @@ vector<Tile> FileManager::readLevelFile(const char* Path, int unitSize)
 		if (str[i] < 8) {
 			switch (str[i]) {
 			case 0://New TileID
-				current.TileID = str[++i] - 8;
+				current.TileID = str[++i] - CHAR_OFFSET;
 			case 1://New X
 				//Comes here after case 0
-				current.x = (str[++i] - (8 + 127/2)) * 64;
+				current.x = (str[++i] - CHAR_OFFSET) * 64;
 				i++;
+				break;
+			case 2:
+				returnvalue.back().flag = str[++i] - 8;//Subtract 8 instead of offset
 				break;
 			}
 			continue;
 		}
 
-		current.y = (str[i++] - (8 + 127/2)) * 64;
+		current.y = (str[i++] - CHAR_OFFSET) * 64;
 		returnvalue.push_back(current);
+
+		if (current.flag > 0)
+			current.flag = 0;
 	}
 
 	stream.close();
 	return returnvalue;
-	return (vector<Tile>)NULL;
 }
 
 int tabCount(string str) {

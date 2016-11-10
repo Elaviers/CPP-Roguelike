@@ -98,7 +98,7 @@ void Controller::render(float deltaTime,Camera2D& cam) {
 		}
 	
 	SpriteRenderer::UseProgram(cam);
-	_level.drawSprites(_tiletexture);
+	_level.drawSprites(_tiletexture,cam);
 	if (PlacementMode != DELETING && !_specialPlacement && !_usingUI)SpriteRenderer::drawSprite(_tiletexture, _currentTile.x, _currentTile.y, 64, 64, Colour(255,255,255,128), 0, 8, _currentTile.TileID);
 	_level.drawEditorSprites(_symboltexture);
 	SpriteRenderer::UnuseProgram();

@@ -174,6 +174,7 @@
     <ClCompile Include="Camera2D.cpp" />
     <ClCompile Include="ErrorHandling.cpp" />
     <ClCompile Include="Font.cpp" />
+    <ClCompile Include="GUI.cpp" />
     <ClCompile Include="LineRenderer.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ImageIO.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="Camera2D.h" />
     <ClInclude Include="ErrorHandling.h" />
     <ClInclude Include="Font.h" />
+    <ClInclude Include="GUI.h" />
     <ClInclude Include="LineRenderer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ImageIO.h" />

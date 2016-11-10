@@ -13,4 +13,3 @@ public:
 	static std::vector<Tile> readLevelFile(const char* path,int);
 	static void writeLevelFile(std::vector<Tile> tiles,const char* path);
 };
-

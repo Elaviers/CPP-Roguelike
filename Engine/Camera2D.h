@@ -21,6 +21,9 @@ public:
 	void scale(float s, glm::vec2 newOrigin);	//Adds to scale and scales based on a certain point
 	float getScale()						{ return _scale; }; //Returns scale
 
+	glm::vec2 Corner1() { return glm::vec2(_position.x - _screenW/2,_position.y - _screenH/2); }
+	glm::vec2 Corner2() { return glm::vec2(_position.x + _screenW / 2, _position.y + _screenH / 2); }
+
 	glm::mat4 getCameraMatrix() { return _CameraMatrix; }; //Returns the camera matrix
 	glm::mat4 getScreenMatrix(); //Returns the normalised matrix
 
