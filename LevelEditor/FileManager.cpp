@@ -16,7 +16,7 @@ void FileManager::writeLevelFile(std::vector<Tile> tiles,const char* path) {
 
 	printf("(DEBUG) saved %d tiles\n",tiles.size());
 
-	vector<char> buffer;
+	vector<unsigned char> buffer;
 
 	for (Tile t : tiles) {
 		//Values 0-7 are load flags
@@ -43,13 +43,13 @@ void FileManager::writeLevelFile(std::vector<Tile> tiles,const char* path) {
 		}
 	}
 
-	stream.write(buffer.data(),buffer.size());
+	stream.write((const char*)buffer.data(), sizeof(unsigned char) * buffer.size());
 	stream.close();
 }
 
 vector<Tile> FileManager::readLevelFile(const char* Path, int unitSize)
 {
-	ifstream stream(Path);
+	ifstream stream(Path,ios::binary | ios::in);
 
 	if (!stream.is_open())return (vector<Tile>)NULL;
 	std::string str((istreambuf_iterator<char>(stream)), istreambuf_iterator<char>());
@@ -57,17 +57,16 @@ vector<Tile> FileManager::readLevelFile(const char* Path, int unitSize)
 	Tile current;
 	vector <Tile> returnvalue;
 
-	int i = 0;
-	bool first = true;
-	while (i < str.length()) {
+
+	for (int i = 0; i < str.length();i++) {
 		if (str[i] < 8) {
 			switch (str[i]) {
 			case 0://New TileID
 				current.TileID = str[++i] - CHAR_OFFSET;
-			case 1://New X
-				//Comes here after case 0
 				current.x = (str[++i] - CHAR_OFFSET) * 64;
-				i++;
+				break;
+			case 1://New X
+				current.x = (str[++i] - CHAR_OFFSET) * 64;
 				break;
 			case 2:
 				returnvalue.back().flag = str[++i] - 8;//Subtract 8 instead of offset
@@ -76,7 +75,7 @@ vector<Tile> FileManager::readLevelFile(const char* Path, int unitSize)
 			continue;
 		}
 
-		current.y = (str[i++] - CHAR_OFFSET) * 64;
+		current.y = (str[i] - CHAR_OFFSET) * 64;
 		returnvalue.push_back(current);
 
 		if (current.flag > 0)
@@ -85,11 +84,4 @@ vector<Tile> FileManager::readLevelFile(const char* Path, int unitSize)
 
 	stream.close();
 	return returnvalue;
-}
-
-int tabCount(string str) {
-	int i = 0;
-	while (str[i] == '\t')
-		i++;
-	return i;
 }

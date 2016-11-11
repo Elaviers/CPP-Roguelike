@@ -1,7 +1,7 @@
 #include "Level.h"
 #include <Engine/SpriteRenderer.h>
 
-Level::Level() : _spawn(Tile {-1,0,0,'s'})
+Level::Level() : _spawn(Tile {-1,0,0})
 {
 }
 
@@ -11,7 +11,7 @@ Level::~Level()
 }
 
 void Level::edit(Tile tile,bool remove) {
-	if (tile.x/64 > 55 || tile.x/64 < -55 || tile.y/64 > 55 || tile.y/64 < -55)return;
+	if (tile.x/64 > 119 || tile.x/64 < -119 || tile.y/64 > 119 || tile.y/64 < -119)return;
 
 	for (int i = 0; i < _tiles.size(); i++)
 		if (_tiles[i].x == tile.x && _tiles[i].y == tile.y)
@@ -36,15 +36,16 @@ void Level::edit(Tile tile,bool remove) {
 	}
 }
 
-void Level::setFlag(Tile tile) {
+void Level::setFlag(Tile tile,char flag) {
 	for (int i = 0; i < _tiles.size(); i++) {
 		if (_tiles[i].x == tile.x && _tiles[i].y == tile.y) {
-			_tiles[i].flag = tile.flag;
+			_tiles[i].flag = flag;
 			return;
 		}
 	}
 
-	_tiles.push_back(tile);
+	tile.flag = flag;
+	edit(tile);
 }
 
 void Level::setSpawnPoint(int x,int y) {
@@ -54,29 +55,38 @@ void Level::setSpawnPoint(int x,int y) {
 bool Level::load(const char* path) {
 	_tiles = FileManager::readLevelFile(path,64);
 
-	for (Tile t : _tiles)
+	for (Tile& t : _tiles) {
 		if (t.flag == 's') {
 			_spawn.x = t.x;
 			_spawn.y = t.y;
-			//edit(t, true);
+			t.flag = 0;
 		}
+		printf("%f\n",t.y);
+	}
 
 	return true;
 }
 
 bool Level::save(const char* path) {
-	setFlag(_spawn);
+	setFlag(_spawn,'s');
 
 	FileManager::writeLevelFile(_tiles,path);
+
+	setFlag(_spawn,0);
 	return true;
 }
 
 void Level::drawSprites(Texture& _tex,Camera2D& cam) {
 
 	for (Tile t : _tiles)
+		if (t.TileID > -1)
 			SpriteRenderer::drawSprite(_tex, cam.Corner1(), cam.Corner2(), t.x, t.y, 64, 64, 0, 8, t.TileID);
 }
 
 void Level::drawEditorSprites(Texture& _tex) {
+	for (Tile t : _tiles)
+		if (t.TileID < 0)
+			SpriteRenderer::drawSprite(_tex,t.x,t.y,64,64,0,4,1);
+
 	SpriteRenderer::drawSprite(_tex,_spawn.x,_spawn.y,64,64,0,4);
 }
