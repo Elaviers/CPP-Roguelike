@@ -36,7 +36,6 @@ void Player::render(Camera2D& cam, float frameTime,Shader& shader) {
 
 	_pointer.move(movex, movey);
 	cam.setPosition(_pointer.x,_pointer.y);
-
 	MouseWorldPosition = cam.screentoWorld(mouseX, mouseY);
 	_pointer.setRotation(std::atan2(MouseWorldPosition.y - _pointer.y, MouseWorldPosition.x - _pointer.x) * 180 / (float)M_PI);
 	_pointer.render();

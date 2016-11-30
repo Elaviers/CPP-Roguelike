@@ -1,5 +1,6 @@
 #include "Misc.h"
 #include <GL/glew.h>
+#include <iostream>
 
 void misc::rectangle(int x,int y,int x2, int y2, float r, float g, float b,int ScreenWidth,int ScreenHeight) { //Not a class member for some reason
 	float xf = (float)x / ScreenWidth * 2 -1;

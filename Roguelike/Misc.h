@@ -1,4 +1,3 @@
-#include <iostream>
 
 namespace misc {
 	void rectangle(int, int, int, int, float, float, float, int, int);

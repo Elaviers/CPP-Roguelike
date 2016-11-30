@@ -1,5 +1,4 @@
 #pragma once
-#include "PicoPNG.h"
 #include <Gl/glew.h>
 
 class Texture {

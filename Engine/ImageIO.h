@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include "Texture.h"
-static class ImageIO
+class ImageIO
 {
 public:
 	static Texture loadPNG(std::string path);//Loads and binds a texture

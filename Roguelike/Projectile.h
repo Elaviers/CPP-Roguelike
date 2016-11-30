@@ -1,8 +1,10 @@
 #pragma once
 
 #include <Engine/Sprite.h>
-#include <Engine/Camera2D.h>
-#include <Engine/SpriteRenderer.h>
+#include <Engine/Texture.h>
+#include <glm/glm.hpp>
+#include <string>
+#include <Engine/Shader.h>
 
 class Projectile
 {

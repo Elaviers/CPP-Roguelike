@@ -3,14 +3,14 @@
   <Class Name="Level">
     <Position X="3.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AACAAAAAAQBAAgAAAAAAAAAAAAAAAAIBAAAAAAAQAAA=</HashCode>
+      <HashCode>IACAEAEACYDAAIAAACgAAAAAAAAAAAABAAAAAgAAAAA=</HashCode>
       <FileName>Level.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Game">
     <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIABAAAAAkAICAAgAAAACQAACAhIAAAAACEAACAQAQA=</HashCode>
+      <HashCode>AIABAAAAAkAICAAgAAAACQAACAjIAAAAACEAACAQAQA=</HashCode>
       <FileName>Game.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -32,13 +32,26 @@
       <FileName>Player.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Struct Name="SpawnPoint">
-    <Position X="5" Y="2.25" Width="1.5" />
+  <Class Name="Editor">
+    <Position X="0.5" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAA=</HashCode>
-      <FileName>Level.h</FileName>
+      <HashCode>AAAAAAAACgAAAAAgwAAAAAAAAA6AAAAQACAAAGAQAAA=</HashCode>
+      <FileName>Editor.h</FileName>
     </TypeIdentifier>
-  </Struct>
+    <ShowAsAssociation>
+      <Field Name="_controller" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Controller">
+    <Position X="8" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAIABAAAAZCQAABAgAAIIUAAAAAEARIALAAgIABQEBA=</HashCode>
+      <FileName>Controller.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_level" />
+    </ShowAsAssociation>
+  </Class>
   <Struct Name="StringPair">
     <Position X="2" Y="0.5" Width="1.5" />
     <TypeIdentifier>
@@ -50,7 +63,7 @@
     <Position X="5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAIAAAAAACAAAAAAAAABgAAAAAAA=</HashCode>
-      <FileName>FileManager.h</FileName>
+      <FileName>Level.h</FileName>
     </TypeIdentifier>
   </Struct>
   <Font Name="Segoe UI" Size="9" />

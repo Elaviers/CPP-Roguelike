@@ -10,11 +10,11 @@ bool IOManager::readFileToBuffer(std::string &location, std::vector<unsigned cha
 	}
 	
 	file.seekg(0,std::ios::end);
-	int fileSize = file.tellg();
+	int fileSize = (int)file.tellg();
 	file.seekg(0, std::ios::beg);
 
 	//Subtract header size
-	fileSize -= file.tellg();
+	fileSize -= (int)file.tellg();
 
 	buffer.resize(fileSize);
 	file.read((char *)&(buffer[0]),fileSize);

@@ -13,7 +13,7 @@ void Text::operator=(std::string rhs) {
 }
 
 void Text::setText(std::string str) {
-	_len = str.length();
+	_len = (unsigned int)str.length();
 	indices = new char[_len]; 
 	for (unsigned int i = 0; i < _len; i++)
 		indices[i] = str[i] - 32;

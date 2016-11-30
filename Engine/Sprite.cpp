@@ -3,6 +3,9 @@
 #include "Sprite.h"
 #include "ResourceManager.h"
 #include <GLM/glm.hpp>
+#include "Shader.h"
+#include "SpriteBatch.h"
+#include <GLM/glm.hpp>
 
 Sprite::Sprite() : _vboID(0), UVGridDivisions(1) {
 }

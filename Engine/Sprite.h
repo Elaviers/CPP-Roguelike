@@ -1,11 +1,8 @@
 #pragma once
 #include <GL/glew.h>
-#include <GLM/glm.hpp>
 #include <string>
 #include "Vertex.h"
 #include "Texture.h"
-#include "Shader.h"
-#include "SpriteBatch.h"
 
 class Sprite
 {

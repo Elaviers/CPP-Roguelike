@@ -41,7 +41,7 @@ void Font::init(FT_Library& lib,const char* path, int size) {
 			texture,
 			glm::ivec2(_face->glyph->bitmap.width, _face->glyph->bitmap.rows),
 			glm::ivec2(_face->glyph->bitmap_left, _face->glyph->bitmap_top),
-			_face->glyph->advance.x
+			(GLuint)_face->glyph->advance.x
 		};
 		_chars.insert(std::pair<GLchar, Character>(i, character));
 	}

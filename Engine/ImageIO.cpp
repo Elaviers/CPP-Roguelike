@@ -1,7 +1,7 @@
 #include "ImageIO.h"
 #include "ErrorHandling.h"
 #include "IOManager.h"
-
+#include "PicoPNG.h"
 
 Texture ImageIO::loadPNG(std::string path) {
 	unsigned long width, height;

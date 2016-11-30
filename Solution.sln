@@ -10,11 +10,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Roguelike", "Roguelike\Rogu
 		{BB565847-E81E-4C1E-97B3-AF543E9C9764} = {BB565847-E81E-4C1E-97B3-AF543E9C9764}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LevelEditor", "LevelEditor\LevelEditor.vcxproj", "{A1FF92D7-DFE3-4A7D-B29A-BB12F72E1DCA}"
-	ProjectSection(ProjectDependencies) = postProject
-		{BB565847-E81E-4C1E-97B3-AF543E9C9764} = {BB565847-E81E-4C1E-97B3-AF543E9C9764}
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -39,18 +34,6 @@ Global
 		{B9D5AA7E-6E29-402D-8C4F-AC91A7543364}.Release|x64.Build.0 = Release|x64
 		{B9D5AA7E-6E29-402D-8C4F-AC91A7543364}.Release|x86.ActiveCfg = Release|Win32
 		{B9D5AA7E-6E29-402D-8C4F-AC91A7543364}.Release|x86.Build.0 = Release|Win32
-		{A1FF92D7-DFE3-4A7D-B29A-BB12F72E1DCA}.Debug|x64.ActiveCfg = Debug|x64
-		{A1FF92D7-DFE3-4A7D-B29A-BB12F72E1DCA}.Debug|x64.Build.0 = Debug|x64
-		{A1FF92D7-DFE3-4A7D-B29A-BB12F72E1DCA}.Debug|x64.Deploy.0 = Debug|x64
-		{A1FF92D7-DFE3-4A7D-B29A-BB12F72E1DCA}.Debug|x86.ActiveCfg = Debug|Win32
-		{A1FF92D7-DFE3-4A7D-B29A-BB12F72E1DCA}.Debug|x86.Build.0 = Debug|Win32
-		{A1FF92D7-DFE3-4A7D-B29A-BB12F72E1DCA}.Debug|x86.Deploy.0 = Debug|Win32
-		{A1FF92D7-DFE3-4A7D-B29A-BB12F72E1DCA}.Release|x64.ActiveCfg = Release|x64
-		{A1FF92D7-DFE3-4A7D-B29A-BB12F72E1DCA}.Release|x64.Build.0 = Release|x64
-		{A1FF92D7-DFE3-4A7D-B29A-BB12F72E1DCA}.Release|x64.Deploy.0 = Release|x64
-		{A1FF92D7-DFE3-4A7D-B29A-BB12F72E1DCA}.Release|x86.ActiveCfg = Release|Win32
-		{A1FF92D7-DFE3-4A7D-B29A-BB12F72E1DCA}.Release|x86.Build.0 = Release|Win32
-		{A1FF92D7-DFE3-4A7D-B29A-BB12F72E1DCA}.Release|x86.Deploy.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

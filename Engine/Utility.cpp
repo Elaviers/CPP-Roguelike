@@ -47,7 +47,7 @@ void Utility::sheetUV(Vertex (&v)[6],int index,int divX,int divY) {
 }
 
 glm::vec2 Utility::getOffsetOfUVIndex(int index,int divisions) {
-	float x, y = divisions - 1;
+	float x, y = (float)divisions - 1;
 	while (index > (divisions - 1)) {
 		y -= 1;
 		index -= divisions;

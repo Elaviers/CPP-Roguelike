@@ -1,7 +1,11 @@
 #include "Game.h"
 #include "FileManager.h"
 
+#include <bass.h>
+#include <SDL/SDL.h>
 #include <Engine/ErrorHandling.h>
+#include <Engine/ResourceManager.h>
+#include <Engine/SpriteRenderer.h>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -11,6 +15,8 @@
 Game::Game() : _running(true) {}
 
 void log(std::string l) { printf("%s", l.c_str()); }
+
+HSTREAM music, music2;
 
 void Game::start() {
 	std::vector<StringPair> properties = FileManager::readFile("Game/wololo.zestyconfig");
@@ -27,6 +33,18 @@ void Game::start() {
 	SDL_ShowCursor(false);
 
 	log("done!\n");
+	////////////BASS
+	log("Initialising BASS...");
+	BASS_Init(-1, 44100, 0, 0, NULL);
+
+	music = BASS_StreamCreateFile(FALSE, "Game/Audio/Loop.wav", 0, 0, 0);
+	music2 = BASS_StreamCreateFile(FALSE, "Game/Audio/SoundTest.wav", 0, 0, 0);
+	BASS_ChannelSetAttribute(music,BASS_ATTRIB_VOL,0.33f);
+	BASS_ChannelFlags(music,BASS_SAMPLE_LOOP,BASS_SAMPLE_LOOP);
+	BASS_ChannelSetAttribute(music2, BASS_ATTRIB_VOL, 0.5f);
+	BASS_ChannelFlags(music2, BASS_SAMPLE_LOOP, BASS_SAMPLE_LOOP);
+	BASS_ChannelPlay(music, FALSE);
+	log("done!\n");
 	////////////GL
 	std::printf("You're still running OpenGL version %s? What a noob!\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 	glEnable(GL_BLEND);
@@ -35,14 +53,14 @@ void Game::start() {
 	log("Loading fonts...");
 
 	FT_Library FtLib;
-
 	if (FT_Init_FreeType(&FtLib))error("Could not initialise FreeType!");
-	_font.init(FtLib, "Game/Fonts/arial.ttf", 16);
+	_font.init(FtLib, "Game/Fonts/corbelz.ttf", 32);
 	FT_Done_FreeType(FtLib);
 
 	log("done!\n");
 	////////////init shaders
 	log("Compiling shaders...");
+
 	_shader.loadPreset(ShaderPreset::TRANSFORM_SPRITE);
 	_shader.link();
 
@@ -58,12 +76,16 @@ void Game::start() {
 	log("done!\n");
 	////////////init
 	_camera.SetViewportSize(ScreenWidth, ScreenHeight);
-	_level.init("Game/lvl.zestylevel");
+
+	Texture tiles = ResourceManager::getTexture("Game/Textures/tiles.png");
+
+	_level.tileSheet = &tiles;
+	_level.load("Game/lvl.zestylevel");
 
 	SpriteRenderer::init();
-	SpawnPoint spawn = _level.getSpawnPoint();
-	_camera.setPosition(glm::vec2(spawn.x-ScreenWidth/2,spawn.y-ScreenHeight/2));
-	_player.init(spawn.x, spawn.y, 128, 64, "Game/Textures/crosshair.png", "Game/Textures/pointer.png");
+	Vector2 spawn = _level.getSpawnPoint();
+	_camera.setPosition(spawn.x-ScreenWidth/2,spawn.y-ScreenHeight/2);
+	_player.init((int)spawn.x, (int)spawn.y, 128, 64, "Game/Textures/crosshair.png", "Game/Textures/pointer.png");
 	_sprite.init(-1, -1, 2, 2);
 
 	log("Initialised!\n");
@@ -85,6 +107,8 @@ void Game::loop() {
 		time += _frameTimer.deltaTime;
 		if (frameNumber % 10 == 0)_window.setTitle("The politically correct window of promise, running at an eye popping "+std::to_string(_frameTimer.getFramerate())+" frames a second! "+std::to_string(time));
 	}
+
+	BASS_Free();
 }
 
 void Game::render(float deltaTime) {
@@ -101,7 +125,7 @@ void Game::render(float deltaTime) {
 	_shader.set1i("sTexture",0);
 	_shader.setMat4("projection", _camera.getCameraMatrix());
 
-	_level.render(_shader);
+	_level.drawSprites(_camera);
 	_player.render(_camera,deltaTime,_shader);
 
 	_shader.unUseProgram();
@@ -110,7 +134,9 @@ void Game::render(float deltaTime) {
 	_fontshader.set1i("sTexture", 0);
 	_fontshader.setMat4("projection", _camera.getScreenMatrix());
 
-	_font.drawString("SAMPLE TEXT SAMPLE TEXT SAMPLE TEXT SAMPL3 T3XT", 0, 256, glm::vec4(1,0,1,1), _fontshader);
+	const static float f = 2;
+	_font.drawString("ROGUELIKE v0.0.1 - now with sound! Press M to change streams!", 0, 0,
+		glm::vec4(std::sin(time*f) / 2 + 1,std::sin(time*f + M_PI) / 2 + 1,std::sin(time*f + M_PI * 2) / 2 + 1,1),_fontshader);//haha
 
 	_fontshader.unUseProgram();
 
@@ -119,7 +145,7 @@ void Game::render(float deltaTime) {
 }
 
 void Game::handleInput() {
-	SDL_Event event;
+	static SDL_Event event;
 	if (SDL_PollEvent(&event) == 1)
 		switch (event.type) {
 
@@ -144,6 +170,18 @@ void Game::handleInput() {
 			if (event.key.keysym.sym == SDLK_i) { _camera.setAngle(_camera.getAngle() + .1f); break; }
 			if (event.key.keysym.sym == SDLK_o) { _camera.setAngle(_camera.getAngle() - .1f); break; }
 			if (event.key.keysym.sym == SDLK_f) { SDL_SetWindowFullscreen(_window.GetWindowID(), true); break; }
+			if (event.key.keysym.sym == SDLK_m) {
+				static bool toggletest = true; if (toggletest) {
+					BASS_ChannelPlay(music2,false);
+					BASS_ChannelPause(music);
+				}
+				else {
+					BASS_ChannelPlay(music, false);
+					BASS_ChannelPause(music2);
+				}
+				toggletest = !toggletest;
+			};
+
 			_player.keyDown(event); break;
 
 		case SDL_KEYUP:

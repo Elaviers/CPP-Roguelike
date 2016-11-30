@@ -1,4 +1,6 @@
 #include "ErrorHandling.h"
+#include <iostream>
+#include <SDL/SDL.h>
 
 extern void error(std::string errorString) {
 	std::cout << "\a *** " << errorString << std::endl << "Enter any key to continue...";

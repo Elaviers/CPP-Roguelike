@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SDL/SDL.h>
 #include <Engine/Window.h>
 #include <Engine/Timing.h>
 #include <Engine/Shader.h>
