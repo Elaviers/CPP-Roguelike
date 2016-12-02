@@ -28,10 +28,12 @@ public:
 	Font();
 	~Font();
 
+	bool loaded = false;
+
 	int getPointSize() { return _pointsize; };
 	void init(FT_Library& lib,const char* path,int);	//Creates an FT Face, creates the character map, and configures texture properties
 	void drawString(std::string text,float x,float y,float scale);	//Renders a string to the screen. Call from within a shader program!
-	void drawString(std::string text, float x, float y, glm::vec4 Colour, Shader s) { drawString(text, x, y, _pointsize, Colour, s); }; //Renders a string to the screen. Call from within a shader program!
-	void drawString(std::string text, float x, float y, int pointsize, glm::vec4 Colour, Shader s); //Renders a string to the screen. Call from within a shader program!
+	void drawString(std::string text, float x, float y, glm::vec4 Colour, Shader& s) { drawString(text, x, y, _pointsize, Colour, s); }; //Renders a string to the screen. Call from within a shader program!
+	void drawString(std::string text, float x, float y, int pointsize, glm::vec4 Colour, Shader& s); //Renders a string to the screen. Call from within a shader program!
 };
 

@@ -39,7 +39,7 @@ void Game::start() {
 
 	music = BASS_StreamCreateFile(FALSE, "Game/Audio/Loop.wav", 0, 0, 0);
 	music2 = BASS_StreamCreateFile(FALSE, "Game/Audio/SoundTest.wav", 0, 0, 0);
-	BASS_ChannelSetAttribute(music,BASS_ATTRIB_VOL,0.33f);
+	BASS_ChannelSetAttribute(music,BASS_ATTRIB_VOL,0.25f);
 	BASS_ChannelFlags(music,BASS_SAMPLE_LOOP,BASS_SAMPLE_LOOP);
 	BASS_ChannelSetAttribute(music2, BASS_ATTRIB_VOL, 0.5f);
 	BASS_ChannelFlags(music2, BASS_SAMPLE_LOOP, BASS_SAMPLE_LOOP);
@@ -105,7 +105,7 @@ void Game::loop() {
 		_frameTimer.end();
 
 		time += _frameTimer.deltaTime;
-		if (frameNumber % 10 == 0)_window.setTitle("The politically correct window of promise, running at an eye popping "+std::to_string(_frameTimer.getFramerate())+" frames a second! "+std::to_string(time));
+		if (frameNumber % 10 == 0)_window.setTitle("Boring Title ("+std::to_string(_frameTimer.getFramerate())+" FPS, Time is "+std::to_string(time)+')');
 	}
 
 	BASS_Free();
@@ -134,7 +134,7 @@ void Game::render(float deltaTime) {
 	_fontshader.set1i("sTexture", 0);
 	_fontshader.setMat4("projection", _camera.getScreenMatrix());
 
-	const static float f = 2;
+	const static float f = 4;
 	_font.drawString("ROGUELIKE v0.0.1 - now with sound! Press M to change streams!", 0, 0,
 		glm::vec4(std::sin(time*f) / 2 + 1,std::sin(time*f + M_PI) / 2 + 1,std::sin(time*f + M_PI * 2) / 2 + 1,1),_fontshader);//haha
 
@@ -167,8 +167,8 @@ void Game::handleInput() {
 
 		case SDL_KEYDOWN:
 			if (event.key.keysym.sym == SDLK_ESCAPE) { _running = false; break; }
-			if (event.key.keysym.sym == SDLK_i) { _camera.setAngle(_camera.getAngle() + .1f); break; }
-			if (event.key.keysym.sym == SDLK_o) { _camera.setAngle(_camera.getAngle() - .1f); break; }
+			if (event.key.keysym.sym == SDLK_i) { _camera.setAngle(_camera.getAngle() + .01f); break; }
+			if (event.key.keysym.sym == SDLK_o) { _camera.setAngle(_camera.getAngle() - .01f); break; }
 			if (event.key.keysym.sym == SDLK_f) { SDL_SetWindowFullscreen(_window.GetWindowID(), true); break; }
 			if (event.key.keysym.sym == SDLK_m) {
 				static bool toggletest = true; if (toggletest) {

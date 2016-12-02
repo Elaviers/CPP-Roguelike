@@ -6,50 +6,26 @@
 
 Level* Controller::currentLevel;
 bool Controller::_inputLock;
-const char* Controller::levelname;
+const char* Controller::levelname = "sample.lvl";
 
 using namespace PlayerEnums;
 
 Controller::Controller() : 
-	speed(768), _namebox(0, 32, 1/3, 32, NORMALISED_WIDTH | ONEMINUS_Y), _loadButton(1/3, 32, 1/3, 32, NORMALISED_X | NORMALISED_WIDTH | ONEMINUS_Y),
-	_saveButton(2/3, 32, 1/3, 32, NORMALISED_X | NORMALISED_WIDTH | ONEMINUS_Y), _root(0, 0, 1, 1, NORMALISED_WIDTH | NORMALISED_HEIGHT) {
-	/*_namebox.panel.setColour(0,0,.5f);
-	_namebox.textColour.set(1, 1, 1);
-	_namebox.onStateChanged = &setInputState;
-
-	_loadButton.colour.set(1, 1, 0);
-	_loadButton.hoverColour.set(1, 0, 0);
-	_loadButton.label.colour.set(0,0,0);
-	_loadButton.label.string = "Load";
-	_loadButton.onClick = &load;
-
-	_saveButton.colour.set(1, 1, 0);
-	_saveButton.hoverColour.set(1, 0, 0);
-	_saveButton.label.colour.set(0, 0, 0);
-	_saveButton.label.string = "Save";
-	_saveButton.onClick = &save;*/
-
-	_namebox.panel.setColour(NormalisedColour(0,0,0.5f));
-
-	_namebox.label.setColour(NormalisedColour(1, 1, 1));
-}
+	speed(768), 
+	_menuBar(0, 32, 1, 32, NORMALISED_WIDTH | ONEMINUS_Y),
+	_namebox(0, 0, 1/3.0f, 1, NORMALISED_WIDTH | NORMALISED_HEIGHT), 
+	_loadButton(1/3.0f, 0, 1/3.0f, 1, NORMALISED_X | NORMALISED_WIDTH | NORMALISED_HEIGHT),
+	_saveButton(2/3.0f, 0, 1/3.0f, 1, NORMALISED_X | NORMALISED_WIDTH | NORMALISED_HEIGHT) 
+{}
 
 void Controller::save() {
-	/*std::string path;
-	std::printf("(SAVE) Level name:");
-	std::cin >> path;
-	currentLevel->save(path.c_str());
-	std::printf("Saved level!\n");*/
-	currentLevel->save(levelname);
+	if (levelname != nullptr)
+		currentLevel->save(levelname);
 }
 
 void Controller::load() {
-	/*std::string path;
-	std::printf("(LOAD) Level name:");
-	std::cin >> path;
-	currentLevel->load(path.c_str());
-	std::printf("Loaded level!\n");*/
-	currentLevel->load(levelname);
+	if (levelname != nullptr)
+		currentLevel->load(levelname);
 }
 
 void Controller::setInputState(bool typing) {
@@ -59,10 +35,33 @@ void Controller::setInputState(bool typing) {
 	_inputLock = typing;
 }
 
-void Controller::init() {
-	_root.addElement(_namebox);
-	_root.addElement(_loadButton);
-	_root.addElement(_saveButton);
+void Controller::init(Font& UIFont) {
+	_namebox.label = "Sample.lvl";
+	_namebox.setColour(NormalisedColour(0,0,1));
+	_namebox.setSelectColour(NormalisedColour(0,0,0.5));
+	_namebox.label.setColour(NormalisedColour(1,1,1,1));
+	_namebox.onStateChanged = setInputState;
+
+	_loadButton.label = "LOAD";
+	_loadButton.label.setColour(NormalisedColour(0,0,0,1));
+	_loadButton.setColour(NormalisedColour(1, 1, 0));
+	_loadButton.setHoverColour(NormalisedColour(1, 0, 0));
+	_loadButton.onClick = load;
+
+	_saveButton.label = "SAVE";
+	_saveButton.label.setColour(NormalisedColour(0, 0, 0, 1));
+	_saveButton.setColour(NormalisedColour(1, 1, 0));
+	_saveButton.setHoverColour(NormalisedColour(1, 0, 0));
+	_saveButton.onClick = save;
+
+	_namebox.label.setFont(UIFont);
+	_saveButton.label.setFont(UIFont);
+	_loadButton.label.setFont(UIFont);
+
+	GlobalUI::add(_menuBar);
+	_menuBar.addElement(_namebox);
+	_menuBar.addElement(_loadButton);
+	_menuBar.addElement(_saveButton);
 
 	_tiletexture = ResourceManager::getTexture("Game/Textures/tiles.png");
 	_symboltexture = ResourceManager::getTexture("Game/Textures/symbols.png");
@@ -121,7 +120,7 @@ void Controller::input(SDL_Event event, int screenh)
 	SDL_GetMouseState(&_mouseX,&_mouseY);
 	_mouseY = screenh - _mouseY;
 
-	_usingUI = GUI::Handler::update(_mouseX, _mouseY);
+	_usingUI = GlobalUI::overlapping(_mouseX, _mouseY);
 
 	if (event.type == SDL_TEXTINPUT) {
 		_namebox.textInput(event.text.text[0]);
@@ -136,7 +135,7 @@ void Controller::input(SDL_Event event, int screenh)
 			case SDL_BUTTON_RIGHT:
 				PlacementMode = DELETING; break;
 			}
-		GUI::Handler::click();
+		GlobalUI::click();
 	}
 	else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_BACKSPACE && _namebox.label.text.length() > 0) {
 		_namebox.label.text.pop_back();

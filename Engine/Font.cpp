@@ -62,9 +62,11 @@ void Font::init(FT_Library& lib,const char* path, int size) {
 			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, uv));				//2-uvs
 		glBindBuffer(GL_ARRAY_BUFFER,0);
 	glBindVertexArray(0);
+
+	loaded = true;
 }
 
-void Font::drawString(std::string text,float x,float y, int s, glm::vec4 colour, Shader shader) {
+void Font::drawString(std::string text,float x,float y, int s, glm::vec4 colour, Shader &shader) {
 	shader.set4f("TextColour",colour.r, colour.g, colour.b, colour.a);
 	drawString(text, x, y, (float)s / _pointsize);
 }

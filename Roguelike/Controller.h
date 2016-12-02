@@ -17,7 +17,7 @@ class Controller
 private:
 	Button _loadButton,_saveButton;
 	TextBox _namebox;
-	UIRoot _root;
+	UIContainer _menuBar;
 
 	static bool _inputLock;
 	static const char* levelname;
@@ -42,9 +42,11 @@ public:
 	static Level* currentLevel;
 
 	float speed;
-	Controller();
 
-	void init();
+	Controller();
+	~Controller() {};
+
+	void init(Font& UIFont);
 	void render(float deltaTime,Camera2D&);
 	void input(SDL_Event event,int);
 };

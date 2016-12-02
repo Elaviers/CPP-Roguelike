@@ -1,65 +1,59 @@
 #pragma once
 #include "UIPrimitives.h"
 
-namespace GUI {
+class GlobalUI {
+private:
+	static GUI::UIContainer _root;
+public:
+	static bool overlapping(int, int);
+	static void add(GUI::UIElement&);
+	static void setCameraSize(int,int);
+	static void render(Shader&);
+	static void click();
+};
 
-	class Button : public UIElement {
+namespace GUI {
+	extern Vector2 cameraScale;
+
+	class Button : public UIContainer {
 	private:
 		bool _active;
+		NormalisedColour _colour, _hoverColour;
 	public:
-		NormalisedColour colour, hoverColour;
+		void setColour(NormalisedColour& c) { _colour = c; panel.setColour(c); };
+		void setHoverColour(NormalisedColour& c) { _hoverColour = c; };
 
 		UIRect panel;
 		UIText label;
 
 		void(*onClick)();
 
-		void render(Font&, Shader&) override;
 		bool isOverlapping(int, int) override;
-		void click() override { if (_active)onClick(); };
+		void click() override { if (_active && onClick != nullptr)onClick(); };
 
-		Button(float x, float y, float w, float h, unsigned char flags) :
-			UIElement(x,y,w,h,flags)
-		{
-			panel.setParent(*this);
-			label.setParent(*this);
-		};
+		Button(float x,float y,float width,float height,unsigned char flags);
 	};
 
-	class TextBox : public UIElement {
+	class TextBox : public UIContainer {
 	private:
 		bool _hover, _active;
+		NormalisedColour _colour, _selectColour;
 	public:
+		void setColour(NormalisedColour& c) { _colour = c; panel.setColour(c); };
+		void setSelectColour(NormalisedColour& c) { _selectColour = c; };
+
 		UIRect panel;
 		UIText label;
 
-		TextBox(float x, float y, float w, float h, unsigned char flags) :
-			UIElement(x, y, w, h, flags)
-		{
-			panel.setParent(*this);
-			label.setParent(*this);
-		};
-
 		void(*onStateChanged)(bool state);
 
-		void render(Font&, Shader&) override;
+		bool isOverlapping(int, int) override;
 		void click() override;
 
 		void textInput(char newchar);
+
+		TextBox(float x,float y,float width,float height,unsigned char flags);
 	};
 
-	class Handler
-	{
-	private:
-		static std::vector<UIElement*> _elements;
-		static Camera2D* _camera;
-	public:
-		static void setCam(Camera2D& c) { _camera = &c; UIElement::setCameraSize(c.getWidth(), c.getHeight()); };
-		static bool update(int, int);
-		static void add(UIElement&);
-		static void render(Font&, Shader&);
-
-		static void click();
-	};
 
 }

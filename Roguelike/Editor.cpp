@@ -23,14 +23,6 @@ void Editor::start() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	////////////////////////////////////////////////////////////////////////
 
-	_camera.SetViewportSize(screenX, screenY);
-	GUI::Handler::setCam(_camera);
-
-
-	_controller.init();
-
-	////////////////////////////////////////////////////////////////////////
-
 	LineRenderer::init();
 	SpriteRenderer::init();
 
@@ -42,6 +34,13 @@ void Editor::start() {
 	_font.init(ft, "Game/Fonts/font.ttf", 64);
 	///////////////////////////////////////////////////////////////////////
 	
+	_camera.SetViewportSize(screenX, screenY);
+
+	GlobalUI::setCameraSize(screenX, screenY);
+
+	_controller.init(_font);
+
+	////////////////////////////////////////////////////////////////////////
 	Colour c;
 	float unitSize = 64.0f;
 	int lineCount = 256;
@@ -72,9 +71,11 @@ void Editor::render(float deltaTime) {
 
 	_controller.render(deltaTime,_camera);
 
+	GlobalUI::render(_fontShader);
+
 	_fontShader.useProgram();
 	_fontShader.setMat4("projection",_camera.getScreenMatrix());
-	GUI::Handler::render(_font,_fontShader);
+	GlobalUI::render(_fontShader);
 	_fontShader.unUseProgram();
 
 	_window.swapBuffer();
@@ -95,6 +96,7 @@ void Editor::windowInput() {
 				screenY = event.window.data2;
 				glViewport(0,0,screenX,screenY);
 				_camera.SetViewportSize(screenX,screenY);
+				GlobalUI::setCameraSize(screenX,screenY);
 			}
 	}
 }
