@@ -1,6 +1,7 @@
 #pragma once
 #include <Engine/Sprite.h>
 #include <Engine/Camera2D.h>
+#include "Level.h"
 #include <SDL/SDL.h>
 #include <vector>
 #include "Projectile.h"
@@ -8,13 +9,15 @@
 class Player
 {
 private:
-	Sprite _crosshair,_pointer;
+	Sprite _crosshair,_playerSprite;
 	std::vector<Projectile> _projectiles;//Vector of all projectiles to be rendered
 
 	int _moveX,_moveY;//Player axis movement
 	float _lastShot;//Time (milliseconds after game start) when the last shot was fired
 	bool _shooting;//Whether the player is shooting or not
 	std::string tex;
+
+	Level *_level;
 
 	//variables
 	float fireRate;//Fire rate in shots per second
@@ -33,5 +36,6 @@ public:
 	void setShooting(bool state) { _shooting = state; };
 	void shoot();
 
+	void setLevel(Level &lvl) { _level = &lvl; };
 	void setPointerLocation(float x,float y);
 };

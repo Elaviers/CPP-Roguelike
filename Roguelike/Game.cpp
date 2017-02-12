@@ -1,11 +1,13 @@
 #include "Game.h"
 #include "FileManager.h"
+#include "Menu.h"
 
 #include <bass.h>
 #include <SDL/SDL.h>
 #include <Engine/ErrorHandling.h>
 #include <Engine/ResourceManager.h>
 #include <Engine/SpriteRenderer.h>
+#include <Engine/GUI.h>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -30,7 +32,7 @@ void Game::start() {
 	_window.create("The Window of Hope", ScreenWidth, ScreenHeight,(FileManager::readBool(properties,"fullscreen") ? SDL_WINDOW_FULLSCREEN : 0) | SDL_WINDOW_RESIZABLE);
 	SDL_GL_SetSwapInterval(FileManager::readBool(properties, "vsync"));//vsync
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	SDL_ShowCursor(false);
+	SDL_ShowCursor(SDL_DISABLE);
 
 	log("done!\n");
 	////////////BASS
@@ -75,17 +77,21 @@ void Game::start() {
 	
 	log("done!\n");
 	////////////init
+	SpriteRenderer::init();
 	_camera.SetViewportSize(ScreenWidth, ScreenHeight);
 
+	GlobalUI::setCameraSize(ScreenWidth, ScreenHeight);
+	//Menu::init(_font);
+
 	Texture tiles = ResourceManager::getTexture("Game/Textures/tiles.png");
-
 	_level.tileSheet = &tiles;
-	_level.load("Game/lvl.zestylevel");
+	//_level.load("Game/lvl.zestylevel");
+	_level.load("Game/collision.test");
 
-	SpriteRenderer::init();
 	Vector2 spawn = _level.getSpawnPoint();
 	_camera.setPosition(spawn.x-ScreenWidth/2,spawn.y-ScreenHeight/2);
-	_player.init((int)spawn.x, (int)spawn.y, 128, 64, "Game/Textures/crosshair.png", "Game/Textures/pointer.png");
+	_player.init((int)spawn.x, (int)spawn.y, 128, 64, "Game/Textures/crosshair.png", "Game/Textures/player.png");
+	_player.setLevel(_level);
 	_sprite.init(-1, -1, 2, 2);
 
 	log("Initialised!\n");
@@ -96,16 +102,18 @@ void Game::start() {
 void Game::loop() {
 	int frameNumber = 0;
 	while (_running) {
-		frameNumber++;
-
 		_frameTimer.begin();
+
+		frameNumber++;
+		time += _frameTimer.deltaTime;
+
+		if (frameNumber % 10 == 0)_window.setTitle("Boring Title (" + std::to_string(_frameTimer.getFramerate()) + " FPS, Time is " + std::to_string(time) + ')');
+		
 		handleInput();
 		_player.update(time,(float)ScreenHeight);
 		render(_frameTimer.deltaTime);
-		_frameTimer.end();
 
-		time += _frameTimer.deltaTime;
-		if (frameNumber % 10 == 0)_window.setTitle("Boring Title ("+std::to_string(_frameTimer.getFramerate())+" FPS, Time is "+std::to_string(time)+')');
+		_frameTimer.end();
 	}
 
 	BASS_Free();
@@ -125,11 +133,14 @@ void Game::render(float deltaTime) {
 	_shader.set1i("sTexture",0);
 	_shader.setMat4("projection", _camera.getCameraMatrix());
 
-	_level.drawSprites(_camera);
+	_level.drawSprites(_camera,-1);
+	_level.drawSprites(_camera,0);
 	_player.render(_camera,deltaTime,_shader);
 
 	_shader.unUseProgram();
 	////////////////////////////////////////////////
+	GlobalUI::render(_fontshader);
+
 	_fontshader.useProgram();
 	_fontshader.set1i("sTexture", 0);
 	_fontshader.setMat4("projection", _camera.getScreenMatrix());
@@ -138,8 +149,10 @@ void Game::render(float deltaTime) {
 	_font.drawString("ROGUELIKE v0.0.1 - now with sound! Press M to change streams!", 0, 0,
 		glm::vec4(std::sin(time*f) / 2 + 1,std::sin(time*f + M_PI) / 2 + 1,std::sin(time*f + M_PI * 2) / 2 + 1,1),_fontshader);//haha
 
-	_fontshader.unUseProgram();
+	GlobalUI::render(_fontshader);
 
+	_fontshader.unUseProgram();
+	///////////////////////////////////////////////
 
 	_window.swapBuffer();
 }
@@ -148,6 +161,9 @@ void Game::handleInput() {
 	static SDL_Event event;
 	if (SDL_PollEvent(&event) == 1)
 		switch (event.type) {
+		case SDL_TEXTINPUT:
+
+			break;
 
 		case SDL_QUIT:
 			_running = false;

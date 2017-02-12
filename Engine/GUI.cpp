@@ -13,12 +13,20 @@ bool GlobalUI::overlapping(int x, int y) {
 	return _root.isOverlapping(x,y);
 }
 
-void GlobalUI::render(Shader&s) {
-	_root.render(s);
+void GlobalUI::render(Shader &fontShader) {
+	_root.render(RenderTypes::NONE,nullptr);
+
+	fontShader.useProgram();
+		_root.render(RenderTypes::FONT,&fontShader);
+	fontShader.unUseProgram();
 }
 
 void GlobalUI::add(UIElement&e) {
 	_root.addElement(e,true);
+}
+
+void GlobalUI::add(UIElement*e) {
+	_root.addElement(e, true);
 }
 
 void GlobalUI::setCameraSize(int w,int h) {

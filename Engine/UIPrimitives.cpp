@@ -1,5 +1,7 @@
 #include "UIPrimitives.h"
 
+#include "LineRenderer.h"
+
 using namespace GUI;
 
 ////////////////|UIELEMENT|
@@ -45,10 +47,10 @@ void UIElement::calculate() {
 	_corner2.y = y + height;
 }
 ////////////////|UIROOT|
-void UIContainer::render(Shader &s) 
+void UIContainer::render(RenderTypes::RenderType type,Shader *s) 
 {
 	for (UIElement*& e : _elements)
-		e->render(s);
+		e->render(type,s);
 }
 
 void UIContainer::click() {
@@ -71,18 +73,21 @@ void UIContainer::calculate() {
 		e->calculate();
 }
 ////////////////|UIRECT|
-void UIRect::render(Shader& s) 
-{	glColor3f(_colour.r,_colour.g,_colour.b);
-	glRectf(_corner1.x * 2 - 1,_corner1.y * 2 - 1,_corner2.x * 2 - 1,_corner2.y * 2 - 1);
+void UIRect::render(RenderTypes::RenderType type, Shader *s) {	
+	if (type == RenderTypes::NONE) {
+		glColor4f(_colour.r, _colour.g, _colour.b, _colour.a);
+		glRectf(_corner1.x * 2 - 1, _corner1.y * 2 - 1, _corner2.x * 2 - 1, _corner2.y * 2 - 1);
+	}
 }
 ////////////////|UITEXT|
-void UIText::render(Shader& fontShader) {
+void UIText::render(RenderTypes::RenderType type, Shader *fontShader) {
 	if (!_font.loaded) {
 		std::printf("Warning:attempted to render UIText without a loaded font!\n");
 		return;
 	}
 
-	_font.drawString(text, _corner1.x * cameraScale.x, _corner1.y * cameraScale.y,
-		(text.length() * cameraScale.y * getHeight() > cameraScale.x * getWidth()) ? (int)((cameraScale.x * getWidth()) / text.length()) : (int)(cameraScale.y * getHeight()),
-		_colour.vec4(), fontShader);
+	if (type == RenderTypes::FONT)
+		_font.drawString(text, _corner1.x * cameraScale.x, _corner1.y * cameraScale.y,
+			(text.length() * cameraScale.y * getHeight() > cameraScale.x * getWidth()) ? (int)((cameraScale.x * getWidth()) / text.length()) : (int)(cameraScale.y * getHeight()),
+			_colour.vec4(), *fontShader);
 }

@@ -51,13 +51,13 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="Misc.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
     <ClCompile Include="Projectile.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
   </ItemGroup>
@@ -80,13 +80,13 @@
     <ClInclude Include="Game.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Misc.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="Projectile.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
   </ItemGroup>

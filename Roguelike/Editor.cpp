@@ -10,8 +10,6 @@
 #include "FileManager.h"
 
 void Editor::start() {
-	//FileManager::writeLevelFile(std::vector<Tile> {Tile{ 0,1,2 }, Tile{3,4,5}},"poo.poo");//Level loading test
-
 	SDL_Init(SDL_INIT_EVERYTHING);
 	_window.create("Level Editor", screenX, screenY, SDL_WINDOW_RESIZABLE);
 
@@ -31,7 +29,7 @@ void Editor::start() {
 
 	FT_Library ft;
 	FT_Init_FreeType(&ft);
-	_font.init(ft, "Game/Fonts/font.ttf", 64);
+	_font.init(ft, "Game/Fonts/font.ttf", 32);
 	///////////////////////////////////////////////////////////////////////
 	
 	_camera.SetViewportSize(screenX, screenY);
@@ -46,40 +44,36 @@ void Editor::start() {
 	int lineCount = 256;
 
 	for (int x = -lineCount; x <= lineCount; x++) {
-		c = (x == 0) ? Colour(32,128,255) : Colour(0,0,0);
+		c = (x == 0) ? Colour(32,128,255) : Colour(196, 196, 196);
 		LineRenderer::drawLine(x * unitSize, -lineCount * unitSize, x * unitSize, lineCount * unitSize, c);
 		LineRenderer::drawLine(-lineCount * unitSize, x * unitSize, lineCount * unitSize, x * unitSize, c);
 	}
-
+	////////
 	running = true;
 	while (running) {
-
 		_frameCounter.begin();
+
 		windowInput();
 		render(_frameCounter.deltaTime);
+		
 		_frameCounter.end();
-
 	}
-
 }
 
 void Editor::render(float deltaTime) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearDepth(1);
 
-	LineRenderer::render(_camera);
-
 	_controller.render(deltaTime,_camera);
 
-	GlobalUI::render(_fontShader);
-
 	_fontShader.useProgram();
-	_fontShader.setMat4("projection",_camera.getScreenMatrix());
-	GlobalUI::render(_fontShader);
+	_fontShader.setMat4("projection", _camera.getScreenMatrix());
 	_fontShader.unUseProgram();
 
-	_window.swapBuffer();
+	GlobalUI::render(_fontShader);
 
+
+	_window.swapBuffer();
 }
 
 void Editor::windowInput() {

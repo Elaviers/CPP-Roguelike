@@ -13,7 +13,7 @@ namespace FileManager
 {
 	vector<StringPair> readFile(const char* FilePath);
 	vector<Tile> readLevelFile(const char* FilePath, int);
-	void writeLevelFile(std::vector<Tile> tiles, const char* path);
+	void writeLevelFile(std::vector<Tile> tiles, const char* path, int unitSize);
 
 	bool readBool(vector<StringPair> Properties,string PropertyName);
 	int readInt(vector<StringPair> Properties,string PropertyName);

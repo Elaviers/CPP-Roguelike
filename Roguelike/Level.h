@@ -6,10 +6,17 @@
 #include <Engine/Vertex.h>
 
 struct Tile {
+	int layer;
 	int TileID;
 	int x, y;
 	char flag;
 };
+
+namespace TileFlags {
+	enum TileFlag {
+		SPAWNPOINT = 0x01
+	};
+}
 
 class Level
 {
@@ -23,7 +30,7 @@ public:
 	Vector2 getSpawnPoint();
 	Texture *tileSheet, *editorTileSheet;
 
-	void drawSprites(Camera2D&);
+	void drawSprites(Camera2D&,int layer);
 	void drawEditorSprites();
 	void edit(Tile, bool = false);
 	void setFlag(Tile t, char);
@@ -31,5 +38,7 @@ public:
 
 	bool save(const char*);
 	bool load(const char*);
+
+	bool pointOverlaps(int x,int y,int layer);
 };
 

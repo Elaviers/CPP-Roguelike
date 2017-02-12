@@ -1,6 +1,7 @@
 #include "Player.h"
 #include <math.h>
 #include <Engine/ResourceManager.h>
+#include <Engine/GUI.H>
 
 bool u, d, l, r;
 glm::vec2 MouseWorldPosition;
@@ -8,8 +9,9 @@ glm::vec2 MouseWorldPosition;
 void Player::init(int x,int y,int size,int crosshairSize,std::string texture, std::string texture1) {
 	_crosshair.init(0, 0, (float)crosshairSize, (float)crosshairSize, false, texture);
 	_crosshair.setOrigin(0,0);
-	_pointer.init((float)x, (float)y, (float)size, (float)size, false, texture1);
-	_pointer.setOrigin(0, 0);
+	_playerSprite.UVGridDivisions = 3;
+	_playerSprite.init((float)x, (float)y, (float)size, (float)size, false, texture1);
+	_playerSprite.setOrigin(0, -0.5f);
 	ResourceManager::getTexture("Game/Textures/proj.png");//Cache projectile texture
 }
 
@@ -34,11 +36,16 @@ void Player::render(Camera2D& cam, float frameTime,Shader& shader) {
 	shader.set2f("UVOffset", 0, 0); 
 	shader.setMat4("transform",glm::mat4());
 
-	_pointer.move(movex, movey);
-	cam.setPosition(_pointer.x,_pointer.y);
+	if(!_level->pointOverlaps(movex > 0 ? _playerSprite.x + 32 : _playerSprite.x - 32, _playerSprite.y,0))
+		_playerSprite.move(movex, 0);
+
+	if (!_level->pointOverlaps(_playerSprite.x, movey > 0 ? _playerSprite.y + 32 : _playerSprite.y - 32, 0))
+	_playerSprite.move(0,movey);
+
+	cam.setPosition(_playerSprite.x,_playerSprite.y);
 	MouseWorldPosition = cam.screentoWorld(mouseX, mouseY);
-	_pointer.setRotation(std::atan2(MouseWorldPosition.y - _pointer.y, MouseWorldPosition.x - _pointer.x) * 180 / (float)M_PI);
-	_pointer.render();
+	//_playerSprite.setRotation(std::atan2(MouseWorldPosition.y - _playerSprite.y, MouseWorldPosition.x - _playerSprite.x) * 180 / (float)M_PI);
+	_playerSprite.render();
 
 	shader.setMat4("projection",cam.getScreenMatrix());
 	_crosshair.setPosition((float)mouseX, (float)mouseY);
@@ -50,7 +57,7 @@ void Player::render(Camera2D& cam, float frameTime,Shader& shader) {
 void  Player::shoot() {
 	Projectile p;
 	_projectiles.push_back(p);
-	_projectiles.back().init(_pointer.x,_pointer.y, 64,_pointer.rotation,512, "Game/Textures/proj.png");
+	_projectiles.back().init(_playerSprite.x,_playerSprite.y + 32, 64, std::atan2(MouseWorldPosition.y - _playerSprite.y, MouseWorldPosition.x - _playerSprite.x) * 180 / (float)M_PI,512, "Game/Textures/proj.png");
 }
 
 void Player::keyUp(SDL_Event action) {
@@ -63,6 +70,8 @@ void Player::keyUp(SDL_Event action) {
 
 	_moveX = l ? (r ? 0 : -1) : r ? 1 : 0;
 	_moveY = u ? (d ? 0 : 1) : d ? -1 : 0;
+
+	_playerSprite.swapUVs(u&&l ? 4 : d&&l ? 5 : d&&r ? 6 : u&&r ? 7 : l ? 0 : d ? 1 : r ? 2 : u ? 3 : 1);
 }
 
 void Player::keyDown(SDL_Event action) {
@@ -75,8 +84,10 @@ void Player::keyDown(SDL_Event action) {
 
 	_moveX = l ? (r ? 0 : -1) : r ? 1 : 0;
 	_moveY = u ? (d ? 0 : 1) : d ? -1 : 0;
+
+	_playerSprite.swapUVs(u&&l ? 4 : d&&l ? 5 : d&&r ? 6 : u&&r ? 7 : l ? 0 : d ? 1 : r ? 2 : u ? 3 : 1);
 }
 
 void Player::setPointerLocation(float x,float y) {
-	_pointer.setPosition(x,y);
+	_playerSprite.setPosition(x,y);
 }

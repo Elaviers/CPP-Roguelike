@@ -7,6 +7,7 @@
 
 namespace PlayerEnums {
 	enum EditMode { NONE, PLACING, DELETING };
+	enum PlacementEmun { TILE, FLAG, SPAWNPOINT };
 	enum Direction { RIGHT, UP, LEFT, DOWN };
 }
 
@@ -18,7 +19,8 @@ private:
 	Button _loadButton,_saveButton;
 	TextBox _namebox;
 	UIContainer _menuBar;
-
+	UIText _counter;
+	//////////////////////////////////
 	static bool _inputLock;
 	static const char* levelname;
 
@@ -26,12 +28,13 @@ private:
 	Level _level;
 	Texture _tiletexture,_symboltexture;
 
-	bool _specialPlacement,_usingUI;
+	bool _usingUI;
 
 	int _mouseX, _mouseY;
 	float _moveX, _moveY, _CameraScale;
 
-	PlayerEnums::EditMode PlacementMode;
+	PlayerEnums::EditMode _editMode;
+	PlayerEnums::PlacementEmun _placeMode;
 
 	bool MovementInputs[4];
 	

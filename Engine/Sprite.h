@@ -25,6 +25,14 @@ public:
 	void swapUVs(int textureIndex);//Swap to another index location on a splitted spritesheet, starting at 0 and ending at UVGridDivisions^2-1
 	void render();//Renders the sprite. Call from within a shader program!
 
+	Vector2 corner1() {
+		return vertices[2].position;
+	}
+
+	Vector2 corner2() {
+		return vertices[0].position;
+	}
+
 	GLuint getTextureID() { return _texture.ID; };
 private:
 	bool _static;

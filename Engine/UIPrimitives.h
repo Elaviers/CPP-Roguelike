@@ -32,6 +32,14 @@ namespace GUI {
 		ONEMINUS_Y = 0x20
 	};
 
+	namespace RenderTypes {
+		enum RenderType {
+			NONE,
+			FONT,
+			SPRITE
+		};
+	}
+
 	class UIElement //Base UI element which ultimately attempts to store two Vector2s representing the normalised coordinates of the bounding box.
 	{
 	protected:
@@ -46,19 +54,20 @@ namespace GUI {
 	public:
 		//Basic setters
 		void setFlags(unsigned char flags) { _flags = flags; };
-		void setParent(UIElement& element,bool recalc = true) { _parent = &element; if (recalc)calculate(); };
+		void setParent(UIElement& element, bool recalc = true) { setParent(&element,recalc); };
+		void setParent(UIElement* elementp, bool recalc = true) { _parent = elementp; if (recalc)calculate(); };
 		//Defined setters
 		void setX(float x) { _position.x = x; calculate(); }; //Just sets the x of corner 1. Normalises x if necessary.
 		void setY(float y) { _position.y = y; calculate(); }; //Just sets the y of corner 1. Normalises y if necessary.
 		void setWidth(float width) { _size.x = width; calculate(); }; //Sets the x of corner 2 to corner 1's x plus a normalised version of width
 		void setHeight(float height) { _size.y = height; calculate(); }; //Sets the y of corner 2 to corner 1's y plus a normalised version of height
 		//Basic getters. All values are normalised.
-		float getX() { return _corner1.x; };
-		float getY() { return _corner1.y; };
-		float getWidth() { return _corner2.x - _corner1.x; };
-		float getHeight() { return _corner2.y - _corner1.y; };
+		float getX() const { return _corner1.x; };
+		float getY() const { return _corner1.y; };
+		float getWidth() const { return _corner2.x - _corner1.x; };
+		float getHeight() const { return _corner2.y - _corner1.y; };
 		//virtual functions
-		virtual void render(Shader &shader) {};
+		virtual void render(RenderTypes::RenderType,Shader *shader) {};
 		virtual void click() {};
 		virtual bool isOverlapping(int px, int py); //Checks if specified point overlaps with the element's bounds
 		virtual void calculate(); //recalculates the normalised coordinates for any not-normalised variables.
@@ -69,9 +78,10 @@ namespace GUI {
 	private:
 		std::vector<UIElement*> _elements;
 	public:
-		void addElement(UIElement& element,bool recalc = true) { _elements.push_back(&element); element.setParent(*this,recalc); };
+		void addElement(UIElement& element,bool recalc = true) { _elements.push_back(&element); element.setParent(this,recalc); };
+		void addElement(UIElement* elementp, bool recalc = true) { _elements.push_back(elementp); elementp->setParent(this, recalc); };
 
-		void render(Shader &shader) override;
+		void render(RenderTypes::RenderType renderType,Shader *shader) override;
 		void click() override;
 		bool isOverlapping(int x, int y) override;//returns true if any of the children of this root overlap with the point given
 		void calculate() override;
@@ -86,7 +96,7 @@ namespace GUI {
 	public:
 		void setColour(NormalisedColour &colour) { _colour = colour; };
 
-		void render(Shader&) override;
+		void render(RenderTypes::RenderType,Shader*) override;
 
 		UIRect(float x, float y, float w, float h, unsigned char f) : UIElement(x, y, w, h, f) {};
 		UIRect() {};
@@ -102,9 +112,9 @@ namespace GUI {
 		void setColour(NormalisedColour &colour) { _colour = colour; };
 		void setFont(Font &font) { _font = font; };
 
-		void render(Shader&) override;
+		void render(RenderTypes::RenderType,Shader*) override;
 
-		const std::string& operator=(const char* rhs) { text = rhs; return text; };
+		const std::string& operator=(const std::string& rhs) { text = rhs; return text; };
 
 		UIText(float x, float y, float w, float h, unsigned char f) : UIElement(x, y, w, h, f) {};
 		UIText() {};

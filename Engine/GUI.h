@@ -7,6 +7,7 @@ private:
 public:
 	static bool overlapping(int, int);
 	static void add(GUI::UIElement&);
+	static void add(GUI::UIElement*);
 	static void setCameraSize(int,int);
 	static void render(Shader&);
 	static void click();
