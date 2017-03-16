@@ -8,7 +8,7 @@ TextureCache::TextureCache() {
 TextureCache::~TextureCache() {
 }
 
-Texture TextureCache::getTexture(std::string path) {
+Texture* TextureCache::getTexture(std::string path) {
 	
 	auto mit = textureMap.find(path);
 
@@ -17,5 +17,5 @@ Texture TextureCache::getTexture(std::string path) {
 		textureMap.insert(make_pair(path, ImageIO::loadPNG(path)));
 		return getTexture(path);
 	}
-	return mit->second;
+	return &mit->second;
 }

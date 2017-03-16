@@ -3,7 +3,6 @@
 #include <GL/glew.h>
 #include <GLM/glm.hpp>
 
-
 namespace ShaderPreset { enum ShaderPreset { SPRITE, TRANSFORM_SPRITE, FONT, LINE }; }
 
 class Shader
@@ -11,6 +10,8 @@ class Shader
 public:
 	Shader();
 	~Shader();
+
+	int Channel; //Recommended : use RenderType enum for this
 
 	void compile(const char* frag,const char* vert);
 	void loadPreset(ShaderPreset::ShaderPreset preset);

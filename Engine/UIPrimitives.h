@@ -1,8 +1,7 @@
 #pragma once
-#include "Vertex.h"//For Vector2D
+#include "Vertex.h"//For Vector2f
 #include "Font.h"
 #include "Shader.h"
-#include "Camera2D.h"
 
 #include <vector>
 
@@ -21,7 +20,7 @@ public:
 };
 
 namespace GUI {
-	extern Vector2 cameraScale;
+	extern Vector2f cameraScale;
 
 	enum UIFlags {
 		NORMALISED_X = 0x01,
@@ -32,20 +31,12 @@ namespace GUI {
 		ONEMINUS_Y = 0x20
 	};
 
-	namespace RenderTypes {
-		enum RenderType {
-			NONE,
-			FONT,
-			SPRITE
-		};
-	}
-
 	class UIElement //Base UI element which ultimately attempts to store two Vector2s representing the normalised coordinates of the bounding box.
 	{
 	protected:
 		UIElement* _parent;
-		Vector2 _position, _size;
-		Vector2 _corner1, _corner2; //These are the normalised coordinates of each corner
+		Vector2f _position, _size;
+		Vector2f _corner1, _corner2; //These are the normalised coordinates of each corner
 		unsigned char _flags;
 		//construction
 		UIElement(float x, float y, float w, float h, unsigned char flags);
@@ -67,8 +58,8 @@ namespace GUI {
 		float getWidth() const { return _corner2.x - _corner1.x; };
 		float getHeight() const { return _corner2.y - _corner1.y; };
 		//virtual functions
-		virtual void render(RenderTypes::RenderType,Shader *shader) {};
-		virtual void click() {};
+		virtual void render(Shader *shader) {};
+		virtual bool click() { return false; }; //returns whether or not to 'consume' input
 		virtual bool isOverlapping(int px, int py); //Checks if specified point overlaps with the element's bounds
 		virtual void calculate(); //recalculates the normalised coordinates for any not-normalised variables.
 	};
@@ -80,9 +71,10 @@ namespace GUI {
 	public:
 		void addElement(UIElement& element,bool recalc = true) { _elements.push_back(&element); element.setParent(this,recalc); };
 		void addElement(UIElement* elementp, bool recalc = true) { _elements.push_back(elementp); elementp->setParent(this, recalc); };
+		void removeElement(UIElement* element);
 
-		void render(RenderTypes::RenderType renderType,Shader *shader) override;
-		void click() override;
+		void render(Shader *shader) override;
+		bool click() override;
 		bool isOverlapping(int x, int y) override;//returns true if any of the children of this root overlap with the point given
 		void calculate() override;
 
@@ -96,7 +88,7 @@ namespace GUI {
 	public:
 		void setColour(NormalisedColour &colour) { _colour = colour; };
 
-		void render(RenderTypes::RenderType,Shader*) override;
+		void render(Shader*) override;
 
 		UIRect(float x, float y, float w, float h, unsigned char f) : UIElement(x, y, w, h, f) {};
 		UIRect() {};
@@ -112,7 +104,7 @@ namespace GUI {
 		void setColour(NormalisedColour &colour) { _colour = colour; };
 		void setFont(Font &font) { _font = font; };
 
-		void render(RenderTypes::RenderType,Shader*) override;
+		void render(Shader*) override;
 
 		const std::string& operator=(const std::string& rhs) { text = rhs; return text; };
 

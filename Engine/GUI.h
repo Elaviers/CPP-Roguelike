@@ -5,16 +5,17 @@ class GlobalUI {
 private:
 	static GUI::UIContainer _root;
 public:
-	static bool overlapping(int, int);
+	static bool updateMousePosition(int, int);
 	static void add(GUI::UIElement&);
 	static void add(GUI::UIElement*);
+	static void remove(GUI::UIElement*);
 	static void setCameraSize(int,int);
-	static void render(Shader&);
+	static void render(Shader*);
 	static void click();
 };
 
 namespace GUI {
-	extern Vector2 cameraScale;
+	extern Vector2f cameraScale;
 
 	class Button : public UIContainer {
 	private:
@@ -30,7 +31,7 @@ namespace GUI {
 		void(*onClick)();
 
 		bool isOverlapping(int, int) override;
-		void click() override { if (_active && onClick != nullptr)onClick(); };
+		bool click() override;
 
 		Button(float x,float y,float width,float height,unsigned char flags);
 	};
@@ -49,7 +50,7 @@ namespace GUI {
 		void(*onStateChanged)(bool state);
 
 		bool isOverlapping(int, int) override;
-		void click() override;
+		bool click() override;
 
 		void textInput(char newchar);
 

@@ -64,6 +64,9 @@
     <ClCompile Include="UIPrimitives.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera2D.h">
@@ -130,6 +133,12 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Constants.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderType.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

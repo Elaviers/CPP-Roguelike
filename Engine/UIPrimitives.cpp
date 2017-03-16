@@ -1,6 +1,9 @@
 #include "UIPrimitives.h"
 
 #include "LineRenderer.h"
+#include "RenderType.h"
+
+#include <algorithm>
 
 using namespace GUI;
 
@@ -47,15 +50,26 @@ void UIElement::calculate() {
 	_corner2.y = y + height;
 }
 ////////////////|UIROOT|
-void UIContainer::render(RenderTypes::RenderType type,Shader *s) 
-{
-	for (UIElement*& e : _elements)
-		e->render(type,s);
+void UIContainer::removeElement(UIElement* e) {
+	_elements.erase(std::remove(_elements.begin(), _elements.end(), e), _elements.end());
 }
 
-void UIContainer::click() {
+void UIContainer::render(Shader *s) 
+{
 	for (UIElement*& e : _elements)
-		e->click();
+		e->render(s);
+}
+
+//#include <iostream>
+bool UIContainer::click() {
+	//int c = 0;
+	for (UIElement*& e : _elements) {
+		//std::cout << "clicking(" << (++c) << ")\n";
+		if (e->click())
+			return true;
+
+	}
+	return false;
 }
 
 bool UIContainer::isOverlapping(int x, int y) {
@@ -73,21 +87,21 @@ void UIContainer::calculate() {
 		e->calculate();
 }
 ////////////////|UIRECT|
-void UIRect::render(RenderTypes::RenderType type, Shader *s) {	
-	if (type == RenderTypes::NONE) {
+void UIRect::render(Shader *s) {	
+	if (!s || s->Channel == RenderTypes::NONE) {
 		glColor4f(_colour.r, _colour.g, _colour.b, _colour.a);
 		glRectf(_corner1.x * 2 - 1, _corner1.y * 2 - 1, _corner2.x * 2 - 1, _corner2.y * 2 - 1);
 	}
 }
 ////////////////|UITEXT|
-void UIText::render(RenderTypes::RenderType type, Shader *fontShader) {
+void UIText::render(Shader *shader) {
 	if (!_font.loaded) {
 		std::printf("Warning:attempted to render UIText without a loaded font!\n");
 		return;
 	}
 
-	if (type == RenderTypes::FONT)
+	if (shader && shader->Channel == RenderTypes::FONT)
 		_font.drawString(text, _corner1.x * cameraScale.x, _corner1.y * cameraScale.y,
 			(text.length() * cameraScale.y * getHeight() > cameraScale.x * getWidth()) ? (int)((cameraScale.x * getWidth()) / text.length()) : (int)(cameraScale.y * getHeight()),
-			_colour.vec4(), *fontShader);
+			_colour.vec4(), *shader);
 }

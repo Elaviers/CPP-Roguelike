@@ -5,6 +5,6 @@ private:
 	static bool _enabled;
 public:
 	static void init(Font&);
-	static void setEnabled(bool enabled) { _enabled = enabled; };
+	static void setEnabled(bool enabled);
 	static void render();
 };

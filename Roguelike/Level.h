@@ -27,7 +27,7 @@ public:
 	Level();
 	~Level();
 
-	Vector2 getSpawnPoint();
+	Vector2f getSpawnPoint();
 	Texture *tileSheet, *editorTileSheet;
 
 	void drawSprites(Camera2D&,int layer);
@@ -40,5 +40,7 @@ public:
 	bool load(const char*);
 
 	bool pointOverlaps(int x,int y,int layer);
+
+	bool pointOverlaps(Vector2f point, int layer) { return pointOverlaps((int)point.x,(int)point.y,layer); };
 };
 

@@ -79,8 +79,8 @@ void Sprite::updateVertices() {
 	if (dbg) std::cout << "updating...\n";
 
 	float rSin = glm::sin(glm::radians(rotation)), rCos = glm::cos(glm::radians(rotation));
-	float x1 = -width / 2.0f, y1 = -height / 2.0f;
-	float x2 = width / 2.0f, y2 = height / 2.0f;
+	float x1 = -width / 2.f, y1 = -height / 2.f;
+	float x2 = width / 2.f, y2 = height / 2.f;
 	float offsetX = x + x2 + _xOffset, offsetY = y + y2 + _yOffset;
 
 	vertices[0].setPosition(x2 * rCos - y2 * rSin + offsetX, x2 * rSin + y2 * rCos + offsetY);
@@ -125,8 +125,8 @@ void Sprite::swapUVs(int textureIndex) {
 		flipped = true;
 	}
 
-	float inc = 1.0f / UVGridDivisions;
-	float UVx = 0, UVy = UVGridDivisions-1.0f;
+	float inc = 1.f / UVGridDivisions;
+	float UVx = 0, UVy = UVGridDivisions-1.f;
 
 	while (textureIndex > (UVGridDivisions - 1)) {
 			UVy-=1;
@@ -164,4 +164,20 @@ void Sprite::setColour(GLbyte r, GLbyte g, GLbyte b, GLbyte a) {
 	for (int i = 0; i < 6; i++)
 		vertices[i].setColour(r, g, b, a);
 
+}
+
+Vector2f Sprite::getCorner(int i) {
+	switch (i) {
+		case CornerEnum::BOTTOM_LEFT :
+			return Vector2f{ x + _xOffset, y + _yOffset };
+		case CornerEnum::BOTTOM_RIGHT:
+			return Vector2f{ x + width + _xOffset, y + _yOffset };
+		case CornerEnum::TOP_LEFT:
+			return Vector2f{ x + _xOffset, y + height + _yOffset};
+		case CornerEnum::TOP_RIGHT:
+			return Vector2f{ x + width + _xOffset, y + height + _yOffset};
+	}
+
+	std::cout << "(WARNING) Yo, why the f are you tring to find corner index " << i << " dawg?" << std::endl;
+	return Vector2f{ 0,0 };
 }

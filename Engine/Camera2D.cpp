@@ -15,6 +15,8 @@ void Camera2D::SetViewportSize(int screenX, int screenY) {
 	_screenW  = screenX;
 	_screenH  = screenY;
 	ortho = glm::ortho(0.0f, (float)_screenW, 0.0f, (float)_screenH);
+
+	//update();
 }
 
 glm::mat4 Camera2D::getScreenMatrix() {
@@ -24,10 +26,9 @@ glm::mat4 Camera2D::getScreenMatrix() {
 void Camera2D::update() {	
 	_scaledW = _screenW * (1 - (_scale - 1));
 	_scaledH = _screenH * (1 - (_scale - 1));
-
-	_CameraMatrix = glm::mat4(1);
-	_CameraMatrix = glm::translate(ortho, glm::vec3(_screenW/2-_position.x, _screenH/2-_position.y, 0));
-	_CameraMatrix = glm::rotate(_CameraMatrix, _angle, glm::vec3(1, 0, 0));
+	_CameraMatrix = ortho;
+	_CameraMatrix = glm::translate(_CameraMatrix, glm::vec3(_screenW/2-_position.x, _screenH/2-_position.y, 0));
+	//_CameraMatrix = glm::rotate(_CameraMatrix, 1.2f, glm::vec3(0, 0, 1)); //inconsistent
 }
 
 void Camera2D::scale(float s, glm::vec2 newOrigin) {

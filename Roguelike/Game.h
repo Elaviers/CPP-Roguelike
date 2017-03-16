@@ -9,6 +9,7 @@
 
 #include "Player.h"
 #include "Level.h"
+#include "GameManager.h"
 
 class Game
 {
@@ -16,21 +17,20 @@ private:
 	Window _window;
 	Timing _frameTimer;
 	bool _running;
-	Camera2D _camera;
 	/////////////////////
 	Font _font;
-	Level _level;
 	Player _player;
 	Sprite _sprite;
 	Shader _shaderlsd,_shader,_fontshader;
 public:
-	float time;
-	int ScreenWidth, ScreenHeight;
-
 	Game();
+	~Game() {};
 
 	void start();
+	void stop();
 	void loop();
+
+	void beginGame();
 
 	void render(float);
 

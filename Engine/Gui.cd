@@ -5,6 +5,11 @@
     <Members>
       <Method Name="UIElement" Hidden="true" />
     </Members>
+    <AssociationLine Name="_parent" Type="GUI::UIElement">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.352" Y="-0.13" />
+      </MemberNameLabel>
+    </AssociationLine>
     <AssociationLine Name="_corner1" Type="Vector2">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="0.07" Y="-0.265" />
@@ -15,35 +20,24 @@
         <Position X="0.131" Y="-0.232" />
       </MemberNameLabel>
     </AssociationLine>
-    <AssociationLine Name="_cameraSize" Type="Vector2">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="0.079" Y="-0.232" />
-      </MemberNameLabel>
-    </AssociationLine>
-    <AssociationLine Name="_parent" Type="GUI::UIElement">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-0.13" Y="0.352" />
-      </MemberNameLabel>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>QAAABACCABAAAAAAAAgGEAAQAAAAQQAEAEADAGBRAAA=</HashCode>
+      <HashCode>QAAABACCABAAAAAAAAAGMBAQAAAAQQAEAEACgGJQAAA=</HashCode>
       <FileName>UIPrimitives.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
+      <Field Name="_parent" />
       <Field Name="_corner1" />
       <Field Name="_corner2" />
-      <Field Name="_cameraSize" />
-      <Field Name="_parent" />
     </ShowAsAssociation>
   </Class>
   <Class Name="GUI::UIRect">
-    <Position X="4.75" Y="5" Width="1.5" />
+    <Position X="4.5" Y="6.25" Width="1.5" />
     <Members>
       <Method Name="UIRect" Hidden="true" />
     </Members>
     <AssociationLine Name="_colour" Type="NormalisedColour">
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-0.796" Y="0.081" />
+        <Position X="0.081" Y="-0.796" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
@@ -54,44 +48,28 @@
       <Field Name="_colour" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="GUI::UIRoot">
+  <Class Name="GUI::UIContainer">
     <Position X="4.75" Y="2.75" Width="1.5" />
-    <Members>
-      <Method Name="UIRoot" Hidden="true" />
-    </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAEABAAAAAAAAAAAAAAAAAAAAQAAAEACAAAQAAA=</HashCode>
+      <HashCode>AAAAAAEABAAAAAAAAAAAIAAAAAAAAQAAAAACAAAQAAE=</HashCode>
       <FileName>UIPrimitives.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Button">
-    <Position X="11.5" Y="4.25" Width="1.5" />
+  <Class Name="GUI::Button">
+    <Position X="11.5" Y="2.5" Width="1.5" />
     <Members>
       <Method Name="Button" Hidden="true" />
     </Members>
-    <AssociationLine Name="label" Type="GUI::UIText" ManuallyRouted="true">
-      <Path>
-        <Point X="12.25" Y="6.511" />
-        <Point X="12.25" Y="7.025" />
-        <Point X="9.62" Y="7.025" Type="JumpStart" />
-        <Point X="9.453" Y="7.025" Type="JumpEnd" />
-        <Point X="7.916" Y="7.025" Type="JumpStart" />
-        <Point X="7.749" Y="7.025" Type="JumpEnd" />
-        <Point X="6.25" Y="7.025" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>EEABAAAAAAAAABAAAAAAAAAAAAAAAwAAAAASAAAQAAA=</HashCode>
+      <HashCode>AEAAAAAAAAAAABAAAAAAAAAAAAAAgwAUAAATAQAAAAA=</HashCode>
       <FileName>GUI.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="colour" />
-      <Field Name="hoverColour" />
       <Field Name="label" />
     </ShowAsAssociation>
   </Class>
   <Class Name="NormalisedColour">
-    <Position X="7.25" Y="2.75" Width="1.75" />
+    <Position X="8" Y="8.5" Width="1.75" />
     <Members>
       <Method Name="NormalisedColour" Hidden="true" />
     </Members>
@@ -100,24 +78,24 @@
       <FileName>UIPrimitives.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TextBox">
-    <Position X="11.5" Y="7.25" Width="1.5" />
+  <Class Name="GUI::TextBox">
+    <Position X="13.5" Y="6" Width="1.5" />
     <Members>
       <Method Name="TextBox" Hidden="true" />
     </Members>
     <AssociationLine Name="panel" Type="GUI::UIRect" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="11.5" Y="7.515" />
-        <Point X="7.914" Y="6.62" Type="JumpStart" />
-        <Point X="7.752" Y="6.58" Type="JumpEnd" />
-        <Point X="6.25" Y="6.205" />
+        <Point X="13.5" Y="6.265" />
+        <Point X="12.332" Y="6.45" Type="JumpStart" />
+        <Point X="12.168" Y="6.476" Type="JumpEnd" />
+        <Point X="6" Y="7.455" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="-0.63" Y="-0.2" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAIAAAIAAAQAAAAAAAAQAAAAAAAIAAASAQAQAAA=</HashCode>
+      <HashCode>AACAAAIAAAIAABQAAAAAAAAQAAEAgQAQAAASAQAAAAA=</HashCode>
       <FileName>GUI.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -125,12 +103,12 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="GUI::UIText">
-    <Position X="4.75" Y="6.5" Width="1.5" />
+    <Position X="4.75" Y="8.75" Width="1.5" />
     <Members>
       <Method Name="UIText" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAABAAAAAAAIAAAAAAgAAQAAAgAAAQAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAACAgAAYAAAgAAAQAAA=</HashCode>
       <FileName>UIPrimitives.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -138,16 +116,16 @@
     </ShowAsAssociation>
   </Class>
   <Struct Name="Vector2">
-    <Position X="4.75" Y="1" Width="1.5" />
+    <Position X="4.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAA=</HashCode>
       <FileName>Vertex.h</FileName>
     </TypeIdentifier>
   </Struct>
   <Enum Name="GUI::UIFlags">
-    <Position X="0.5" Y="2.75" Width="1.5" />
+    <Position X="0.5" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAIAAAAAAAAAAAAEAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAIAAAAADAAAAAAEAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
       <FileName>UIPrimitives.h</FileName>
     </TypeIdentifier>
   </Enum>

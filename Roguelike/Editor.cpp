@@ -66,11 +66,12 @@ void Editor::render(float deltaTime) {
 
 	_controller.render(deltaTime,_camera);
 
+	GlobalUI::render(NULL);
+
 	_fontShader.useProgram();
 	_fontShader.setMat4("projection", _camera.getScreenMatrix());
+	GlobalUI::render(&_fontShader);
 	_fontShader.unUseProgram();
-
-	GlobalUI::render(_fontShader);
 
 
 	_window.swapBuffer();

@@ -15,8 +15,8 @@ Level::~Level()
 
 const float tileSize = 64;
 
-Vector2 Level::getSpawnPoint() {
-	return Vector2 { (float)_spawn.x + tileSize / 2, (float)_spawn.y + tileSize / 2 };
+Vector2f Level::getSpawnPoint() {
+	return Vector2f { (float)_spawn.x + tileSize / 2, (float)_spawn.y + tileSize / 2 };
 }
 
 //Editing functions

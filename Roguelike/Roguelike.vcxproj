@@ -159,6 +159,7 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x64  $(TargetDir)</Command>
   <ItemGroup>
     <ClInclude Include="Controller.h" />
     <ClInclude Include="Editor.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="Game.h" />
@@ -170,6 +171,7 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x64  $(TargetDir)</Command>
   <ItemGroup>
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Editor.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="Game.cpp" />

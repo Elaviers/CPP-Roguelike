@@ -3,8 +3,13 @@
 #include <Engine/ResourceManager.h>
 #include <Engine/GUI.H>
 
+#include "Game.h"
+
+#include <iostream>
+
+#include "GameManager.h"
+
 bool u, d, l, r;
-glm::vec2 MouseWorldPosition;
 
 void Player::init(int x,int y,int size,int crosshairSize,std::string texture, std::string texture1) {
 	_crosshair.init(0, 0, (float)crosshairSize, (float)crosshairSize, false, texture);
@@ -15,17 +20,14 @@ void Player::init(int x,int y,int size,int crosshairSize,std::string texture, st
 	ResourceManager::getTexture("Game/Textures/proj.png");//Cache projectile texture
 }
 
-void Player::update(float gameTime,float wheight) {
-	SDL_GetMouseState(&mouseX, &mouseY);
-	mouseY = (int)wheight - mouseY;
-
-	if (_shooting && gameTime - _lastShot > fireRate) {
-		_lastShot = gameTime;
+void Player::update() {
+	if (_shooting && GameManager::runTime - _lastShot > fireRate) {
+		_lastShot = GameManager::runTime;
 		shoot();
 	}
 }
 
-void Player::render(Camera2D& cam, float frameTime,Shader& shader) {
+void Player::render(Shader& shader,float frameTime) {
 	float movex = _moveX * moveSpeed * frameTime;
 	float movey = _moveY * moveSpeed * frameTime;
 
@@ -36,19 +38,34 @@ void Player::render(Camera2D& cam, float frameTime,Shader& shader) {
 	shader.set2f("UVOffset", 0, 0); 
 	shader.setMat4("transform",glm::mat4());
 
-	if(!_level->pointOverlaps(movex > 0 ? _playerSprite.x + 32 : _playerSprite.x - 32, _playerSprite.y,0))
+	if (movex != 0 /*?
+		!(GameManager::level->pointOverlaps(_playerSprite.getCorner(CornerEnum::TOP_RIGHT), 0) || GameManager::level->pointOverlaps(_playerSprite.getCorner(CornerEnum::BOTTOM_RIGHT), 0))
+		: movex < 0 ?
+		!(GameManager::level->pointOverlaps(_playerSprite.getCorner(CornerEnum::TOP_LEFT), 0)  || GameManager::level->pointOverlaps(_playerSprite.getCorner(CornerEnum::BOTTOM_LEFT), 0))
+		: false*/) {
+
 		_playerSprite.move(movex, 0);
+	}
 
-	if (!_level->pointOverlaps(_playerSprite.x, movey > 0 ? _playerSprite.y + 32 : _playerSprite.y - 32, 0))
-	_playerSprite.move(0,movey);
+	if (movex > 0)
+		std::cout << "x:" << _playerSprite.x << " y:" << _playerSprite.y << " top-left:" << _playerSprite.getCorner(CornerEnum::TOP_LEFT).x << "," << _playerSprite.getCorner(CornerEnum::TOP_LEFT).y <<
+		" bottom-right:" << _playerSprite.getCorner(CornerEnum::BOTTOM_RIGHT).x << "," << _playerSprite.getCorner(CornerEnum::BOTTOM_RIGHT).y << std::endl;
 
-	cam.setPosition(_playerSprite.x,_playerSprite.y);
-	MouseWorldPosition = cam.screentoWorld(mouseX, mouseY);
-	//_playerSprite.setRotation(std::atan2(MouseWorldPosition.y - _playerSprite.y, MouseWorldPosition.x - _playerSprite.x) * 180 / (float)M_PI);
+	if (movey != 0 /*?
+		!(GameManager::level->pointOverlaps(_playerSprite.getCorner(CornerEnum::TOP_LEFT), 0) || GameManager::level->pointOverlaps(_playerSprite.getCorner(CornerEnum::TOP_RIGHT), 0))
+		: movey < 0 ?
+		!(GameManager::level->pointOverlaps(_playerSprite.getCorner(CornerEnum::BOTTOM_LEFT), 0) || GameManager::level->pointOverlaps(_playerSprite.getCorner(CornerEnum::BOTTOM_RIGHT), 0))
+		: false*/) {
+
+		_playerSprite.move(0, movey);
+	}
+
+	GameManager::camera->setPosition(_playerSprite.x,_playerSprite.y);
+
 	_playerSprite.render();
 
-	shader.setMat4("projection",cam.getScreenMatrix());
-	_crosshair.setPosition((float)mouseX, (float)mouseY);
+	shader.setMat4("projection",GameManager::camera->getScreenMatrix());
+	_crosshair.setPosition((float)GameManager::mousePosition.x, (float)GameManager::mousePosition.y);
 	_crosshair.render();
 
 	glBindTexture(GL_TEXTURE_2D,0);
@@ -57,7 +74,9 @@ void Player::render(Camera2D& cam, float frameTime,Shader& shader) {
 void  Player::shoot() {
 	Projectile p;
 	_projectiles.push_back(p);
-	_projectiles.back().init(_playerSprite.x,_playerSprite.y + 32, 64, std::atan2(MouseWorldPosition.y - _playerSprite.y, MouseWorldPosition.x - _playerSprite.x) * 180 / (float)M_PI,512, "Game/Textures/proj.png");
+	glm::vec2 WorldCursorPosition = GameManager::camera->screentoWorld(GameManager::mousePosition.x, GameManager::mousePosition.y);
+	float angle = std::atan2(WorldCursorPosition.y - _playerSprite.y, WorldCursorPosition.x - _playerSprite.x) * 180 / (float)M_PI;
+	_projectiles.back().init(_playerSprite.x,_playerSprite.y + 32, 64, angle, 512, "Game/Textures/proj.png");
 }
 
 void Player::keyUp(SDL_Event action) {

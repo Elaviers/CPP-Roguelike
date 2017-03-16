@@ -2,7 +2,8 @@
 
 #include <Gl/glew.h>
 
-struct Vector2 { float x, y; };
+struct Vector2 { int x, y; };
+struct Vector2f { float x, y; };
 
 struct UV { 
 	float u, v;
@@ -19,7 +20,7 @@ public:
 };
 
 struct Vertex {
-	Vector2 position;
+	Vector2f position;
 	Colour colour;
 	UV uv;
 

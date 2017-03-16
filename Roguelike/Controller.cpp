@@ -137,7 +137,7 @@ void Controller::input(SDL_Event event, int screenh)
 	SDL_GetMouseState(&_mouseX,&_mouseY);
 	_mouseY = screenh - _mouseY;
 
-	_usingUI = GlobalUI::overlapping(_mouseX, _mouseY);
+	_usingUI = GlobalUI::updateMousePosition(_mouseX, _mouseY);
 
 	if (event.type == SDL_TEXTINPUT) {
 		_namebox.textInput(event.text.text[0]);

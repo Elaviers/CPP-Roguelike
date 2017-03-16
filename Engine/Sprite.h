@@ -4,6 +4,10 @@
 #include "Vertex.h"
 #include "Texture.h"
 
+namespace CornerEnum {
+	enum CornerEnum {TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT};
+}
+
 class Sprite
 {
 public:
@@ -25,13 +29,7 @@ public:
 	void swapUVs(int textureIndex);//Swap to another index location on a splitted spritesheet, starting at 0 and ending at UVGridDivisions^2-1
 	void render();//Renders the sprite. Call from within a shader program!
 
-	Vector2 corner1() {
-		return vertices[2].position;
-	}
-
-	Vector2 corner2() {
-		return vertices[0].position;
-	}
+	Vector2f getCorner(int index);
 
 	GLuint getTextureID() { return _texture.ID; };
 private:

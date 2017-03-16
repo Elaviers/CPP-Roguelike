@@ -1,7 +1,8 @@
 #include "GUI.h"
 #include <GL/glew.h>
+#include "RenderType.h"
 
-Vector2 GUI::cameraScale = Vector2{ 1,1 };
+Vector2f GUI::cameraScale = Vector2f{ 1,1 };
 
 using namespace GUI;
 
@@ -9,16 +10,18 @@ using namespace GUI;
 
 UIContainer GlobalUI::_root(0,0,1,1,NORMALISED_X | NORMALISED_Y | NORMALISED_WIDTH | NORMALISED_HEIGHT);
 
-bool GlobalUI::overlapping(int x, int y) {
+bool GlobalUI::updateMousePosition(int x, int y) {
 	return _root.isOverlapping(x,y);
 }
 
-void GlobalUI::render(Shader &fontShader) {
-	_root.render(RenderTypes::NONE,nullptr);
+void GlobalUI::render(Shader *shader) {
+	if (!shader) {
+		_root.render(nullptr);
+		return;
+	}
 
-	fontShader.useProgram();
-		_root.render(RenderTypes::FONT,&fontShader);
-	fontShader.unUseProgram();
+	if (shader->Channel == RenderTypes::FONT)
+		_root.render(shader);
 }
 
 void GlobalUI::add(UIElement&e) {
@@ -29,8 +32,12 @@ void GlobalUI::add(UIElement*e) {
 	_root.addElement(e, true);
 }
 
+void GlobalUI::remove(UIElement* e) {
+	_root.removeElement(e);
+}
+
 void GlobalUI::setCameraSize(int w,int h) {
-	GUI::cameraScale = Vector2{ (float) w,(float) h };
+	GUI::cameraScale = Vector2f{ (float) w,(float) h };
 	_root.calculate();
 }
 
@@ -54,6 +61,15 @@ bool Button::isOverlapping(int x,int y) {
 	return _active;
 }
 
+bool Button::click() { 
+	if (_active) {
+		if (onClick != nullptr)
+			onClick();
+		return true;
+	}
+	return false;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////TEXTBOX
 TextBox::TextBox(float x, float y, float w, float h, unsigned char flags) :
 	UIContainer(x, y, w, h, flags)
@@ -62,12 +78,14 @@ TextBox::TextBox(float x, float y, float w, float h, unsigned char flags) :
 	addElement(label,false);
 };
 
-void TextBox::click() {
+bool TextBox::click() {
 	if (_active != _hover) {
 		_active = _hover;
 		panel.setColour(_active ? _selectColour : _colour);
 		onStateChanged(_active);
+		return true;
 	}
+	return false;
 }
 
 bool TextBox::isOverlapping(int x,int y) {
