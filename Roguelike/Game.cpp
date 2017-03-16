@@ -41,7 +41,6 @@ void Game::start() {
 	_window.create("The Window of Hope", GameManager::screenDimensions.x, GameManager::screenDimensions.y,(FileManager::readBool(properties,"fullscreen") ? SDL_WINDOW_FULLSCREEN : 0) | SDL_WINDOW_RESIZABLE);
 	SDL_GL_SetSwapInterval(FileManager::readBool(properties, "vsync"));//vsync
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	//SDL_ShowCursor(SDL_DISABLE);
 
 	log("done!\n");
 	////////////BASS
@@ -74,11 +73,9 @@ void Game::start() {
 
 	_shader.loadPreset(ShaderPreset::TRANSFORM_SPRITE);
 	_shader.link();
-	_shader.Channel = RenderTypes::SPRITE;
 
 	_fontshader.loadPreset(ShaderPreset::FONT);
 	_fontshader.link();
-	_fontshader.Channel = RenderTypes::FONT;
 
 	_shaderlsd.compile("Game/Shaders/DRUGS.frag", "Game/Shaders/DRUGS.vert");
 	_shaderlsd.addAttribute("vertPosition");
@@ -101,6 +98,8 @@ void Game::start() {
 }
 
 void Game::beginGame() {
+	SDL_ShowCursor(SDL_DISABLE);
+
 	////////////init
 	SpriteRenderer::init();
 
@@ -238,9 +237,7 @@ void Game::handleInput() {
 				GameManager::screenDimensions.y = event.window.data2;
 				glViewport(0,0, GameManager::screenDimensions.x, GameManager::screenDimensions.y);
 				GameManager::camera->SetViewportSize(GameManager::screenDimensions.x, GameManager::screenDimensions.y);
-				GlobalUI::setCameraSize(GameManager::screenDimensions.x, GameManager::screenDimensions.y);
-				_player.setPointerLocation(GameManager::camera->getPosition().x + GameManager::screenDimensions.x / 2, GameManager::camera->getPosition().y + GameManager::screenDimensions.y / 2);
-			}
+				GlobalUI::setCameraSize(GameManager::screenDimensions.x, GameManager::screenDimensions.y);			}
 			break;
 		}
 }

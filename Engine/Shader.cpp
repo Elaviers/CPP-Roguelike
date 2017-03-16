@@ -3,7 +3,7 @@
 #include <vector>
 #include "Shader.h"
 #include "ErrorHandling.h"
-
+#include "RenderType.h"
 
 Shader::Shader() :_attributeCount(0),  _programID(0), _vertID(0), _fragID(0) {
 }
@@ -39,6 +39,7 @@ void Shader::loadPreset(ShaderPreset::ShaderPreset type) {
 			addAttribute("vertPosition");
 			addAttribute("vertColour");
 			addAttribute("vertUV");
+			Channel = RenderTypes::SPRITE;
 			break;
 		case ShaderPreset::TRANSFORM_SPRITE:
 			generateShaderStuff();
@@ -47,6 +48,7 @@ void Shader::loadPreset(ShaderPreset::ShaderPreset type) {
 			addAttribute("vertPosition");
 			addAttribute("vertColour");
 			addAttribute("vertUV");
+			Channel = RenderTypes::SPRITE;
 			break;
 		case ShaderPreset::LINE:
 			generateShaderStuff();
@@ -61,6 +63,7 @@ void Shader::loadPreset(ShaderPreset::ShaderPreset type) {
 			load(Presets::FONT_VERT, _vertID);
 			addAttribute("vertPosition");
 			addAttribute("vertUV");
+			Channel = RenderTypes::FONT;
 			break;
 		default:
 			error("Invalid preset");

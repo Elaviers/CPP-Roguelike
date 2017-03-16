@@ -18,7 +18,7 @@ void Play_OnClick() {
 }
 
 void Menu::init(Font &f) {
-	root = new UIContainer(.33,.1,.33,.8,NORMALISED_HEIGHT | NORMALISED_WIDTH | NORMALISED_X | NORMALISED_Y);
+	root = new UIContainer(.33f,.1f,.33f,.8f,NORMALISED_HEIGHT | NORMALISED_WIDTH | NORMALISED_X | NORMALISED_Y);
 	UIRect *rootrect = new UIRect(0,0,1,1,NORMALISED_WIDTH | NORMALISED_HEIGHT);
 
 	UIContainer *titleBox = new UIContainer(0,0,1,32,NORMALISED_WIDTH | ONEMINUS_Y);

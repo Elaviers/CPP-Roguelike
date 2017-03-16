@@ -34,5 +34,4 @@ public:
 	void setShooting(bool state) { _shooting = state; };
 	void shoot();
 
-	void setPointerLocation(float x,float y);
 };

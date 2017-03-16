@@ -47,9 +47,10 @@ void Player::render(Shader& shader,float frameTime) {
 		_playerSprite.move(movex, 0);
 	}
 
-	if (movex > 0)
+	/*if (movex > 0)
 		std::cout << "x:" << _playerSprite.x << " y:" << _playerSprite.y << " top-left:" << _playerSprite.getCorner(CornerEnum::TOP_LEFT).x << "," << _playerSprite.getCorner(CornerEnum::TOP_LEFT).y <<
 		" bottom-right:" << _playerSprite.getCorner(CornerEnum::BOTTOM_RIGHT).x << "," << _playerSprite.getCorner(CornerEnum::BOTTOM_RIGHT).y << std::endl;
+	*/
 
 	if (movey != 0 /*?
 		!(GameManager::level->pointOverlaps(_playerSprite.getCorner(CornerEnum::TOP_LEFT), 0) || GameManager::level->pointOverlaps(_playerSprite.getCorner(CornerEnum::TOP_RIGHT), 0))
@@ -105,8 +106,4 @@ void Player::keyDown(SDL_Event action) {
 	_moveY = u ? (d ? 0 : 1) : d ? -1 : 0;
 
 	_playerSprite.swapUVs(u&&l ? 4 : d&&l ? 5 : d&&r ? 6 : u&&r ? 7 : l ? 0 : d ? 1 : r ? 2 : u ? 3 : 1);
-}
-
-void Player::setPointerLocation(float x,float y) {
-	_playerSprite.setPosition(x,y);
 }
