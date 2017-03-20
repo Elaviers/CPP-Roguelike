@@ -45,8 +45,8 @@ void Editor::start() {
 
 	for (int x = -lineCount; x <= lineCount; x++) {
 		c = (x == 0) ? Colour(32,128,255) : Colour(196, 196, 196);
-		LineRenderer::drawLine(x * unitSize, -lineCount * unitSize, x * unitSize, lineCount * unitSize, c);
-		LineRenderer::drawLine(-lineCount * unitSize, x * unitSize, lineCount * unitSize, x * unitSize, c);
+		LineRenderer::addLine(x * unitSize, -lineCount * unitSize, x * unitSize, lineCount * unitSize, c);
+		LineRenderer::addLine(-lineCount * unitSize, x * unitSize, lineCount * unitSize, x * unitSize, c);
 	}
 	////////
 	running = true;

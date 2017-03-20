@@ -7,6 +7,7 @@
 #include <Engine/ErrorHandling.h>
 #include <Engine/ResourceManager.h>
 #include <Engine/SpriteRenderer.h>
+#include <Engine/LineRenderer.h>
 #include <Engine/GUI.h>
 
 #include <ft2build.h>
@@ -32,14 +33,15 @@ void Game::start() {
 	GameManager::screenDimensions.x = FileManager::readInt(properties,"resx");
 	GameManager::screenDimensions.y = FileManager::readInt(properties, "resy");
 
-	GameManager::screenDimensions = Vector2{640,480};
-
 	////////////SDL
 	log("Creating window...");
 
 	SDL_Init(SDL_INIT_EVERYTHING);
 	_window.create("The Window of Hope", GameManager::screenDimensions.x, GameManager::screenDimensions.y,(FileManager::readBool(properties,"fullscreen") ? SDL_WINDOW_FULLSCREEN : 0) | SDL_WINDOW_RESIZABLE);
+	
 	SDL_GL_SetSwapInterval(FileManager::readBool(properties, "vsync"));//vsync
+	if (FileManager::readBool(properties, "vsync"))_frameTimer.setFPSCap(60);
+
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 	log("done!\n");
@@ -101,28 +103,22 @@ void Game::beginGame() {
 	SDL_ShowCursor(SDL_DISABLE);
 
 	////////////init
+	LineRenderer::init();
 	SpriteRenderer::init();
-
+	
 	GameManager::level = new Level();
 	GameManager::level->tileSheet = ResourceManager::getTextureRef("Game/Textures/tiles.png");;
 	GameManager::level->load("Game/collision.test");
 
 	Vector2f spawn = GameManager::level->getSpawnPoint();
 
-	//GameManager::camera->setPosition(spawn.x - GameManager::screenDimensions.x / 2, spawn.y - GameManager::screenDimensions.y / 2);
-
-	_player.init((int)spawn.x, (int)spawn.y, 128, 64, "Game/Textures/crosshair.png", "Game/Textures/player.png");
+	_player.init((int)spawn.x, (int)spawn.y, 128, 32, "Game/Textures/crosshair.png", "Game/Textures/player.png");
 	GameManager::addObject(&_player);
 
 	//GameManager::camera->
 
 	log("Game started\n");
 	//////////////////
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 4; j++)
-			std::cout << GameManager::camera->getScreenMatrix()[i][j] << " ";
-		std::cout << std::endl;
-	}
 }
 
 void Game::loop() {
@@ -179,6 +175,7 @@ void Game::render(float deltaTime) {
 
 	_fontshader.unUseProgram();
 	///////////////////////////////////////////////
+	LineRenderer::render(*GameManager::camera);
 
 	_window.swapBuffer();
 }

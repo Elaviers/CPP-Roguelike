@@ -9,6 +9,8 @@
 
 #include "GameManager.h"
 
+#include <Engine/LineRenderer.h>
+
 bool u, d, l, r;
 
 void Player::init(int x,int y,int size,int crosshairSize,std::string texture, std::string texture1) {
@@ -16,8 +18,10 @@ void Player::init(int x,int y,int size,int crosshairSize,std::string texture, st
 	_crosshair.setOrigin(0,0);
 	_playerSprite.UVGridDivisions = 3;
 	_playerSprite.init((float)x, (float)y, (float)size, (float)size, false, texture1);
-	_playerSprite.setOrigin(0, -0.5f);
+	_playerSprite.setOrigin(0, -1.f);
 	ResourceManager::getTexture("Game/Textures/proj.png");//Cache projectile texture
+
+	collision = Rect{ Vector2f{-32,0}, Vector2f{32,64} };
 }
 
 void Player::update() {
@@ -38,30 +42,25 @@ void Player::render(Shader& shader,float frameTime) {
 	shader.set2f("UVOffset", 0, 0); 
 	shader.setMat4("transform",glm::mat4());
 
-	if (movex != 0 /*?
-		!(GameManager::level->pointOverlaps(_playerSprite.getCorner(CornerEnum::TOP_RIGHT), 0) || GameManager::level->pointOverlaps(_playerSprite.getCorner(CornerEnum::BOTTOM_RIGHT), 0))
-		: movex < 0 ?
-		!(GameManager::level->pointOverlaps(_playerSprite.getCorner(CornerEnum::TOP_LEFT), 0)  || GameManager::level->pointOverlaps(_playerSprite.getCorner(CornerEnum::BOTTOM_LEFT), 0))
-		: false*/) {
-
-		_playerSprite.move(movex, 0);
+	if (movex != 0) {
+		Tile* collide = GameManager::level->rectOverlaps(position + collision.min + Vector2f{ movex, 0 }, position + collision.max + Vector2f{ movex, 0 }, 0);
+		if (collide)
+			movex = (movex >= 0 ? collide->x - (position.x + collision.max.x) : (collide->x + 64) - (position.x + collision.min.x));
 	}
 
-	/*if (movex > 0)
-		std::cout << "x:" << _playerSprite.x << " y:" << _playerSprite.y << " top-left:" << _playerSprite.getCorner(CornerEnum::TOP_LEFT).x << "," << _playerSprite.getCorner(CornerEnum::TOP_LEFT).y <<
-		" bottom-right:" << _playerSprite.getCorner(CornerEnum::BOTTOM_RIGHT).x << "," << _playerSprite.getCorner(CornerEnum::BOTTOM_RIGHT).y << std::endl;
-	*/
-
-	if (movey != 0 /*?
-		!(GameManager::level->pointOverlaps(_playerSprite.getCorner(CornerEnum::TOP_LEFT), 0) || GameManager::level->pointOverlaps(_playerSprite.getCorner(CornerEnum::TOP_RIGHT), 0))
-		: movey < 0 ?
-		!(GameManager::level->pointOverlaps(_playerSprite.getCorner(CornerEnum::BOTTOM_LEFT), 0) || GameManager::level->pointOverlaps(_playerSprite.getCorner(CornerEnum::BOTTOM_RIGHT), 0))
-		: false*/) {
-
-		_playerSprite.move(0, movey);
+	if (movey != 0) {
+		Tile* collide = GameManager::level->rectOverlaps(position + collision.min + Vector2f{ 0, movey }, position + collision.max + Vector2f{ 0, movey }, 0);
+		if (collide)
+			movey = (movey >= 0 ? collide->y - (position.y + collision.max.y) : (collide->y + 64) - (position.y + collision.min.y));
 	}
 
-	GameManager::camera->setPosition(_playerSprite.x,_playerSprite.y);
+	position.x += movex;
+	position.y += movey;
+
+	_playerSprite.setPosition(position.x,position.y);
+	GameManager::camera->setPosition(position.x, position.y);
+
+	//std::cout << "X:" << _playerSprite.x << " Y:" << _playerSprite.y << std::endl;
 
 	_playerSprite.render();
 
@@ -70,14 +69,20 @@ void Player::render(Shader& shader,float frameTime) {
 	_crosshair.render();
 
 	glBindTexture(GL_TEXTURE_2D,0);
+
+	/*LineRenderer::clear();
+	LineRenderer::addLine(position.x + collision.min.x, position.y + collision.min.y, position.x + collision.max.x, position.y + collision.min.y);
+	LineRenderer::addLine(position.x + collision.min.x, position.y + collision.min.y, position.x + collision.min.x, position.y + collision.max.y);
+	LineRenderer::addLine(position.x + collision.max.x, position.y + collision.min.y, position.x + collision.max.x, position.y + collision.max.y);
+	LineRenderer::addLine(position.x + collision.min.x, position.y + collision.max.y, position.x + collision.max.x, position.y + collision.max.y);*/
 }
 
 void  Player::shoot() {
 	Projectile p;
 	_projectiles.push_back(p);
 	glm::vec2 WorldCursorPosition = GameManager::camera->screentoWorld(GameManager::mousePosition.x, GameManager::mousePosition.y);
-	float angle = std::atan2(WorldCursorPosition.y - _playerSprite.y, WorldCursorPosition.x - _playerSprite.x) * 180 / (float)M_PI;
-	_projectiles.back().init(_playerSprite.x,_playerSprite.y + 32, 64, angle, 512, "Game/Textures/proj.png");
+	float angle = std::atan2(WorldCursorPosition.y - (_playerSprite.y + 64), WorldCursorPosition.x - _playerSprite.x) * 180 / (float)M_PI;
+	_projectiles.back().init(_playerSprite.x,_playerSprite.y + 64, 64, angle, 512, "Game/Textures/proj.png");
 }
 
 void Player::keyUp(SDL_Event action) {

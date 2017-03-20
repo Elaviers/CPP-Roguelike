@@ -4,6 +4,8 @@ std::vector<LineRenderer::VertexNoUV> LineRenderer::_vertices;
 GLuint LineRenderer::_vbo, LineRenderer::_vao;
 Shader LineRenderer::_shader;
 
+bool initialised = false;
+
 void LineRenderer::init() {
 	glGenVertexArrays(1,&_vao);
 	glGenBuffers(1,&_vbo);
@@ -24,9 +26,11 @@ void LineRenderer::init() {
 
 	_shader.loadPreset(ShaderPreset::LINE);
 	_shader.link();
+
+	initialised = true;
 }
 
-void LineRenderer::drawLine(float x, float y, float x2, float y2, Colour c) {
+void LineRenderer::addLine(float x, float y, float x2, float y2, Colour c) {
 	int i = (int)_vertices.size();
 	_vertices.resize(_vertices.size() + 2);
 
@@ -43,11 +47,17 @@ void LineRenderer::drawLine(float x, float y, float x2, float y2, Colour c) {
 	glBindVertexArray(0);
 }
 
+void LineRenderer::clear() {
+	_vertices.clear();
+}
+
 void LineRenderer::render(Camera2D& c) {
-	_shader.useProgram();
-	_shader.setMat4("projection", c.getCameraMatrix());
-	glBindVertexArray(_vao);
-	glDrawArrays(GL_LINES, 0, (GLsizei)_vertices.size());
-	glBindVertexArray(0);
-	_shader.unUseProgram();
+	if (initialised) {
+		_shader.useProgram();
+		_shader.setMat4("projection", c.getCameraMatrix());
+		glBindVertexArray(_vao);
+		glDrawArrays(GL_LINES, 0, (GLsizei)_vertices.size());
+		glBindVertexArray(0);
+		_shader.unUseProgram();
+	}
 }

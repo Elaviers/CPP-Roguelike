@@ -21,12 +21,15 @@ Controller::Controller() :
 {}
 
 void Controller::save() {
-	if (levelname != nullptr)
+	if (levelname != nullptr) {
+		std::cout << "Saving \"" << levelname << "\"...\n";
 		currentLevel->save(levelname);
+	}
 }
 
 void Controller::load() {
 	if (levelname != nullptr)
+		std::cout << "Loading \"" << levelname << "\"...\n";
 		currentLevel->load(levelname);
 }
 

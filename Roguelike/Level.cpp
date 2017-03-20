@@ -13,6 +13,10 @@ Level::~Level()
 {
 }
 
+Tile* Level::getData() {
+	return _tiles.data();
+}
+
 const float tileSize = 64;
 
 Vector2f Level::getSpawnPoint() {
@@ -112,4 +116,11 @@ bool Level::pointOverlaps(int x, int y,int layer) {
 		if (t.layer == layer && x >= t.x && x <= t.x + 64 && y >= t.y && y <= t.y + 64)
 			return true;
 	return false;
+}
+
+Tile* Level::rectOverlaps(Vector2f min, Vector2f max, int layer) {
+	for (Tile t : _tiles)
+		if (t.layer == layer && !(max.x <= t.x || max.y <= t.y || min.x >= t.x + 64 || min.y >= t.y + 64))
+			return &t;
+	return NULL;
 }

@@ -1,9 +1,7 @@
 #pragma once
 
 #include <Gl/glew.h>
-
-struct Vector2 { int x, y; };
-struct Vector2f { float x, y; };
+#include "Vector.h"
 
 struct UV { 
 	float u, v;

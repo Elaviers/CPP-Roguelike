@@ -17,8 +17,9 @@ private:
 	static Shader _shader;
 public:
 	static void init(); //Creates shader and VAO/VBO
-	static void drawLine(float x,float y,float x2,float y2,Colour colour); //Adds a line to be rendered
-	static void drawLine(float x,float y,float x2,float y2) { drawLine(x,y,x2,y2,Colour()); }; //Adds a white line to be rendered
+	static void addLine(float x,float y,float x2,float y2,Colour colour); //Adds a line to be rendered
+	static void addLine(float x,float y,float x2,float y2) { addLine(x,y,x2,y2,Colour()); }; //Adds a white line to be rendered
+	static void clear();
 	static void render(Camera2D&); //Renders lines
 };
 

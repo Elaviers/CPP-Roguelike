@@ -157,6 +157,7 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x64  $(TargetDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Tile.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="GameManager.h" />

@@ -181,3 +181,7 @@ Vector2f Sprite::getCorner(int i) {
 	std::cout << "(WARNING) Yo, why the f are you tring to find corner index " << i << " dawg?" << std::endl;
 	return Vector2f{ 0,0 };
 }
+
+Vector2f Sprite::getCentre() {
+	return Vector2f{ x + width / 2 + _xOffset, y + height / 2 + _yOffset };
+}

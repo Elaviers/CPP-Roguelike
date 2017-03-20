@@ -30,6 +30,7 @@ public:
 	void render();//Renders the sprite. Call from within a shader program!
 
 	Vector2f getCorner(int index);
+	Vector2f getCentre();
 
 	GLuint getTextureID() { return _texture.ID; };
 private:
