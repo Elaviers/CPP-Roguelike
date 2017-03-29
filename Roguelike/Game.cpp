@@ -1,6 +1,8 @@
 #include "Game.h"
 #include "FileManager.h"
 #include "Menu.h"
+#include "UIWindow.h"
+#include "Constants.h"
 
 #include <bass.h>
 #include <SDL/SDL.h>
@@ -66,7 +68,8 @@ void Game::start() {
 
 	FT_Library FtLib;
 	if (FT_Init_FreeType(&FtLib))error("Could not initialise FreeType!");
-	_font.init(FtLib, "Game/Fonts/corbelz.ttf", 32);
+	ResourceManager::setFontLibrary(FtLib);
+	ResourceManager::getFontRef(Constants::font);
 	FT_Done_FreeType(FtLib);
 
 	log("done!\n");
@@ -92,14 +95,14 @@ void Game::start() {
 	GameManager::camera = new Camera2D();
 	GameManager::camera->SetViewportSize(GameManager::screenDimensions.x, GameManager::screenDimensions.y);
 
-	Menu::init(_font);
+	Menu::init();
 
 	_sprite.init(-1, -1, 2, 2);
 
 	loop();
 }
 
-void Game::beginGame() {
+void Game::beginGame(const char* level) {
 	SDL_ShowCursor(SDL_DISABLE);
 
 	////////////init
@@ -108,14 +111,12 @@ void Game::beginGame() {
 	
 	GameManager::level = new Level();
 	GameManager::level->tileSheet = ResourceManager::getTextureRef("Game/Textures/tiles.png");;
-	GameManager::level->load("Game/collision.test");
+	GameManager::level->load(level);
 
 	Vector2f spawn = GameManager::level->getSpawnPoint();
 
 	_player.init((int)spawn.x, (int)spawn.y, 128, 32, "Game/Textures/crosshair.png", "Game/Textures/player.png");
 	GameManager::addObject(&_player);
-
-	//GameManager::camera->
 
 	log("Game started\n");
 	//////////////////
@@ -170,8 +171,8 @@ void Game::render(float deltaTime) {
 	GlobalUI::render(&_fontshader);
 
 	const static float f = 4;
-	_font.drawString("ROGUELIKE v0.0.1 - now with sound! Press M to change streams!", 0, 0,
-		glm::vec4(std::sin(GameManager::runTime * f) / 2 + 1, std::sin(GameManager::runTime * f + M_PI) / 2 + 1, std::sin(GameManager::runTime * f + M_PI * 2) / 2 + 1, 1), _fontshader);//haha
+	//ResourceManager::getFontRef(Constants::font)->drawString("ROGUELIKE v0.0.1 - now with sound! Press M to change streams!", 0, 0,
+	//	glm::vec4(std::sin(GameManager::runTime * f) / 2 + 1, std::sin(GameManager::runTime * f + M_PI) / 2 + 1, std::sin(GameManager::runTime * f + M_PI * 2) / 2 + 1, 1), _fontshader);//haha
 
 	_fontshader.unUseProgram();
 	///////////////////////////////////////////////

@@ -8,7 +8,7 @@ TextureCache::TextureCache() {
 TextureCache::~TextureCache() {
 }
 
-Texture* TextureCache::getTexture(std::string path) {
+Texture* TextureCache::getTexture(const std::string& path) {
 	
 	auto mit = textureMap.find(path);
 

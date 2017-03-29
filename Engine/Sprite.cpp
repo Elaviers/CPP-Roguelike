@@ -22,7 +22,7 @@ Sprite::~Sprite() {
 }
 
 #include <iostream>
-void Sprite::init(float xp, float yp,float w,float h,bool isStatic,std::string path) {
+void Sprite::init(float xp, float yp,float w,float h,bool isStatic,const std::string& path) {
 	_static = isStatic;
 	x = xp;
 	y = yp;

@@ -2,15 +2,24 @@
 #include <GL/glew.h>
 #include "RenderType.h"
 
-Vector2f GUI::cameraScale = Vector2f{ 1,1 };
-
 using namespace GUI;
+
+Vector2f GUI::cameraScale = Vector2f{ 1,1 };
 
 //Global
 
 UIContainer GlobalUI::_root(0,0,1,1,NORMALISED_X | NORMALISED_Y | NORMALISED_WIDTH | NORMALISED_HEIGHT);
+std::vector<UIElement*> GlobalUI::_elementsToDelete;
 
-bool GlobalUI::updateMousePosition(int x, int y) {
+bool GlobalUI::update(int x, int y) {
+	if (_elementsToDelete.size() > 0) {
+		for (UIElement* e : _elementsToDelete) {
+			_root.removeElement(e);
+			delete e;
+		}
+		_elementsToDelete.clear();
+	}
+
 	return _root.isOverlapping(x,y);
 }
 
@@ -34,6 +43,10 @@ void GlobalUI::add(UIElement*e) {
 
 void GlobalUI::remove(UIElement* e) {
 	_root.removeElement(e);
+}
+
+void GlobalUI::deleteElement(UIElement* e) {
+	_elementsToDelete.push_back(e);
 }
 
 void GlobalUI::setCameraSize(int w,int h) {
@@ -63,8 +76,10 @@ bool Button::isOverlapping(int x,int y) {
 
 bool Button::click() { 
 	if (_active) {
-		if (onClick != nullptr)
-			onClick();
+		if (_event_onClick_basic != nullptr)
+			_event_onClick_basic();
+		if (_event_onClick != nullptr)
+			_event_onClick(this);
 		return true;
 	}
 	return false;

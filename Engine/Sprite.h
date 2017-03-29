@@ -20,7 +20,7 @@ public:
 	float x, y, width, height, rotation;
 	Vertex vertices[6];
 
-	void init(float x, float y, float width, float height,bool isStatic = true, std::string texturePath = "");//Creates sprite,binds VAO,VBO, and texture
+	void init(float x, float y, float width, float height,bool isStatic = true, const std::string& texturePath = "");//Creates sprite,binds VAO,VBO, and texture
 	void setOrigin(float x,float y);//Sets the origin of the sprite. For each axis, 0 is the centre,-1 is left edge, and 1 is right edge. Only affects location for now.
 	void setPosition(float x, float y);//Sets position
 	void setRotation(float angle);//Sets Z angle

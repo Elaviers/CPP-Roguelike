@@ -58,7 +58,7 @@ void Player::render(Shader& shader,float frameTime) {
 	position.y += movey;
 
 	_playerSprite.setPosition(position.x,position.y);
-	GameManager::camera->setPosition(position.x, position.y);
+	GameManager::camera->setPosition(position);
 
 	//std::cout << "X:" << _playerSprite.x << " Y:" << _playerSprite.y << std::endl;
 
@@ -80,7 +80,7 @@ void Player::render(Shader& shader,float frameTime) {
 void  Player::shoot() {
 	Projectile p;
 	_projectiles.push_back(p);
-	glm::vec2 WorldCursorPosition = GameManager::camera->screentoWorld(GameManager::mousePosition.x, GameManager::mousePosition.y);
+	Vector2f WorldCursorPosition = GameManager::camera->screentoWorld(GameManager::mousePosition.x, GameManager::mousePosition.y);
 	float angle = std::atan2(WorldCursorPosition.y - (_playerSprite.y + 64), WorldCursorPosition.x - _playerSprite.x) * 180 / (float)M_PI;
 	_projectiles.back().init(_playerSprite.x,_playerSprite.y + 64, 64, angle, 512, "Game/Textures/proj.png");
 }

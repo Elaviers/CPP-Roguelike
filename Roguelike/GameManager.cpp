@@ -22,7 +22,7 @@ void GameManager::addObject(GameObject* obj) {
 void GameManager::update() {
 	SDL_GetMouseState(&mousePosition.x,&mousePosition.y);
 	mousePosition.y = screenDimensions.y - mousePosition.y;
-	mouseOnGUI = GlobalUI::updateMousePosition(mousePosition.x,mousePosition.y);
+	mouseOnGUI = GlobalUI::update(mousePosition.x,mousePosition.y);
 
 	for (GameObject* Object : Objects)
 		Object->update();

@@ -18,7 +18,6 @@ private:
 	Timing _frameTimer;
 	bool _running;
 	/////////////////////
-	Font _font;
 	Player _player;
 	Sprite _sprite;
 	Shader _shaderlsd,_shader,_fontshader;
@@ -30,7 +29,7 @@ public:
 	void stop();
 	void loop();
 
-	void beginGame();
+	void beginGame(const char* level);
 
 	void render(float);
 

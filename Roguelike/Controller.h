@@ -49,7 +49,7 @@ public:
 	Controller();
 	~Controller() {};
 
-	void init(Font& UIFont);
+	void init();
 	void render(float deltaTime,Camera2D&);
 	void input(SDL_Event event,int);
 };

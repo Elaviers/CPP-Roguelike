@@ -100,7 +100,7 @@ bool Level::save(const char* path) {
 void Level::drawSprites(Camera2D& cam,int layer) {
 	for (Tile t : _tiles)
 		if (t.TileID >= 0 && t.layer == layer)
-			SpriteRenderer::drawSprite(*tileSheet, cam.Corner1(), cam.Corner2(), (float)t.x, (float)t.y, tileSize, tileSize, 0.0f, 8, t.TileID);
+			SpriteRenderer::drawSprite(*tileSheet, cam.getMin(), cam.getMax(), (float)t.x, (float)t.y, tileSize, tileSize, 0.0f, 8, t.TileID);
 }
 
 void Level::drawEditorSprites() {

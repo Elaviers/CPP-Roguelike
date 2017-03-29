@@ -24,8 +24,8 @@ public:
 	static void UseProgram(Camera2D&);
 	static void UnuseProgram();
 
-	static void drawSprite(Texture& Texture, glm::vec2 Corner1, glm::vec2 Corner2, float x, float y, float width, float height, float angle = 0.0f, int Divisions = 1, int Index = 0);
-	static void drawSprite(Texture& Texture, glm::vec2 Corner1, glm::vec2 Corner2, float x, float y, float width, float height, Colour colour, float angle = 0.0f, int Divisions = 1, int Index = 0);
+	static void drawSprite(Texture& Texture, Vector2f Corner1, Vector2f Corner2, float x, float y, float width, float height, float angle = 0.0f, int Divisions = 1, int Index = 0);
+	static void drawSprite(Texture& Texture, Vector2f Corner1, Vector2f Corner2, float x, float y, float width, float height, Colour colour, float angle = 0.0f, int Divisions = 1, int Index = 0);
 
 	static void drawSprite(Texture& Texture, float x, float y, float width, float height, float angle = 0.0f, int Divisions = 1, int Index = 0);
 	static void drawSprite(Texture& Texture, float x, float y, float width, float height, Colour colour, float angle = 0.0f, int Divisions = 1, int Index = 0);

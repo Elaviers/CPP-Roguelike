@@ -1,16 +1,25 @@
 #include "Camera2D.h"
 #include <GLM/gtc/matrix_transform.hpp>
 
-Camera2D::Camera2D() : _position(0, 0), _CameraMatrix(1) {
+Camera2D::Camera2D() : _position{ 0, 0 }, _CameraMatrix(1) {
 }
 
 Camera2D::~Camera2D() {
 }
 
 glm::mat4 ortho;
-glm::vec2 OriginOffset;
+Vector2f OriginOffset;
 
-void Camera2D::SetViewportSize(int screenX, int screenY) {
+void Camera2D::setPosition(const Vector2f position) {
+	_position = position; 
+	update();
+}
+
+void Camera2D::move(const float x,const float y) {
+	setPosition(Vector2f{ _position.x + x, _position.y + y });
+}
+
+void Camera2D::SetViewportSize(const int screenX, const int screenY) {
 	_scale = 1;
 	_screenW  = screenX;
 	_screenH  = screenY;
@@ -31,7 +40,7 @@ void Camera2D::update() {
 	//_CameraMatrix = glm::rotate(_CameraMatrix, 1.2f, glm::vec3(0, 0, 1)); //inconsistent
 }
 
-void Camera2D::scale(float s, glm::vec2 newOrigin) {
+void Camera2D::scale(const float s, const Vector2f newOrigin) {
 	if (newOrigin != OriginOffset)
 		OriginOffset = newOrigin;
 

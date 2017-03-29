@@ -1,5 +1,7 @@
 #include "Editor.h"
+#include "Constants.h"
 
+#include <Engine/ResourceManager.h>
 #include <Engine/LineRenderer.h>
 #include <Engine/SpriteRenderer.h>
 #include <SDL/SDL.h>
@@ -29,14 +31,17 @@ void Editor::start() {
 
 	FT_Library ft;
 	FT_Init_FreeType(&ft);
-	_font.init(ft, "Game/Fonts/font.ttf", 32);
+	//_font.init(ft, "Game/Fonts/font.ttf", 32);
+	ResourceManager::setFontLibrary(ft);
+	ResourceManager::getFontRef(Constants::font);
+	FT_Done_FreeType(ft);
 	///////////////////////////////////////////////////////////////////////
 	
 	_camera.SetViewportSize(screenX, screenY);
 
 	GlobalUI::setCameraSize(screenX, screenY);
 
-	_controller.init(_font);
+	_controller.init();
 
 	////////////////////////////////////////////////////////////////////////
 	Colour c;

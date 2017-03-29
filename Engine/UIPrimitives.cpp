@@ -2,6 +2,7 @@
 
 #include "LineRenderer.h"
 #include "RenderType.h"
+#include "ResourceManager.h"
 
 #include <algorithm>
 
@@ -11,11 +12,11 @@ using namespace GUI;
 UIElement::UIElement(float x, float y, float w, float h, unsigned char flags) : _flags(flags), _position{ x, y }, _size{ w, h } {}
 ////////
 
-bool UIElement::isOverlapping(int x, int y) {
+bool UIElement::isOverlapping(const int x, const int y) {
 	float fx = x / cameraScale.x;
 	float fy = y / cameraScale.y;
 
-	if (fx >= _corner1.x && fx <= _corner2.x && fy >= _corner1.y && fy <= _corner2.y)
+	if (fx >= _min.x && fx <= _max.x && fy >= _min.y && fy <= _max.y)
 		return true;
 	return false;
 }
@@ -24,11 +25,11 @@ void UIElement::calculate() {
 	float x = _position.x, y = _position.y;
 	float width = _size.x, height = _size.y;
 	
-	if (!_flags & NORMALISED_X)x /= cameraScale.x;//Normalise if needed
-	if (_flags & ONEMINUS_X)x = 1 - x;
+	if (!(_flags & NORMALISED_X))x /= cameraScale.x;//Normalise if needed
+	if (_flags & FLIPPED_X)x = 1 - x;
 
 	if (!(_flags & NORMALISED_Y))y /= cameraScale.y;//Normalise if needed
-	if ((_flags & ONEMINUS_Y))y = 1 - y;
+	if (_flags & FLIPPED_Y)y = 1 - y;
 
 	if (!(_flags & NORMALISED_WIDTH))width /= cameraScale.x;//Normalise if needed
 	if (!(_flags & NORMALISED_HEIGHT))height /= cameraScale.y;//Normalise if needed
@@ -41,40 +42,45 @@ void UIElement::calculate() {
 	std::printf("CALCULATE %p : PARENT IS %p : CAMERASCALE IS %d %d (%f %f %f %f -> %f %f %f %f)\n",
 		this,_parent,
 		(int)cameraScale.x,(int)cameraScale.y,
-		_position.x, _position.y, _position.x + _size.x, _position.x + _size.y,
+		_position.x, _position.y, _size.x, _size.y,
 		x,y,x+width,y+height);
 
-	_corner1.x = x;
-	_corner1.y = y;
-	_corner2.x = x + width;
-	_corner2.y = y + height;
+	_min.x = width < 0 ? x + width : x;
+	_min.y = height < 0 ? y + height : y;
+	_max.x = width > 0 ? x + width : x;
+	_max.y = height > 0 ? y + height : y;
 }
-////////////////|UIROOT|
+
+UIContainer::~UIContainer() {
+	std::printf("Start destroying UIContainer.. (%p)\n",this);
+	for (UIElement* e : _elements)
+		if (e) {
+			std::printf("delete %p...\n",e);
+			delete e;
+		}
+	std::printf("done!\n");
+}
+
 void UIContainer::removeElement(UIElement* e) {
 	_elements.erase(std::remove(_elements.begin(), _elements.end(), e), _elements.end());
 }
 
-void UIContainer::render(Shader *s) 
-{
-	for (UIElement*& e : _elements)
+void UIContainer::render(Shader *s) {
+	for (UIElement* e : _elements)
 		e->render(s);
 }
 
-//#include <iostream>
 bool UIContainer::click() {
-	//int c = 0;
-	for (UIElement*& e : _elements) {
-		//std::cout << "clicking(" << (++c) << ")\n";
+	for (UIElement* e : _elements) {
 		if (e->click())
 			return true;
-
 	}
 	return false;
 }
 
-bool UIContainer::isOverlapping(int x, int y) {
+bool UIContainer::isOverlapping(const int x, const int y) {
 	bool val = false;
-	for (UIElement*& e : _elements)
+	for (UIElement* e : _elements)
 		if (e->isOverlapping(x,y)) 
 			val = true;
 	return val;
@@ -90,18 +96,22 @@ void UIContainer::calculate() {
 void UIRect::render(Shader *s) {	
 	if (!s || s->Channel == RenderTypes::NONE) {
 		glColor4f(_colour.r, _colour.g, _colour.b, _colour.a);
-		glRectf(_corner1.x * 2 - 1, _corner1.y * 2 - 1, _corner2.x * 2 - 1, _corner2.y * 2 - 1);
+		glRectf(_min.x * 2 - 1, _min.y * 2 - 1, _max.x * 2 - 1, _max.y * 2 - 1);
 	}
 }
 ////////////////|UITEXT|
+void UIText::setFont(const std::string& path) {
+	_font = ResourceManager::getFontRef(path);
+}
+
 void UIText::render(Shader *shader) {
-	if (!_font.loaded) {
+	if (!_font->loaded) {
 		std::printf("Warning:attempted to render UIText without a loaded font!\n");
 		return;
 	}
 
 	if (shader && shader->Channel == RenderTypes::FONT)
-		_font.drawString(text, _corner1.x * cameraScale.x, _corner1.y * cameraScale.y,
+		_font->drawString(text, _min.x * cameraScale.x, _min.y * cameraScale.y,
 			(text.length() * cameraScale.y * getHeight() > cameraScale.x * getWidth()) ? (int)((cameraScale.x * getWidth()) / text.length()) : (int)(cameraScale.y * getHeight()),
 			_colour.vec4(), *shader);
 }

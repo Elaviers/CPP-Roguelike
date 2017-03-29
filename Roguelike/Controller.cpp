@@ -1,4 +1,5 @@
 #include "Controller.h"
+#include "Constants.h"
 
 #include <Engine/LineRenderer.h>
 #include <Engine/SpriteRenderer.h>
@@ -13,7 +14,7 @@ using namespace PlayerEnums;
 
 Controller::Controller() : 
 	speed(768), 
-	_menuBar(0, 32, 1, 32, NORMALISED_WIDTH | ONEMINUS_Y),
+	_menuBar(0, 0, 1, -32, NORMALISED_WIDTH | FLIPPED_Y ),
 	_namebox(0, 0, 1/3.0f, 1, NORMALISED_WIDTH | NORMALISED_HEIGHT), 
 	_loadButton(1/3.0f, 0, 1/3.0f, 1, NORMALISED_X | NORMALISED_WIDTH | NORMALISED_HEIGHT),
 	_saveButton(2/3.0f, 0, 1/3.0f, 1, NORMALISED_X | NORMALISED_WIDTH | NORMALISED_HEIGHT),
@@ -40,7 +41,7 @@ void Controller::setInputState(bool typing) {
 	_inputLock = typing;
 }
 
-void Controller::init(Font& UIFont) {
+void Controller::init() {
 	_namebox.label = "Sample.lvl";
 	_namebox.setColour(NormalisedColour(0,0,1));
 	_namebox.setSelectColour(NormalisedColour(0,0,0.5));
@@ -51,21 +52,21 @@ void Controller::init(Font& UIFont) {
 	_loadButton.label.setColour(NormalisedColour(0,0,0,1));
 	_loadButton.setColour(NormalisedColour(1, 1, 0));
 	_loadButton.setHoverColour(NormalisedColour(1, 0, 0));
-	_loadButton.onClick = load;
+	_loadButton.bind_onClick(load);
 
 	_saveButton.label = "SAVE";
 	_saveButton.label.setColour(NormalisedColour(0, 0, 0, 1));
 	_saveButton.setColour(NormalisedColour(1, 1, 0));
 	_saveButton.setHoverColour(NormalisedColour(1, 0, 0));
-	_saveButton.onClick = save;
+	_saveButton.bind_onClick(save);
 
 	_counter = "TileID : 0|Layer : 0";
 	_counter.setColour(NormalisedColour(1,1,1,1));
 
-	_namebox.label.setFont(UIFont);
-	_saveButton.label.setFont(UIFont);
-	_loadButton.label.setFont(UIFont);
-	_counter.setFont(UIFont);
+	_namebox.label.setFont(Constants::font);
+	_saveButton.label.setFont(Constants::font);
+	_loadButton.label.setFont(Constants::font);
+	_counter.setFont(Constants::font);
 
 	GlobalUI::add(_counter);
 	GlobalUI::add(_menuBar);
@@ -91,7 +92,7 @@ int gridSnap(int i, int snap) {
 void Controller::render(float deltaTime,Camera2D& cam) {
 	cam.move(_moveX * speed * deltaTime, _moveY * speed * deltaTime);
 
-	glm::vec2 f = cam.screentoWorld(_mouseX,_mouseY);
+	Vector2f f = cam.screentoWorld(_mouseX,_mouseY);
 	_currentTile.x = gridSnap((int)f.x,64);
 	_currentTile.y = gridSnap((int)f.y,64);
 
@@ -140,7 +141,7 @@ void Controller::input(SDL_Event event, int screenh)
 	SDL_GetMouseState(&_mouseX,&_mouseY);
 	_mouseY = screenh - _mouseY;
 
-	_usingUI = GlobalUI::updateMousePosition(_mouseX, _mouseY);
+	_usingUI = GlobalUI::update(_mouseX, _mouseY);
 
 	if (event.type == SDL_TEXTINPUT) {
 		_namebox.textInput(event.text.text[0]);

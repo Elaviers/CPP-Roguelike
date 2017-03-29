@@ -19,7 +19,6 @@ private:
 	Controller _controller;
 
 	Shader _fontShader;
-	Font _font;
 
 	void render(float);
 public:

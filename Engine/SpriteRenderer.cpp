@@ -50,11 +50,11 @@ void SpriteRenderer::drawSprite(Texture& a, float b, float c, float d, float e, 
 	drawSprite(_shader, a, b, c, d, e, f, g, h, i);
 };
 
-void SpriteRenderer::drawSprite(Texture& a, glm::vec2 c1, glm::vec2 c2, float x, float y, float width, float height, float f, int g, int h) {
+void SpriteRenderer::drawSprite(Texture& a, Vector2f c1, Vector2f c2, float x, float y, float width, float height, float f, int g, int h) {
 	if (x < c2.x && y < c2.y && x + width > c1.x && y + height > c1.y)drawSprite(a, x, y, width, height, f, g, h);
 };
 
-void SpriteRenderer::drawSprite(Texture& a, glm::vec2 c1, glm::vec2 c2, float x, float y, float width, float height, Colour f, float g, int h, int i) {
+void SpriteRenderer::drawSprite(Texture& a, Vector2f c1, Vector2f c2, float x, float y, float width, float height, Colour f, float g, int h, int i) {
 	if (x < c2.x && y < c2.y && x + width > c1.x && y + height > c1.y)drawSprite(a, x, y, width, height, f, g, h, i);
 };
 

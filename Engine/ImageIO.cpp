@@ -7,17 +7,17 @@ Texture ImageIO::loadPNG(std::string path) {
 	unsigned long width, height;
 	Texture texture;
 
-	std::vector<unsigned char> out = loadPNGRaw(path,width,height);
+	std::vector<unsigned char> out = loadPNGRaw(path, width, height);
 
 	texture.Width = width;
 	texture.Height = height;
-	
-	bindTexture(texture,out);
+
+	bindTexture(texture, out);
 
 	return texture;
 }
 
-std::vector<unsigned char> ImageIO::loadPNGRaw(std::string path, unsigned long &width, unsigned long &height) {
+std::vector<unsigned char> ImageIO::loadPNGRaw(const std::string& path, unsigned long &width, unsigned long &height) {
 	Texture texture = {};
 	std::vector<unsigned char> in;
 	std::vector<unsigned char> out;
@@ -31,7 +31,7 @@ std::vector<unsigned char> ImageIO::loadPNGRaw(std::string path, unsigned long &
 	return out;
 }
 
-void ImageIO::bindTexture(Texture &texture, std::vector<unsigned char> data) {
+void ImageIO::bindTexture(Texture &texture, const std::vector<unsigned char>& data) {
 	glGenTextures(1, &texture.ID);
 
 	glBindTexture(GL_TEXTURE_2D, texture.ID);
