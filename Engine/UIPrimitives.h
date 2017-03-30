@@ -42,7 +42,7 @@ namespace GUI {
 		UIElement(float x, float y, float w, float h, unsigned char flags);
 		UIElement() : UIElement(0, 0, 1, 1, NORMALISED_WIDTH | NORMALISED_HEIGHT) {};
 	public:
-		virtual ~UIElement() {};
+		virtual ~UIElement();
 		//Basic setters
 		void setFlags(unsigned char flags) { _flags = flags; };
 		void addFlags(unsigned char flags) { _flags |= flags; };
@@ -96,7 +96,7 @@ namespace GUI {
 
 		UIRect(float x, float y, float w, float h, unsigned char f) : UIElement(x, y, w, h, f) {};
 		UIRect() {};
-		virtual ~UIRect() { std::printf("Destroy UIRECT (%p)\n",this); };
+		~UIRect() { std::printf("Destroy UIRect (%p)\n", this); };
 	};
 
 	class UIText : public UIElement
@@ -115,7 +115,7 @@ namespace GUI {
 
 		UIText(float x, float y, float w, float h, unsigned char f) : UIElement(x, y, w, h, f) {};
 		UIText() {};
-		virtual ~UIText() { std::printf("Destroy UITEXT (%p)\n",this); };
+		~UIText() { std::printf("Destroy UITEXT (%p)\n",this); };
 	};
 
 }

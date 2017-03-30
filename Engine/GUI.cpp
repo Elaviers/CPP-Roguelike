@@ -12,14 +12,10 @@ UIContainer GlobalUI::_root(0,0,1,1,NORMALISED_X | NORMALISED_Y | NORMALISED_WID
 std::vector<UIElement*> GlobalUI::_elementsToDelete;
 
 bool GlobalUI::update(int x, int y) {
-	if (_elementsToDelete.size() > 0) {
-		for (UIElement* e : _elementsToDelete) {
-			_root.removeElement(e);
-			delete e;
-		}
-		_elementsToDelete.clear();
+	while (_elementsToDelete.size() > 0) {
+		_root.removeElement(_elementsToDelete.back());
+		_elementsToDelete.pop_back();
 	}
-
 	return _root.isOverlapping(x,y);
 }
 

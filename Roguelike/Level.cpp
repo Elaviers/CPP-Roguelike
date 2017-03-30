@@ -27,12 +27,13 @@ Vector2f Level::getSpawnPoint() {
 void Level::edit(Tile tile, bool remove) {
 	if (tile.x / tileSize > 123 || tile.x / tileSize < -124 || tile.y / tileSize > 123 || tile.y / tileSize < -124)return;
 
-	for (int i = 0; i < _tiles.size(); i++)
-		if (_tiles[i].x == tile.x && _tiles[i].y == tile.y && _tiles[i].layer == tile.layer)
-			if (!remove && _tiles[i].TileID == tile.TileID)
+	for (auto t = _tiles.begin(); t != _tiles.end(); t++)
+		if (t->x == tile.x && t->y == tile.y && t->layer == tile.layer)
+			if (!remove && t->TileID == tile.TileID)
 				return; //If tile is identical then return
 			else
-				_tiles.erase(_tiles.begin() + i);//Remove tile if it exists in level
+				delete &(*t);
+				//_tiles.erase(_tiles.begin() + i);//Remove tile if it exists in level
 
 	bool layerFound = false, IDFound = false;
 
@@ -59,9 +60,9 @@ void Level::edit(Tile tile, bool remove) {
 }
 
 void Level::setFlag(Tile tile, char flag) {
-	for (int i = 0; i < _tiles.size(); i++) {
-		if (_tiles[i].x == tile.x && _tiles[i].y == tile.y) {
-			_tiles[i].flag = flag;
+	for (auto t = _tiles.begin(); t != _tiles.end(); t++) {
+		if (t->x == tile.x && t->y == tile.y) {
+			t->flag = flag;
 			return;
 		}
 	}
@@ -77,11 +78,11 @@ void Level::setSpawnPoint(int x, int y) {
 bool Level::load(const char* path) {
 	_tiles = FileManager::readLevelFile(path, (int)tileSize);
 
-	for (Tile& t : _tiles) {
-		if (t.flag & TileFlags::SPAWNPOINT) {
-			_spawn.x = t.x;
-			_spawn.y = t.y;
-			t.flag = 0;
+	for (auto t = _tiles.begin(); t != _tiles.end(); t++) {
+		if (t->flag & TileFlags::SPAWNPOINT) {
+			_spawn.x = t->x;
+			_spawn.y = t->y;
+			t->flag = 0;
 		}
 	}
 
@@ -98,29 +99,25 @@ bool Level::save(const char* path) {
 }
 
 void Level::drawSprites(Camera2D& cam,int layer) {
-	for (Tile t : _tiles)
-		if (t.TileID >= 0 && t.layer == layer)
-			SpriteRenderer::drawSprite(*tileSheet, cam.getMin(), cam.getMax(), (float)t.x, (float)t.y, tileSize, tileSize, 0.0f, 8, t.TileID);
+	for (auto t = _tiles.begin(); t != _tiles.end(); t++)
+		if (t->TileID >= 0 && t->layer == layer)
+			SpriteRenderer::drawSprite(*tileSheet, cam.getMin(), cam.getMax(), (float)t->x, (float)t->y, tileSize, tileSize, 0.0f, 8, t->TileID);
 }
 
 void Level::drawEditorSprites() {
-	for (Tile t : _tiles)
-		if (t.TileID < 0)
-			SpriteRenderer::drawSprite(*editorTileSheet, (float)t.x, (float)t.y, tileSize, tileSize, 0.0f, 4, 1);
+	for (auto t = _tiles.begin(); t != _tiles.end(); t++)
+		if (t->TileID < 0)
+			SpriteRenderer::drawSprite(*editorTileSheet, (float)t->x, (float)t->y, tileSize, tileSize, 0.0f, 4, 1);
 
 	SpriteRenderer::drawSprite(*editorTileSheet, (float)_spawn.x, (float)_spawn.y, tileSize, tileSize, 0.0f, 4);
 }
 
-bool Level::pointOverlaps(int x, int y,int layer) {
-	for (Tile t : _tiles)
-		if (t.layer == layer && x >= t.x && x <= t.x + 64 && y >= t.y && y <= t.y + 64)
-			return true;
-	return false;
-}
-
 Tile* Level::rectOverlaps(Vector2f min, Vector2f max, int layer) {
-	for (Tile t : _tiles)
-		if (t.layer == layer && !(max.x <= t.x || max.y <= t.y || min.x >= t.x + 64 || min.y >= t.y + 64))
-			return &t;
+	for (auto t = _tiles.begin(); t != _tiles.end(); t++) {
+		if (t->layer == layer && !(max.x <= t->x || max.y <= t->y || min.x >= t->x + 64 || min.y >= t->y + 64))
+			return &(*t);
+		if (t->layer > layer)
+			break;
+	}
 	return NULL;
 }

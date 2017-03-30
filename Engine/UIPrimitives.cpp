@@ -12,6 +12,14 @@ using namespace GUI;
 UIElement::UIElement(float x, float y, float w, float h, unsigned char flags) : _flags(flags), _position{ x, y }, _size{ w, h } {}
 ////////
 
+UIElement::~UIElement() {
+	if (_parent) {
+		UIContainer * owner = dynamic_cast<UIContainer*>(_parent);
+		if (owner)
+			owner->removeElement(this);
+	}
+}
+
 bool UIElement::isOverlapping(const int x, const int y) {
 	float fx = x / cameraScale.x;
 	float fy = y / cameraScale.y;
@@ -53,11 +61,12 @@ void UIElement::calculate() {
 
 UIContainer::~UIContainer() {
 	std::printf("Start destroying UIContainer.. (%p)\n",this);
-	for (UIElement* e : _elements)
-		if (e) {
-			std::printf("delete %p...\n",e);
-			delete e;
-		}
+
+	while (_elements.size() > 0) {
+		std::printf("delete %p...\n", _elements.back());
+		delete _elements.back();
+	}
+
 	std::printf("done!\n");
 }
 
@@ -66,13 +75,13 @@ void UIContainer::removeElement(UIElement* e) {
 }
 
 void UIContainer::render(Shader *s) {
-	for (UIElement* e : _elements)
-		e->render(s);
+	for (auto e = _elements.begin(); e != _elements.end(); e++)
+		(*e)->render(s);
 }
 
 bool UIContainer::click() {
-	for (UIElement* e : _elements) {
-		if (e->click())
+	for (auto e = _elements.begin(); e != _elements.end(); e++) {
+		if ((*e)->click())
 			return true;
 	}
 	return false;
@@ -80,8 +89,8 @@ bool UIContainer::click() {
 
 bool UIContainer::isOverlapping(const int x, const int y) {
 	bool val = false;
-	for (UIElement* e : _elements)
-		if (e->isOverlapping(x,y)) 
+	for (auto e = _elements.begin(); e != _elements.end(); e++)
+		if ((*e)->isOverlapping(x,y)) 
 			val = true;
 	return val;
 }
@@ -89,8 +98,8 @@ bool UIContainer::isOverlapping(const int x, const int y) {
 void UIContainer::calculate() {
 	UIElement::calculate();
 
-	for (UIElement*& e : _elements)
-		e->calculate();
+	for (auto e = _elements.begin(); e != _elements.end(); e++)
+		(*e)->calculate();
 }
 ////////////////|UIRECT|
 void UIRect::render(Shader *s) {	

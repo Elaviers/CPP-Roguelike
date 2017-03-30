@@ -29,7 +29,7 @@ namespace GUI {
 		void(*_event_onClick_basic)();
 	public:
 		Button(float x, float y, float width, float height, unsigned char flags);
-		virtual ~Button() { _elements.clear(); }; //Destructor clears children so that the UIContainer will not try to delete their pointers
+		virtual ~Button() { std::printf("Destroy Button (%p)\n", this); };
 
 		void setColour(const NormalisedColour& c) { _colour = c; panel.setColour(c); };
 		void setHoverColour(const NormalisedColour& c) { _hoverColour = c; };
@@ -50,7 +50,7 @@ namespace GUI {
 		NormalisedColour _colour, _selectColour;
 	public:
 		TextBox(float x, float y, float width, float height, unsigned char flags);
-		virtual ~TextBox() { _elements.clear(); }; //See Button
+		virtual ~TextBox() { std::printf("Destroy TextBox (%p)\n", this); };
 
 		void setColour(const NormalisedColour& c) { _colour = c; panel.setColour(c); };
 		void setSelectColour(const NormalisedColour& c) { _selectColour = c; };

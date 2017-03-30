@@ -35,9 +35,6 @@ public:
 	bool save(const char*);
 	bool load(const char*);
 
-	bool pointOverlaps(int x,int y,int layer);
-
-	bool pointOverlaps(Vector2f point, int layer) { return pointOverlaps((int)point.x,(int)point.y,layer); };
 	Tile* rectOverlaps(Vector2f min, Vector2f max, int layer);
 };
 

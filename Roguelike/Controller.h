@@ -16,9 +16,10 @@ using namespace GUI;
 class Controller
 {
 private:
+	UIContainer _menuBar; //Parents MUST be declared before children or they will not be able to destruct properly
 	Button _loadButton,_saveButton;
 	TextBox _namebox;
-	UIContainer _menuBar;
+
 	UIText _counter;
 	//////////////////////////////////
 	static bool _inputLock;
