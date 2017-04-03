@@ -6,6 +6,7 @@ private:
 	static GUI::UIContainer _root;
 	static std::vector<GUI::UIElement*> _elementsToDelete;
 public:
+	static void clear(); //Careful!
 	static bool update(int mouseX, int mouseY);
 	static void add(GUI::UIElement&);
 	static void add(GUI::UIElement*);

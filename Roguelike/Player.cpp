@@ -21,6 +21,7 @@ void Player::init(int x,int y,int size,int crosshairSize,std::string texture, st
 	_playerSprite.setOrigin(0, -1.f);
 	ResourceManager::getTexture("Game/Textures/proj.png");//Cache projectile texture
 
+	position = Vector2f{ (float)x, (float)y };
 	collision = Rect{ Vector2f{-32,0}, Vector2f{32,64} };
 }
 

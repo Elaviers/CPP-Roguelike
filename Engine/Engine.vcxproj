@@ -194,6 +194,7 @@
     <ClCompile Include="UIPrimitives.cpp" />
     <ClCompile Include="Utility.cpp" />
     <ClCompile Include="Vector.cpp" />
+    <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>

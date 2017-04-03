@@ -15,6 +15,8 @@ public:
 	Colour(GLubyte c) : r(c), g(c), b(c) {};
 	Colour(GLubyte r, GLubyte g, GLubyte b) : r(r), g(g), b(b), a(255) {};
 	Colour(GLubyte r, GLubyte g, GLubyte b, GLubyte a) : r(r), g(g), b(b), a(a) {};
+
+	bool operator!=(const Colour& b);
 };
 
 struct Vertex {

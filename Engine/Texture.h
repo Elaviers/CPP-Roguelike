@@ -6,5 +6,5 @@ public:
 	GLuint ID;
 	int Width, Height;
 
-	void bind();
+	void bind() const;
 };

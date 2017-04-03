@@ -4,12 +4,8 @@
 #include <Engine/Timing.h>
 #include <Engine/Shader.h>
 #include <Engine/Sprite.h>
-#include <Engine/Camera2D.h>
-#include <Engine/Font.h>
 
-#include "Player.h"
 #include "Level.h"
-#include "GameManager.h"
 
 class Game
 {
@@ -18,8 +14,7 @@ private:
 	Timing _frameTimer;
 	bool _running;
 	/////////////////////
-	Player _player;
-	Sprite _sprite;
+	Sprite _bg;
 	Shader _shaderlsd,_shader,_fontshader;
 public:
 	Game();

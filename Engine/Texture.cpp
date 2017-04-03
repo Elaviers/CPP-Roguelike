@@ -1,5 +1,5 @@
 #include "Texture.h"
 
-void Texture::bind() {
+void Texture::bind() const {
 	glBindTexture(GL_TEXTURE_2D,ID);
 }

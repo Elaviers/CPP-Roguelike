@@ -14,8 +14,8 @@ Shader SpriteRenderer::_shader;
 
 using namespace glm;
 
-void SpriteRenderer::drawSprite(Shader& shader, Texture &t, float x, float y, float width, float height, Colour c, float angle, int divisions, int index) {
-	if (_divisions != divisions || _lastColour.a != c.a) {
+void SpriteRenderer::drawSprite(Shader& shader, const Texture &t, float x, float y, float width, float height, Colour c, float angle, int divisions, int index) {
+	if (_divisions != divisions || _lastColour != c) {
 		setUVData(divisions,c);
 		setIndex(index);
 	}
@@ -38,27 +38,27 @@ void SpriteRenderer::drawSprite(Shader& shader, Texture &t, float x, float y, fl
 	glActiveTexture(0);
 }
 
-void SpriteRenderer::drawSprite(Shader& a,Texture &b, float c, float d, float e, float f, float g, int h, int i) {
+void SpriteRenderer::drawSprite(Shader& a, const Texture &b, float c, float d, float e, float f, float g, int h, int i) {
 	drawSprite(a,b,c,d,e,f,Colour(),g,h,i);
 }
 
-void SpriteRenderer::drawSprite(Texture& a, float b, float c, float d, float e, float f, int g, int h) {
+void SpriteRenderer::drawSprite(const Texture& a, float b, float c, float d, float e, float f, int g, int h) {
 	drawSprite(_shader,a,b,c,d,e,f,g,h);
 };
 
-void SpriteRenderer::drawSprite(Texture& a, float b, float c, float d, float e, Colour f, float g, int h, int i) {
+void SpriteRenderer::drawSprite(const Texture& a, float b, float c, float d, float e, Colour f, float g, int h, int i) {
 	drawSprite(_shader, a, b, c, d, e, f, g, h, i);
 };
 
-void SpriteRenderer::drawSprite(Texture& a, Vector2f c1, Vector2f c2, float x, float y, float width, float height, float f, int g, int h) {
+void SpriteRenderer::drawSprite(const Texture& a, Vector2f c1, Vector2f c2, float x, float y, float width, float height, float f, int g, int h) {
 	if (x < c2.x && y < c2.y && x + width > c1.x && y + height > c1.y)drawSprite(a, x, y, width, height, f, g, h);
 };
 
-void SpriteRenderer::drawSprite(Texture& a, Vector2f c1, Vector2f c2, float x, float y, float width, float height, Colour f, float g, int h, int i) {
+void SpriteRenderer::drawSprite(const Texture& a, Vector2f c1, Vector2f c2, float x, float y, float width, float height, Colour f, float g, int h, int i) {
 	if (x < c2.x && y < c2.y && x + width > c1.x && y + height > c1.y)drawSprite(a, x, y, width, height, f, g, h, i);
 };
 
-void SpriteRenderer::UseProgram(Camera2D& cam) {
+void SpriteRenderer::UseProgram(const Camera2D& cam) {
 	_shader.useProgram();
 	_shader.setMat4("projection", cam.getCameraMatrix());
 }
@@ -77,12 +77,12 @@ void SpriteRenderer::setUVData(int divisions,Colour c) {
 	Vertex poo[6];
 
 	float uv = 1.0f / divisions;
-	poo[0].setPosition(0, 1); poo[0].setUv(0, uv); poo[0].colour = c;
-	poo[1].setPosition(1, 0); poo[1].setUv(uv, 0); poo[1].colour = c;
-	poo[2].setPosition(0, 0); poo[2].setUv(0, 0); poo[2].colour = c;
-	poo[3].setPosition(0, 1); poo[3].setUv(0, uv); poo[3].colour = c;
+	poo[0].setPosition(0, 1); poo[0].setUv(0, uv);	poo[0].colour = c;
+	poo[1].setPosition(1, 0); poo[1].setUv(uv, 0);	poo[1].colour = c;
+	poo[2].setPosition(0, 0); poo[2].setUv(0, 0);	poo[2].colour = c;
+	poo[3].setPosition(0, 1); poo[3].setUv(0, uv);	poo[3].colour = c;
 	poo[4].setPosition(1, 1); poo[4].setUv(uv, uv); poo[4].colour = c;
-	poo[5].setPosition(1, 0); poo[5].setUv(uv, 0); poo[5].colour = c;
+	poo[5].setPosition(1, 0); poo[5].setUv(uv, 0);	poo[5].colour = c;
 
 	glBindVertexArray(_vao);
 	glBindBuffer(GL_ARRAY_BUFFER,_vbo);

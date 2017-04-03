@@ -4,32 +4,25 @@
 #include "UIWindow.h"
 #include "Constants.h"
 
-#include <Engine/IOManager.h>
 #include <iostream>
 using namespace GUI;
 
 bool Menu::_enabled;
 
-UIWindow *mainMenu, *levelSelect, *options;
+UIWindow *mainMenu, *options;
+Window_LevelSelect *levelSelect;
 
 void Quit_OnClick() {
 	GameManager::gameInstance->stop();
 }
 
 void Level_OnClick(UIElement* caller) {
-	GameManager::gameInstance->beginGame((std::string("Game/Levels/") + dynamic_cast<UI_Button*>(caller)->label.text).c_str());
-	GlobalUI::deleteElement(mainMenu);
-	GlobalUI::deleteElement(levelSelect);
-}
-
-void closeWindow(UIElement* button) {
-	UIWindow* window = dynamic_cast<UIWindow*>(button->getParent()->getParent());
-	if (window != nullptr)GlobalUI::remove(window);
+	GameManager::gameInstance->beginGame((std::string("Game/Levels/") + static_cast<UI_Button*>(caller)->label.text).c_str());
+	GlobalUI::clear();
 }
 
 void Menu::init() {
-	mainMenu = new UIWindow(.33f, .1f, .33f, .8f, NORMALISED_HEIGHT | NORMALISED_WIDTH | NORMALISED_X | NORMALISED_Y, "Main Menu", Constants::font);
-	mainMenu->bind_close(closeWindow);
+	mainMenu = new UIWindow(.33f, .1f, .33f, .8f, NORMALISED_HEIGHT | NORMALISED_WIDTH | NORMALISED_X | NORMALISED_Y, "Main Menu", Constants::font, false);
 
 	UI_Button *menu_Play = new UI_Button();
 	menu_Play->addFlags(FLIPPED_Y);
@@ -49,22 +42,6 @@ void Menu::init() {
 
 	////////////////////////////////////////////
 
-	levelSelect = new UIWindow(.66f, 0, .34f, 1, NORMALISED_HEIGHT | NORMALISED_WIDTH | NORMALISED_X | NORMALISED_Y, "Level Select", Constants::font);
-	levelSelect->bind_close(closeWindow);
-
-	std::vector<std::string> files = IOManager::getFilesInDirectory("Game/Levels", "level");
-	for (int i = 0; i < files.size(); i++) {
-		UI_Button *button = new UI_Button();
-		button->setFlags(NORMALISED_WIDTH | FLIPPED_Y);
-		button->setY(32.f + 16.f * i);
-		button->setHeight(-16);
-		button->label.setFont(Constants::font);
-		button->label = files[i];
-		button->bind_onClick(Level_OnClick);
-
-		levelSelect->addElement(button);
-	}
-
 	////////////////////////////////////////////
 	Menu::setEnabled(true);
 }
@@ -78,5 +55,10 @@ void Menu::setEnabled(bool b) {
 }
 
 void Menu::openLS() {
-	GlobalUI::add(levelSelect);
+	if (!Window_LevelSelect::status) { //Something tells me there's a better way of checking this...
+		levelSelect = new Window_LevelSelect(.66f, 0, .34f, .8f, NORMALISED_HEIGHT | NORMALISED_WIDTH | NORMALISED_X | NORMALISED_Y);
+		levelSelect->refresh();
+		levelSelect->bind_level(Level_OnClick);
+		GlobalUI::add(levelSelect);
+	}
 }

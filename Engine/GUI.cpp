@@ -11,6 +11,12 @@ Vector2f GUI::cameraScale = Vector2f{ 1,1 };
 UIContainer GlobalUI::_root(0,0,1,1,NORMALISED_X | NORMALISED_Y | NORMALISED_WIDTH | NORMALISED_HEIGHT);
 std::vector<UIElement*> GlobalUI::_elementsToDelete;
 
+void GlobalUI::clear() {
+	std::vector<UIElement*> *elements = _root.getChildren();
+	while (elements->size() > 0)
+		delete elements->back();
+}
+
 bool GlobalUI::update(int x, int y) {
 	while (_elementsToDelete.size() > 0) {
 		_root.removeElement(_elementsToDelete.back());

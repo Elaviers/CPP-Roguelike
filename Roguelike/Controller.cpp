@@ -97,13 +97,10 @@ void Controller::render(float deltaTime,Camera2D& cam) {
 	_currentTile.y = gridSnap((int)f.y,64);
 
 	switch (_editMode) {
-		case PLACING:
-			if (_placeMode == TILE)
-				_level.edit(_currentTile);
-			else
-				_level.setSpawnPoint(_currentTile.x,_currentTile.y);
+		case PLACING_TILE:
+			_level.edit(_currentTile);
 			break;
-		case DELETING:
+		case DELETING_TILE:
 			_level.edit(_currentTile,true);
 			break;
 	}
@@ -111,22 +108,23 @@ void Controller::render(float deltaTime,Camera2D& cam) {
 	SpriteRenderer::UseProgram(cam);
 		for (int layer = -16;layer < _currentTile.layer;layer++)
 			_level.drawSprites(cam,layer);
+
+		_level.drawSprites(cam,_currentTile.layer,Colour(200,255,200,255));
+
+		for (int layer = _currentTile.layer + 1; layer <= 16; layer++)
+			_level.drawSprites(cam, layer, Colour(255,255,255,127));
+				
+		_level.drawEntitySprites();
+
+		if (!_usingUI)
+			if (!_entMode && _editMode != DELETING_TILE)
+				SpriteRenderer::drawSprite(_tiletexture, (float)_currentTile.x, (float)_currentTile.y, 64.0f, 64.0f, Colour(255, 255, 255, 128), 0.0f, 8, _currentTile.TileID);
+			else if (_entMode && _editMode != DELETING_ENT)
+				SpriteRenderer::drawSprite(_symboltexture, (float)_currentTile.x, (float)_currentTile.y, 64.0f, 64.0f, Colour(255, 255, 255, 128), 0.0f, 4, _currentTile.TileID);
+
 	SpriteRenderer::UnuseProgram();
 
 	LineRenderer::render(cam);
-
-	SpriteRenderer::UseProgram(cam);
-	if (_editMode != DELETING && !_usingUI)
-		if (_placeMode == TILE)
-			SpriteRenderer::drawSprite(_tiletexture, (float)_currentTile.x, (float)_currentTile.y, 64.0f, 64.0f, Colour(255, 255, 255, 128), 0.0f, 8, _currentTile.TileID);
-		else
-			SpriteRenderer::drawSprite(_symboltexture, (float)_currentTile.x, (float)_currentTile.y, 64.0f, 64.0f, Colour(255, 255, 255, 128), 0.0f, 8, _currentTile.TileID);
-
-	_level.drawEditorSprites();
-
-		for (int layer = _currentTile.layer; layer < 16; layer++)
-			_level.drawSprites(cam,layer);
-	SpriteRenderer::UnuseProgram();
 }
 
 void Controller::setMovement(Direction dir,bool s) {
@@ -152,9 +150,11 @@ void Controller::input(SDL_Event event, int screenh)
 		if (!_usingUI)
 			switch (event.button.button) {
 			case SDL_BUTTON_LEFT:
-				_editMode = PLACING; break;
+				_editMode = _entMode ? PLACING_ENT : PLACING_TILE; 
+				if (_entMode)_level.addEntity(Entity(_currentTile.TileID, Vector2f{ (float)_currentTile.x, (float)_currentTile.y }));
+				break; 
 			case SDL_BUTTON_RIGHT:
-				_editMode = DELETING; break;
+				_editMode = _entMode ? DELETING_ENT : DELETING_TILE; break;
 			}
 		GlobalUI::click();
 	}
@@ -172,14 +172,18 @@ void Controller::input(SDL_Event event, int screenh)
 		case SDLK_a:setMovement(LEFT, true); break;
 		case SDLK_d:setMovement(RIGHT, true); break;
 
-		//case SDLK_SPACE:_placeMode = !_placeMode; break;
+		case SDLK_SPACE: _entMode = !_entMode; break;
+
 		case SDLK_r:_currentTile.TileID--; break;
 		case SDLK_t:_currentTile.TileID++; break;
 		case SDLK_LEFTBRACKET:_currentTile.layer--; break;
 		case SDLK_RIGHTBRACKET:_currentTile.layer++; break;
 		}
 
-		_counter = "TileID : " + std::to_string(_currentTile.TileID) + "|Layer : " + std::to_string(_currentTile.layer);
+		if (_entMode)
+			_counter = "EntID : " + std::to_string(_currentTile.TileID);
+		else
+			_counter = "TileID : " + std::to_string(_currentTile.TileID) + "|Layer : " + std::to_string(_currentTile.layer);
 	}
 	else if (event.type == SDL_KEYUP) {
 		switch (event.key.keysym.sym) {

@@ -6,8 +6,8 @@
 #include "FileManager.h"
 
 namespace PlayerEnums {
-	enum EditMode { NONE, PLACING, DELETING };
-	enum PlacementEmun { TILE, FLAG, SPAWNPOINT };
+	enum EditMode { NONE, PLACING_TILE, DELETING_TILE, PLACING_ENT, DELETING_ENT };
+	//enum PlacementEmun { TILE, FLAG, SPAWNPOINT };
 	enum Direction { RIGHT, UP, LEFT, DOWN };
 }
 
@@ -35,7 +35,8 @@ private:
 	float _moveX, _moveY, _CameraScale;
 
 	PlayerEnums::EditMode _editMode;
-	PlayerEnums::PlacementEmun _placeMode;
+	bool _entMode;
+	//PlayerEnums::PlacementEmun _placeMode;
 
 	bool MovementInputs[4];
 	

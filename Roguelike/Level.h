@@ -5,32 +5,28 @@
 #include <vector>
 #include <Engine/Vertex.h>
 #include "Tile.h"
-
-namespace TileFlags {
-	enum TileFlag {
-		SPAWNPOINT = 0x01
-	};
-}
+#include "Entity.h"
 
 class Level
 {
 private:
 	std::vector<Tile> _tiles;
-	Tile _spawn;
+	std::vector<EntityData> _entData;
 public:
 	Level();
 	~Level();
 
-	Vector2f getSpawnPoint();
+	Vector2 getSpawnPoint();
 	Texture *tileSheet, *editorTileSheet;
 
 	Tile* getData();
 
 	void drawSprites(Camera2D&,int layer);
-	void drawEditorSprites();
+	void drawSprites(Camera2D&, int layer, Colour c);
+	void drawEntitySprites();
 	void edit(Tile, bool = false);
-	void setFlag(Tile t, char);
-	void setSpawnPoint(int, int);
+
+	void addEntity(const Entity&);
 
 	bool save(const char*);
 	bool load(const char*);

@@ -4,5 +4,6 @@ struct Tile {
 	int layer;
 	int TileID;
 	int x, y;
-	char flag;
 };
+
+bool operator<(const Tile& a,const Tile& b);

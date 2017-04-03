@@ -1,8 +1,10 @@
 #include "Game.h"
+#include "Player.h"
 #include "FileManager.h"
 #include "Menu.h"
 #include "UIWindow.h"
 #include "Constants.h"
+#include "GameManager.h"
 
 #include <bass.h>
 #include <SDL/SDL.h>
@@ -15,11 +17,11 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#include <iostream>
-
+Player* _player = new Player;
+/////////////////////////////////
 Game::Game() : _running(true) {}
 
-void log(std::string l) { printf("%s", l.c_str()); }
+inline void log(std::string l) { printf("%s", l.c_str()); }
 
 HSTREAM music, music2;
 
@@ -31,7 +33,8 @@ void Game::start() {
 	GameManager::gameInstance = this;
 	////////
 
-	std::vector<StringPair> properties = FileManager::readFile("Game/wololo.zestyconfig");
+	std::vector<StringPair> properties;
+	FileManager::readFile("Game/wololo.zestyconfig",properties);
 	GameManager::screenDimensions.x = FileManager::readInt(properties,"resx");
 	GameManager::screenDimensions.y = FileManager::readInt(properties, "resy");
 
@@ -89,6 +92,9 @@ void Game::start() {
 	_shaderlsd.link();
 	
 	log("done!\n");
+	//other init
+	LineRenderer::init();
+	SpriteRenderer::init();
 
 	GlobalUI::setCameraSize(GameManager::screenDimensions.x, GameManager::screenDimensions.y);
 
@@ -97,7 +103,7 @@ void Game::start() {
 
 	Menu::init();
 
-	_sprite.init(-1, -1, 2, 2);
+	_bg.init(-1, -1, 2, 2);
 
 	loop();
 }
@@ -106,17 +112,15 @@ void Game::beginGame(const char* level) {
 	SDL_ShowCursor(SDL_DISABLE);
 
 	////////////init
-	LineRenderer::init();
-	SpriteRenderer::init();
 	
 	GameManager::level = new Level();
 	GameManager::level->tileSheet = ResourceManager::getTextureRef("Game/Textures/tiles.png");;
 	GameManager::level->load(level);
 
-	Vector2f spawn = GameManager::level->getSpawnPoint();
+	Vector2 spawn = GameManager::level->getSpawnPoint();
 
-	_player.init((int)spawn.x, (int)spawn.y, 128, 32, "Game/Textures/crosshair.png", "Game/Textures/player.png");
-	GameManager::addObject(&_player);
+	_player->init(spawn.x + 32, spawn.y + 32, 128, 32, "Game/Textures/crosshair.png", "Game/Textures/player.png");
+	GameManager::addObject(_player);
 
 	log("Game started\n");
 	//////////////////
@@ -149,31 +153,30 @@ void Game::render(float deltaTime) {
 	/////////////////////////////////////////////////
 	_shaderlsd.useProgram();
 	_shaderlsd.set1f("time",GameManager::runTime);
-	_sprite.render();
+	_bg.render();
 	_shaderlsd.unUseProgram();
 
 	////////////////////////////////////////////////
+	SpriteRenderer::UseProgram(*GameManager::camera);
+	GameManager::renderLevel(-2, 0);
+	SpriteRenderer::UnuseProgram();
+
 	_shader.useProgram();
 	_shader.set1i("sTexture", 0);
 	_shader.setMat4("projection", GameManager::camera->getCameraMatrix());
-
-	GameManager::renderLevel(-2, 2);
 	GameManager::renderObjects(_shader, deltaTime);
-
 	_shader.unUseProgram();
+
+	SpriteRenderer::UseProgram(*GameManager::camera);
+	GameManager::renderLevel(1, 2);
+	SpriteRenderer::UnuseProgram();
 	////////////////////////////////////////////////
 	GlobalUI::render(NULL);
 
 	_fontshader.useProgram();
 	_fontshader.set1i("sTexture", 0);
 	_fontshader.setMat4("projection", GameManager::camera->getScreenMatrix());
-
 	GlobalUI::render(&_fontshader);
-
-	const static float f = 4;
-	//ResourceManager::getFontRef(Constants::font)->drawString("ROGUELIKE v0.0.1 - now with sound! Press M to change streams!", 0, 0,
-	//	glm::vec4(std::sin(GameManager::runTime * f) / 2 + 1, std::sin(GameManager::runTime * f + M_PI) / 2 + 1, std::sin(GameManager::runTime * f + M_PI * 2) / 2 + 1, 1), _fontshader);//haha
-
 	_fontshader.unUseProgram();
 	///////////////////////////////////////////////
 	LineRenderer::render(*GameManager::camera);
@@ -193,12 +196,12 @@ void Game::handleInput() {
 			_running = false;
 
 		case SDL_MOUSEBUTTONDOWN:
-			if (!GameManager::mouseOnGUI)_player.setShooting(true); 
+			if (!GameManager::mouseOnGUI)_player->setShooting(true); 
 			GlobalUI::click();
 			break;
 
 		case SDL_MOUSEBUTTONUP:
-			_player.setShooting(false); break;
+			_player->setShooting(false); break;
 
 		case SDL_MOUSEWHEEL:
 			if (event.wheel.y > 0)
@@ -224,10 +227,10 @@ void Game::handleInput() {
 				toggletest = !toggletest;
 			};
 
-			_player.keyDown(event); break;
+			_player->keyDown(event); break;
 
 		case SDL_KEYUP:
-			_player.keyUp(event); break;
+			_player->keyUp(event); break;
 
 		case SDL_WINDOWEVENT:
 			if (event.window.event == SDL_WINDOWEVENT_RESIZED) {

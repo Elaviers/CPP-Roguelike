@@ -1,10 +1,13 @@
 ﻿#include "Game.h"
 #include "Editor.h"
 
+#include <stdlib.h>
+#include <time.h>
 #include <windows.h>
 
 int main(int argsc, char* argsv[]) {
 	system("chcp 65001"); //FOR UNICODE CONSOLE OUTPUT--OMIT THIS FOR MAC PORT OBVIOUSLY.
+	srand(time(NULL));
 
 	if (argsc >= 2) {
 		if (!std::strcmp(argsv[1], "edit")) {
