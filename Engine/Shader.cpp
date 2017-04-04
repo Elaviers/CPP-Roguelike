@@ -1,9 +1,12 @@
-#include <fstream>
-#include <string>
-#include <vector>
 #include "Shader.h"
+
 #include "ErrorHandling.h"
 #include "RenderType.h"
+
+#include <fstream>
+#include <GL/glew.h>
+#include <string>
+#include <vector>
 
 Shader::Shader() :_attributeCount(0),  _programID(0), _vertID(0), _fragID(0) {
 }

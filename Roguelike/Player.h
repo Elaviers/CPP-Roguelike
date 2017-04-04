@@ -1,11 +1,12 @@
 #pragma once
-#include <Engine/Sprite.h>
+#include "Level.h"
+#include "Projectile.h"
+
 #include <Engine/Camera2D.h>
 #include <Engine/GameObject.h>
-#include "Level.h"
-#include <SDL/SDL.h>
+#include <Engine/Sprite.h>
+#include <SDL/SDL_events.h>
 #include <vector>
-#include "Projectile.h"
 
 class Player : public GameObject
 {

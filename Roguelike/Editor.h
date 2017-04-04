@@ -1,11 +1,9 @@
 #pragma once
-
-#include <Engine/Window.h>
-#include <Engine/Timing.h>
-#include <Engine/Camera2D.h>
-#include <Engine/Font.h>
-
 #include "Controller.h"
+
+#include <Engine/Camera2D.h>
+#include <Engine/Timing.h>
+#include <Engine/Window.h>
 
 class Editor
 {
@@ -28,4 +26,3 @@ public:
 	void start();
 	void windowInput();
 };
-

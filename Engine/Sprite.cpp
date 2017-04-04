@@ -1,11 +1,10 @@
-#include <cstddef>
-#include <stdlib.h> 
 #include "Sprite.h"
+
 #include "ResourceManager.h"
-#include <GLM/glm.hpp>
 #include "Shader.h"
-#include "SpriteBatch.h"
-#include <GLM/glm.hpp>
+
+#include <GLM/trigonometric.hpp>
+#include <iostream>
 
 Sprite::Sprite() : _vboID(0), UVGridDivisions(1) {
 }
@@ -21,7 +20,6 @@ Sprite::~Sprite() {
 		glDeleteVertexArrays(1, &_vaoID);
 }
 
-#include <iostream>
 void Sprite::init(float xp, float yp,float w,float h,bool isStatic,const std::string& path) {
 	_static = isStatic;
 	x = xp;
@@ -159,7 +157,7 @@ void Sprite::setRotation(float a) {
 	updateVertices();
 }
 
-void Sprite::setColour(GLbyte r, GLbyte g, GLbyte b, GLbyte a) {
+void Sprite::setColour(GLubyte r, GLubyte g, GLubyte b, GLubyte a) {
 
 	for (int i = 0; i < 6; i++)
 		vertices[i].setColour(r, g, b, a);

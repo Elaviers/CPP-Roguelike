@@ -1,5 +1,5 @@
 #pragma once
-#include "UIPrimitives.h"
+#include "UIContainer.h"
 
 class GlobalUI {
 private:
@@ -16,56 +16,3 @@ public:
 	static void render(Shader*);
 	static void click();
 };
-
-namespace GUI {
-	extern Vector2f cameraScale;
-	typedef void(*buttonEvent)(UIElement* caller);
-
-	class Button : public UIContainer {
-	private:
-		bool _active;
-		NormalisedColour _colour, _hoverColour;
-
-		void (*_event_onClick)(UIElement *caller);
-		void(*_event_onClick_basic)();
-	public:
-		Button(float x, float y, float width, float height, unsigned char flags);
-		virtual ~Button() { std::printf("Destroy Button (%p)\n", this); };
-
-		void setColour(const NormalisedColour& c) { _colour = c; panel.setColour(c); };
-		void setHoverColour(const NormalisedColour& c) { _hoverColour = c; };
-
-		UIRect panel;
-		UIText label;
-
-		bool isOverlapping(const int, const int) override;
-		bool click() override;
-
-		void bind_onClick(void(*function)(UIElement *caller)) { _event_onClick = function; };
-		void bind_onClick(void(*function)()) { _event_onClick_basic = function; };
-	};
-
-	class TextBox : public UIContainer {
-	private:
-		bool _hover, _active;
-		NormalisedColour _colour, _selectColour;
-	public:
-		TextBox(float x, float y, float width, float height, unsigned char flags);
-		virtual ~TextBox() { std::printf("Destroy TextBox (%p)\n", this); };
-
-		void setColour(const NormalisedColour& c) { _colour = c; panel.setColour(c); };
-		void setSelectColour(const NormalisedColour& c) { _selectColour = c; };
-
-		UIRect panel;
-		UIText label;
-
-		void(*onStateChanged)(bool state);
-
-		bool isOverlapping(const int, const int) override;
-		bool click() override;
-
-		void textInput(char newchar);
-	};
-
-
-}

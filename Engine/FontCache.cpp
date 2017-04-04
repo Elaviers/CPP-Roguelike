@@ -1,7 +1,7 @@
-#include <iostream>
-#include <string>
 #include "FontCache.h"
 
+#include <iostream>
+#include <string>
 
 FontCache::FontCache()
 {

@@ -1,8 +1,9 @@
 #pragma once
-#include <vector>
+#include "Vertex.h"
+
 #include <GL/glew.h>
 #include <GLM/glm.hpp>
-#include "Vertex.h"
+#include <vector>
 
 enum class sortType {
 	NONE,
@@ -51,4 +52,3 @@ private:
 	void createVAO();
 	void sortGlyphs();
 };
-

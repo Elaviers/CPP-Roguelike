@@ -1,12 +1,10 @@
 #pragma once
+#include "Game.h"
+#include "Level.h"
 
 #include <Engine/Camera2D.h>
 #include <Engine/GameObject.h>
-#include "Level.h"
-
 #include <vector>
-
-#include "Game.h"
 
 class Game;
 
@@ -32,4 +30,3 @@ public:
 	static void renderLevel(int StartingLayer, int EndLayer);
 	static void renderObjects(Shader& s, float DeltaTime);
 };
-

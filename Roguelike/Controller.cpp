@@ -1,9 +1,11 @@
 #include "Controller.h"
+
 #include "Constants.h"
 
+#include <Engine/GUI.h>
 #include <Engine/LineRenderer.h>
-#include <Engine/SpriteRenderer.h>
 #include <Engine/ResourceManager.h>
+#include <Engine/SpriteRenderer.h>
 #include <iostream>
 
 Level* Controller::currentLevel;

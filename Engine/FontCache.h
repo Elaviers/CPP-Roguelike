@@ -1,6 +1,7 @@
 #pragma once
-#include <map>
 #include "Font.h"
+
+#include <map>
 
 class FontCache
 {
@@ -14,4 +15,3 @@ private:
 	std::map<std::string,Font> _fontMap;
 	FT_Library* FT_LIB;
 };
-

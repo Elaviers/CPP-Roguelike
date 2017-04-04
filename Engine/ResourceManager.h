@@ -1,7 +1,9 @@
 #pragma once
-#include <string>
-#include "TextureCache.h"
 #include "FontCache.h"
+#include "TextureCache.h"
+
+#include <string>
+
 class ResourceManager
 {
 public:

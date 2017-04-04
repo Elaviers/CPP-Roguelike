@@ -1,6 +1,8 @@
 #include "GUI.h"
-#include <GL/glew.h>
 #include "RenderType.h"
+#include "Vector2f.h"
+
+#include <GL/glew.h>
 
 using namespace GUI;
 
@@ -61,58 +63,6 @@ void GlobalUI::click() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////BUTTON
-Button::Button(float x, float y, float w, float h, unsigned char flags) :
-	UIContainer(x, y, w, h, flags)
-{
-	addElement(panel, false);
-	addElement(label, false);
-};
 
-bool Button::isOverlapping(int x,int y) {
-	_active = panel.isOverlapping(x, y);
-
-	panel.setColour(_active ? _hoverColour : _colour);
-
-	return _active;
-}
-
-bool Button::click() { 
-	if (_active) {
-		if (_event_onClick_basic != nullptr)
-			_event_onClick_basic();
-		if (_event_onClick != nullptr)
-			_event_onClick(this);
-		return true;
-	}
-	return false;
-}
 
 ////////////////////////////////////////////////////////////////////////////////////TEXTBOX
-TextBox::TextBox(float x, float y, float w, float h, unsigned char flags) :
-	UIContainer(x, y, w, h, flags)
-{
-	addElement(panel,false);
-	addElement(label,false);
-};
-
-bool TextBox::click() {
-	if (_active != _hover) {
-		_active = _hover;
-		panel.setColour(_active ? _selectColour : _colour);
-		onStateChanged(_active);
-		return true;
-	}
-	return false;
-}
-
-bool TextBox::isOverlapping(int x,int y) {
-	_hover = panel.isOverlapping(x, y);
-
-	return _hover;
-}
-
-void TextBox::textInput(char ch) {
-	if (_active) {
-		label.text += ch;
-	}
-}

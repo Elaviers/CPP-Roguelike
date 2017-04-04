@@ -1,14 +1,11 @@
 #pragma once
-
-#include <map>
-
-#include <Gl/glew.h>
-#include <glm/glm.hpp>
+#include "Shader.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
-
-#include "Shader.h"
+#include <Gl/glew.h>
+#include <glm/vec2.hpp>
+#include <map>
 
 struct Character {
 	GLuint TextureID;
@@ -36,4 +33,3 @@ public:
 	void drawString(const std::string& text, float x, float y, glm::vec4 Colour, Shader& s) { drawString(text, x, y, _pointsize, Colour, s); }; //Renders a string to the screen. Call from within a shader program!
 	void drawString(const std::string& text, float x, float y, int pointsize, glm::vec4 Colour, Shader& s); //Renders a string to the screen. Call from within a shader program!
 };
-

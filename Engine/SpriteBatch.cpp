@@ -1,4 +1,5 @@
 #include "SpriteBatch.h"
+
 #include <algorithm>
 
 SpriteBatch::SpriteBatch() : _VBO(0), _VAO(0) {

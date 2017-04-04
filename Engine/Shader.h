@@ -1,7 +1,7 @@
 #pragma once
+#include <GLM/mat4x4.hpp>
 
-#include <GL/glew.h>
-#include <GLM/glm.hpp>
+typedef unsigned int GLuint;
 
 namespace ShaderPreset { enum ShaderPreset { SPRITE, TRANSFORM_SPRITE, FONT, LINE }; }
 

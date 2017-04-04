@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL/SDL.h>
+
 class Timing
 {
 public:
@@ -13,4 +14,3 @@ private:
 	int _CAP;
 	int _start,_frametime;
 };
-

@@ -1,6 +1,6 @@
 #pragma once
 #include <Engine/GameObject.h>
-#include <Engine/Vector.h>
+#include <Engine/Vector2.h>
 
 struct EntityData {
 	unsigned char ID;

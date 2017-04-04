@@ -1,6 +1,7 @@
 #pragma once
-#include <GLM/glm.hpp>
-#include "Vector.h"
+#include "Vector2f.h"
+
+#include <GLM/mat4x4.hpp>
 
 class Camera2D
 {
@@ -49,4 +50,3 @@ private:
 
 	void update();
 };
-

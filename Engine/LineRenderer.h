@@ -1,8 +1,11 @@
 #pragma once
-#include <vector>
-#include "Shader.h"
-#include "Vertex.h"
 #include "Camera2D.h"
+#include "Colour.h"
+#include "Shader.h"
+#include "Vector2f.h"
+
+#include <glm/vec2.hpp>
+#include <vector>
 
 class LineRenderer
 {
@@ -11,6 +14,8 @@ private:
 		glm::vec2 Position;
 		Colour Colour;
 	};
+
+	glm::vec2 l;
 
 	static std::vector<VertexNoUV> _vertices;
 	static GLuint _vbo, _vao;
@@ -22,4 +27,3 @@ public:
 	static void clear();
 	static void render(const Camera2D&); //Renders lines
 };
-

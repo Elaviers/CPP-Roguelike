@@ -1,8 +1,9 @@
 #include "Level.h"
+
 #include "FileManager.h"
 
-#include <Engine/SpriteRenderer.h>
 #include <Engine/ResourceManager.h>
+#include <Engine/SpriteRenderer.h>
 
 Level::Level()
 {

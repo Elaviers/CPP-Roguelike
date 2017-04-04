@@ -1,21 +1,21 @@
 #include "Game.h"
-#include "Player.h"
-#include "FileManager.h"
-#include "Menu.h"
-#include "UIWindow.h"
+
 #include "Constants.h"
+#include "FileManager.h"
 #include "GameManager.h"
+#include "Menu.h"
+#include "Player.h"
+#include "UIWindow.h"
 
 #include <bass.h>
-#include <SDL/SDL.h>
-#include <Engine/ErrorHandling.h>
-#include <Engine/ResourceManager.h>
-#include <Engine/SpriteRenderer.h>
-#include <Engine/LineRenderer.h>
-#include <Engine/GUI.h>
-
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#include <Engine/ErrorHandling.h>
+#include <Engine/GUI.h>
+#include <Engine/LineRenderer.h>
+#include <Engine/ResourceManager.h>
+#include <Engine/SpriteRenderer.h>
+#include <SDL/SDL.h>
 
 Player* _player = new Player;
 /////////////////////////////////

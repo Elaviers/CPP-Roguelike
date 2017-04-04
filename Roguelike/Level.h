@@ -1,11 +1,12 @@
 #pragma once
-
-#include <Engine/Texture.h>
-#include <Engine/Camera2D.h>
-#include <vector>
-#include <Engine/Vertex.h>
-#include "Tile.h"
 #include "Entity.h"
+#include "Tile.h"
+
+#include <Engine/Camera2D.h>
+#include <Engine/Colour.h>
+#include <Engine/Texture.h>
+#include <Engine/Vector2.h>
+#include <vector>
 
 class Level
 {
@@ -33,4 +34,3 @@ public:
 
 	Tile* rectOverlaps(Vector2f min, Vector2f max, int layer);
 };
-

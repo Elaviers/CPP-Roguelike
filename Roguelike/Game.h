@@ -1,11 +1,8 @@
 #pragma once
-
-#include <Engine/Window.h>
-#include <Engine/Timing.h>
 #include <Engine/Shader.h>
 #include <Engine/Sprite.h>
-
-#include "Level.h"
+#include <Engine/Timing.h>
+#include <Engine/Window.h>
 
 class Game
 {
@@ -29,6 +26,4 @@ public:
 	void render(float);
 
 	void handleInput();
-;
 };
-

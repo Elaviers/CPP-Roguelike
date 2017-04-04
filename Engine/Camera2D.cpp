@@ -1,4 +1,5 @@
 #include "Camera2D.h"
+
 #include <GLM/gtc/matrix_transform.hpp>
 
 Camera2D::Camera2D() : _position{ 0, 0 }, _CameraMatrix(1) {

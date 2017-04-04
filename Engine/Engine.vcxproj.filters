@@ -25,9 +25,6 @@
     <ClCompile Include="SpriteBatch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Text.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TextureCache.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -61,19 +58,34 @@
     <ClCompile Include="GUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UIPrimitives.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FontCache.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Vertex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2f.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UIElement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UIContainer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UIRect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UIText.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Textbox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -100,9 +112,6 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="SpriteBatch.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Text.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
@@ -138,9 +147,6 @@
     <ClInclude Include="GUI.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="UIPrimitives.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Constants.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -150,13 +156,40 @@
     <ClInclude Include="RenderType.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Vector.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Rect.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="FontCache.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="UIElement.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="UIContainer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="UIRect.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="UIText.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2f.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalisedColour.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Colour.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Textbox.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

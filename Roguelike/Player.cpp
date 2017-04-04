@@ -1,15 +1,11 @@
 #include "Player.h"
-#include <math.h>
-#include <Engine/ResourceManager.h>
-#include <Engine/GUI.H>
 
 #include "Game.h"
-
-#include <iostream>
-
 #include "GameManager.h"
 
+#include <Engine/GUI.H>
 #include <Engine/LineRenderer.h>
+#include <Engine/ResourceManager.h>
 
 bool u, d, l, r;
 

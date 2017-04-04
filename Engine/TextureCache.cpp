@@ -1,6 +1,8 @@
-#include <iostream>
 #include "TextureCache.h"
+
 #include "ImageIO.h"
+
+#include <iostream>
 
 TextureCache::TextureCache() {
 }

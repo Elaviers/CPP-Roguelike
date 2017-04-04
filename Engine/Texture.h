@@ -1,5 +1,6 @@
 #pragma once
-#include <Gl/glew.h>
+
+typedef unsigned int GLuint;
 
 class Texture {
 public:

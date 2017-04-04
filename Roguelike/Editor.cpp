@@ -1,15 +1,14 @@
 #include "Editor.h"
-#include "Constants.h"
 
-#include <Engine/ResourceManager.h>
+#include "Constants.h"
+#include "FileManager.h"
+
+#include <Engine/GUI.h>
 #include <Engine/LineRenderer.h>
+#include <Engine/ResourceManager.h>
 #include <Engine/SpriteRenderer.h>
 #include <SDL/SDL.h>
 #include <GL/glew.h>
-
-#include <Engine/GUI.h>
-
-#include "FileManager.h"
 
 void Editor::start() {
 	SDL_Init(SDL_INIT_EVERYTHING);

@@ -1,8 +1,9 @@
 ﻿#include "FileManager.h"
+
+#include <Engine/Utility.h>
 #include <fstream>
 #include <iostream>
 #include <iterator>
-#include <Engine/Utility.h>
 
 const int CHAR_OFFSET = 132;
 

@@ -1,7 +1,8 @@
 #include "GameManager.h"
+
 #include <Engine/ErrorHandling.h>
-#include <SDL/SDL.h>
 #include <Engine/GUI.h>
+#include <SDL/SDL.h>
 
 Game* GameManager::gameInstance;
 Vector2 GameManager::screenDimensions;

@@ -1,22 +1,10 @@
 #pragma once
-
-#include <Gl/glew.h>
-#include "Vector.h"
+#include "Colour.h"
+#include "Vector2f.h"
 
 struct UV { 
 	float u, v;
 	void set(float uValue, float vValue) { u = uValue; v = vValue; }
-};
-
-class Colour { 
-public:
-	GLubyte r, g, b, a;
-	Colour() : r(255), g(255), b(255), a(255) { r, g, b, a; };
-	Colour(GLubyte c) : r(c), g(c), b(c) {};
-	Colour(GLubyte r, GLubyte g, GLubyte b) : r(r), g(g), b(b), a(255) {};
-	Colour(GLubyte r, GLubyte g, GLubyte b, GLubyte a) : r(r), g(g), b(b), a(a) {};
-
-	bool operator!=(const Colour& b);
 };
 
 struct Vertex {
@@ -28,6 +16,8 @@ struct Vertex {
 	void setColour(GLubyte r, GLubyte b, GLubyte g, GLubyte a) { colour.r = r; colour.g = g; colour.b = b; colour.a = a; }
 	void setUv(float u, float v) { uv.u = u; uv.v = v; }
 
-	static Colour colourOf(GLuint r, GLuint g, GLuint b, GLuint a) 
-	{ Colour c; c.r = r; c.g = g, c.b = b, c.a = a; return c; }
+	static Colour colourOf(int r, int g, int b, int a)
+	{
+		return Colour{ (GLubyte)r, (GLubyte)g, (GLubyte)b, (GLubyte)a };
+	}
 };

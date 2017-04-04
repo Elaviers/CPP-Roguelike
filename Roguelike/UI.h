@@ -1,5 +1,5 @@
 #pragma once
-#include <Engine/GUI.h>
+#include <Engine/Button.h>
 
 namespace UI_Constants {
 	extern const NormalisedColour rect_Primary, rect_Secondary, text_Primary;

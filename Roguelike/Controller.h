@@ -1,9 +1,11 @@
 #pragma once
-#include <SDL/SDL.h>
-#include <Engine/Camera2D.h>
-#include "Level.h"
-#include <Engine/GUI.h>
 #include "FileManager.h"
+#include "Level.h"
+
+#include <SDL/SDL_events.h>
+#include <Engine/Camera2D.h>
+#include <Engine/Button.h>
+#include <Engine/Textbox.h>
 
 namespace PlayerEnums {
 	enum EditMode { NONE, PLACING_TILE, DELETING_TILE, PLACING_ENT, DELETING_ENT };

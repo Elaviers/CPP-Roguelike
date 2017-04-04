@@ -1,9 +1,8 @@
 #pragma once
-
+#include "Rect.h"
 #include "RenderType.h"
 #include "Shader.h"
-#include "Vector.h"
-#include "Rect.h"
+#include "Vector2f.h"
 
 class GameObject
 {

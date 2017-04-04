@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+
 class IOManager
 {
 public:
@@ -7,4 +8,3 @@ public:
 
 	static std::vector<std::string> getFilesInDirectory(const char * path, const char * extension);
 };
-

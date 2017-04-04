@@ -1,6 +1,7 @@
 #pragma once
-#include <map>
 #include "Texture.h"
+
+#include <map>
 
 class TextureCache
 {

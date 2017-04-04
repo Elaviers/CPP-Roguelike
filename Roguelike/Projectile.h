@@ -1,10 +1,9 @@
 #pragma once
-
+#include <Engine/Shader.h>
 #include <Engine/Sprite.h>
 #include <Engine/Texture.h>
-#include <glm/glm.hpp>
+#include <glm/vec2.hpp>
 #include <string>
-#include <Engine/Shader.h>
 
 class Projectile
 {

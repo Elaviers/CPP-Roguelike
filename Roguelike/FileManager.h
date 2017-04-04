@@ -1,8 +1,9 @@
 #pragma once
+#include "Entity.h"
+#include "Level.h"
+
 #include <string>
 #include <vector>
-#include "Level.h"
-#include "Entity.h"
 
 struct StringPair {
 	std::string Property, Value;

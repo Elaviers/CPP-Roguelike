@@ -1,8 +1,9 @@
 #pragma once
 #include "Vertex.h"
-#include <vector>
-#include <string>
+
 #include <glm/glm.hpp>
+#include <string>
+#include <vector>
 
 namespace Utility {
 	glm::vec2 getOffsetOfUVIndex(int Index, int divisions);

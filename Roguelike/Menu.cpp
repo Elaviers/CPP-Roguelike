@@ -1,9 +1,11 @@
 #include "Menu.h"
-#include "UI.h"
-#include "GameManager.h"
-#include "UIWindow.h"
-#include "Constants.h"
 
+#include "Constants.h"
+#include "GameManager.h"
+#include "UI.h"
+#include "UIWindow.h"
+
+#include <Engine/GUI.h>
 #include <iostream>
 using namespace GUI;
 

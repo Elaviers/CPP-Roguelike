@@ -1,5 +1,5 @@
-﻿#include "Game.h"
-#include "Editor.h"
+﻿#include "Editor.h"
+#include "Game.h"
 
 #include <stdlib.h>
 #include <time.h>

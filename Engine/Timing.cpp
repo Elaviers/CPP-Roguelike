@@ -1,6 +1,5 @@
 #include "Timing.h"
 
-
 void Timing::init(int cVal) {
 	setFPSCap(cVal);
 }

@@ -1,5 +1,7 @@
 #include "LineRenderer.h"
 
+#include <GL/glew.h>
+
 std::vector<LineRenderer::VertexNoUV> LineRenderer::_vertices;
 GLuint LineRenderer::_vbo, LineRenderer::_vao;
 Shader LineRenderer::_shader;

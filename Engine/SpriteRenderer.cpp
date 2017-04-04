@@ -1,10 +1,9 @@
 #include "SpriteRenderer.h"
+
 #include "Utility.h"
 
-#include <cstddef>
-#include <GLM/glm.hpp>
+#include <GL/glew.h>
 #include <GLM/gtc/matrix_transform.hpp>
-#include "Utility.h"
 
 GLuint SpriteRenderer::_vbo, SpriteRenderer::_vao;
 int SpriteRenderer::_currentIndex, SpriteRenderer::_divisions;

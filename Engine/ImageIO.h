@@ -1,7 +1,9 @@
 #pragma once
+#include "Texture.h"
+
 #include <string>
 #include <vector>
-#include "Texture.h"
+
 class ImageIO
 {
 public:

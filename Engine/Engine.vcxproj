@@ -184,21 +184,27 @@
     <ClCompile Include="PicoPNG.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="ShaderPresetDefinitions.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteBatch.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
-    <ClCompile Include="Text.cpp" />
+    <ClCompile Include="Textbox.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureCache.cpp" />
     <ClCompile Include="Timing.cpp" />
-    <ClCompile Include="UIPrimitives.cpp" />
+    <ClCompile Include="UIContainer.cpp" />
+    <ClCompile Include="UIElement.cpp" />
+    <ClCompile Include="UIRect.cpp" />
+    <ClCompile Include="UIText.cpp" />
     <ClCompile Include="Utility.cpp" />
-    <ClCompile Include="Vector.cpp" />
+    <ClCompile Include="Vector2f.cpp" />
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Camera2D.h" />
+    <ClInclude Include="Colour.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="ErrorHandling.h" />
     <ClInclude Include="Font.h" />
@@ -206,6 +212,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="LineRenderer.h" />
+    <ClInclude Include="NormalisedColour.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="RenderType.h" />
     <ClInclude Include="Shader.h" />
@@ -216,13 +223,17 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteBatch.h" />
     <ClInclude Include="SpriteRenderer.h" />
-    <ClInclude Include="Text.h" />
+    <ClInclude Include="Textbox.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureCache.h" />
     <ClInclude Include="Timing.h" />
-    <ClInclude Include="UIPrimitives.h" />
+    <ClInclude Include="UIContainer.h" />
+    <ClInclude Include="UIElement.h" />
+    <ClInclude Include="UIRect.h" />
+    <ClInclude Include="UIText.h" />
     <ClInclude Include="Utility.h" />
-    <ClInclude Include="Vector.h" />
+    <ClInclude Include="Vector2f.h" />
+    <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

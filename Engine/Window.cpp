@@ -1,7 +1,6 @@
-#include "ErrorHandling.h"
 #include "Window.h"
 
-
+#include "ErrorHandling.h"
 
 Window::Window() {
 }
