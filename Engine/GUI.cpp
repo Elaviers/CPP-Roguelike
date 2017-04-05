@@ -8,8 +8,6 @@ using namespace GUI;
 
 Vector2f GUI::cameraScale = Vector2f{ 1,1 };
 
-//Global
-
 UIContainer GlobalUI::_root(0,0,1,1,NORMALISED_X | NORMALISED_Y | NORMALISED_WIDTH | NORMALISED_HEIGHT);
 std::vector<UIElement*> GlobalUI::_elementsToDelete;
 
@@ -61,8 +59,3 @@ void GlobalUI::setCameraSize(int w,int h) {
 void GlobalUI::click() {
 	_root.click();
 }
-
-////////////////////////////////////////////////////////////////////////////////////BUTTON
-
-
-////////////////////////////////////////////////////////////////////////////////////TEXTBOX

@@ -3,12 +3,12 @@
 #include "Projectile.h"
 
 #include <Engine/Camera2D.h>
-#include <Engine/GameObject.h>
+#include <Engine/Entity.h>
 #include <Engine/Sprite.h>
 #include <SDL/SDL_events.h>
 #include <vector>
 
-class Player : public GameObject
+class Player : public Entity
 {
 private:
 	Sprite _crosshair,_playerSprite;

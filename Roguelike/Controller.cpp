@@ -100,10 +100,10 @@ void Controller::render(float deltaTime,Camera2D& cam) {
 
 	switch (_editMode) {
 		case PLACING_TILE:
-			_level.edit(_currentTile);
+			_level.addTile(_currentTile);
 			break;
 		case DELETING_TILE:
-			_level.edit(_currentTile,true);
+			_level.removeTile(_currentTile);
 			break;
 	}
 	
@@ -153,7 +153,7 @@ void Controller::input(SDL_Event event, int screenh)
 			switch (event.button.button) {
 			case SDL_BUTTON_LEFT:
 				_editMode = _entMode ? PLACING_ENT : PLACING_TILE; 
-				if (_entMode)_level.addEntity(Entity(_currentTile.TileID, Vector2f{ (float)_currentTile.x, (float)_currentTile.y }));
+				if (_entMode)_level.addEntityData(EntityData{ (unsigned char)_currentTile.TileID, NULL, Vector2{ _currentTile.x, _currentTile.y } });
 				break; 
 			case SDL_BUTTON_RIGHT:
 				_editMode = _entMode ? DELETING_ENT : DELETING_TILE; break;

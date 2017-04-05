@@ -1,14 +1,15 @@
 #pragma once
+#include "EntityData.h"
 #include "Rect.h"
 #include "RenderType.h"
 #include "Shader.h"
 #include "Vector2f.h"
 
-class GameObject
+class Entity
 {
 public:
-	GameObject() {};
-	virtual ~GameObject() {};
+	Entity() {};
+	virtual ~Entity() {};
 
 	Vector2f position;
 	Rect collision;
@@ -18,4 +19,6 @@ public:
 	virtual void init() {};
 	virtual void update() {};
 	virtual void render(Shader& Shader, float DeltaTime) {};
+
+	virtual EntityData* getData() const { return NULL; };
 };

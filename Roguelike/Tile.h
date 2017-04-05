@@ -6,4 +6,5 @@ struct Tile {
 	int x, y;
 };
 
+bool operator==(const Tile& a, const Tile& b);
 bool operator<(const Tile& a,const Tile& b);

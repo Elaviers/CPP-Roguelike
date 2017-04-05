@@ -1,9 +1,9 @@
 #pragma once
-#include "Entity.h"
 #include "Tile.h"
 
 #include <Engine/Camera2D.h>
 #include <Engine/Colour.h>
+#include <Engine/EntityData.h>
 #include <Engine/Texture.h>
 #include <Engine/Vector2.h>
 #include <vector>
@@ -25,9 +25,12 @@ public:
 	void drawSprites(Camera2D&,int layer);
 	void drawSprites(Camera2D&, int layer, Colour c);
 	void drawEntitySprites();
-	void edit(Tile, bool = false);
 
-	void addEntity(const Entity&);
+	void addTile(const Tile&);
+	void removeTile(const Tile&);
+
+	void addEntityData(const EntityData&);
+	void removeEntityData(const EntityData&);
 
 	bool save(const char*);
 	bool load(const char*);

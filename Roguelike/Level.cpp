@@ -2,6 +2,7 @@
 
 #include "FileManager.h"
 
+#include <algorithm>
 #include <Engine/ResourceManager.h>
 #include <Engine/SpriteRenderer.h>
 
@@ -34,52 +35,53 @@ Vector2 Level::getSpawnPoint() {
 	return Vector2 { 0,0 };
 }
 
-//Editing functions
-void Level::edit(Tile tile, bool remove) {
+void Level::addTile(const Tile& tile) {
 	if (tile.x / tileSize > 123 || tile.x / tileSize < -124 || tile.y / tileSize > 123 || tile.y / tileSize < -124)return;
 
-	for (int i = 0; i < _tiles.size(); i++)
-		if (_tiles[i].x == tile.x && _tiles[i].y == tile.y && _tiles[i].layer == tile.layer)
-			if (!remove && _tiles[i].TileID == tile.TileID)
-				return; //If tile is identical then return
-			else
-				_tiles.erase(_tiles.begin() + i);
-				//_tiles.erase(_tiles.begin() + i);//Remove tile if it exists in level
+	for (auto it = _tiles.begin(); it != _tiles.end(); it++) //Check for existing tile
+		if (it->x == tile.x && it->y == tile.y && it->layer == tile.layer)
+			if (it->TileID != tile.TileID)
+				_tiles.erase(it);
+			else return;
 
-	bool layerFound = false, IDFound = false;
+	bool layerFound = false, IDFound = false, inIDRange = false;;
+	auto it = _tiles.begin();
 
-	if (!remove) {
-		int index = 0;
-		bool inIDRange = false;
-		for (index; index < _tiles.size();index++) {
-			if (tile.layer == _tiles[index].layer) {
-				layerFound = true;
-				if (tile.TileID == _tiles[index].TileID) {
-					IDFound = true;
-					if (tile.TileID != _tiles[index].TileID || tile.x > _tiles[index].x || (tile.x == _tiles[index].x && tile.y > _tiles[index].y))
-						break;
-				}
-				else if (IDFound) break;
+	for (it; it != _tiles.end(); it++) {
+		if (tile.layer == it->layer) {
+			layerFound = true;
+			if (tile.TileID == it->TileID) {
+				IDFound = true;
+				if (tile.TileID != it->TileID || tile.x > it->x || (tile.x == it->x && tile.y > it->y))
+					break;
 			}
-			else if (layerFound) break;
+			else if (IDFound) break;
 		}
-		_tiles.emplace(_tiles.begin() + index, tile);
-		printf("Tile placed at index %d",index);
-		if (index > 0)printf(" (after %d: %f, %f)\n", _tiles[index - 1].TileID, _tiles[index - 1].x / tileSize, _tiles[index - 1].y / tileSize);
-		else printf("\n");
+		else if (layerFound) break;
 	}
+	_tiles.insert(it, tile);
 }
 
-void Level::addEntity(const Entity& ent) {
-	EntityData data{ ent.ID, ent.getData(), Vector2{ (int)ent.position.x, (int)ent.position.y } };
+void Level::removeTile(const Tile& tile) {
+	for (auto it = _tiles.begin(); it != _tiles.end(); it++)
+		if (it->layer == tile.layer && it->x == tile.x && it->y == tile.y) {
+			_tiles.erase(it);
+			return;
+		}
+}
 
-	for (auto it = _entData.begin(); it < _entData.end(); it++)
+void Level::addEntityData(const EntityData& data) {
+	for (auto it = _entData.begin(); it != _entData.end(); it++)
 		if (*it < data) {
 			_entData.insert(it, data);
 			return;
 		}
 
 	_entData.push_back(data);
+}
+
+void Level::removeEntityData(const EntityData& data) {
+	_entData.erase(std::remove(_entData.begin(), _entData.end(), data), _entData.end());
 }
 
 bool Level::load(const char* path) {

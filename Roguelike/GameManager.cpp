@@ -1,23 +1,17 @@
 #include "GameManager.h"
 
+#include "GameData.h"
+
 #include <Engine/ErrorHandling.h>
 #include <Engine/GUI.h>
 #include <SDL/SDL.h>
 
-Game* GameManager::gameInstance;
-Vector2 GameManager::screenDimensions;
-Vector2 GameManager::mousePosition = Vector2 { 0, 0 };
-bool GameManager::mouseOnGUI;
+using namespace GameData;
 
-float GameManager::runTime;
+std::vector<Entity*> GameManager::Entities;
 
-Camera2D* GameManager::camera;
-Level* GameManager::level;
-
-std::vector<GameObject*> GameManager::Objects;
-
-void GameManager::addObject(GameObject* obj) {
-	Objects.push_back(obj);
+void GameManager::addEntity(Entity* obj) {
+	Entities.push_back(obj);
 }
 
 void GameManager::update() {
@@ -25,8 +19,8 @@ void GameManager::update() {
 	mousePosition.y = screenDimensions.y - mousePosition.y;
 	mouseOnGUI = GlobalUI::update(mousePosition.x,mousePosition.y);
 
-	for (GameObject* Object : Objects)
-		Object->update();
+	for (auto it = Entities.begin(); it < Entities.end(); it++)
+		(*it)->update();
 }
 
 void GameManager::renderLevel(int StartingLayer, int EndLayer) {
@@ -37,7 +31,6 @@ void GameManager::renderLevel(int StartingLayer, int EndLayer) {
 }
 
 void GameManager::renderObjects(Shader& shader, float DeltaTime) {
-	for (GameObject* Object : Objects) {
-		Object->render(shader, DeltaTime);
-	}
+	for (auto it = Entities.begin(); it < Entities.end(); it++)
+		(*it)->render(shader, DeltaTime);
 }

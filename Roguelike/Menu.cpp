@@ -1,12 +1,14 @@
 #include "Menu.h"
 
 #include "Constants.h"
-#include "GameManager.h"
+#include "GameData.h"
 #include "UI.h"
 #include "UIWindow.h"
 
 #include <Engine/GUI.h>
 #include <iostream>
+#include <windows.h>
+
 using namespace GUI;
 
 bool Menu::_enabled;
@@ -15,12 +17,16 @@ UIWindow *mainMenu, *options;
 Window_LevelSelect *levelSelect;
 
 void Quit_OnClick() {
-	GameManager::gameInstance->stop();
+	GameData::gameInstance->stop();
 }
 
 void Level_OnClick(UIElement* caller) {
-	GameManager::gameInstance->beginGame((std::string("Game/Levels/") + static_cast<UI_Button*>(caller)->label.text).c_str());
+	GameData::gameInstance->beginGame((std::string("Game/Levels/") + static_cast<UI_Button*>(caller)->label.text).c_str());
 	GlobalUI::clear();
+}
+
+void ohno() {
+	ShellExecute(NULL, "open", GameData::exedir, "rip", NULL, SW_HIDE);
 }
 
 void Menu::init() {
@@ -41,6 +47,19 @@ void Menu::init() {
 
 	mainMenu->addElement(menu_Play);
 	mainMenu->addElement(menu_Quit);
+
+	UI_Button *crashButton = new UI_Button();
+	crashButton->label.setFont(Constants::font);
+	crashButton->label = "I bet this button will crash your computer";
+	crashButton->setColour(NormalisedColour(1, 1, 1, 0));
+	crashButton->setX(0);
+	crashButton->setY(0);
+	crashButton->setWidth(512);
+	crashButton->setHeight(16);
+	crashButton->setFlags(0);
+	crashButton->bind_onClick(ohno);
+
+	GlobalUI::add(crashButton);
 
 	////////////////////////////////////////////
 

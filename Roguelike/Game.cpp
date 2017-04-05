@@ -2,6 +2,7 @@
 
 #include "Constants.h"
 #include "FileManager.h"
+#include "GameData.h"
 #include "GameManager.h"
 #include "Menu.h"
 #include "Player.h"
@@ -30,19 +31,19 @@ void Game::stop() {
 }
 
 void Game::start() {
-	GameManager::gameInstance = this;
+	GameData::gameInstance = this;
 	////////
 
 	std::vector<StringPair> properties;
 	FileManager::readFile("Game/wololo.zestyconfig",properties);
-	GameManager::screenDimensions.x = FileManager::readInt(properties,"resx");
-	GameManager::screenDimensions.y = FileManager::readInt(properties, "resy");
+	GameData::screenDimensions.x = FileManager::readInt(properties,"resx");
+	GameData::screenDimensions.y = FileManager::readInt(properties, "resy");
 
 	////////////SDL
 	log("Creating window...");
 
 	SDL_Init(SDL_INIT_EVERYTHING);
-	_window.create("The Window of Hope", GameManager::screenDimensions.x, GameManager::screenDimensions.y,(FileManager::readBool(properties,"fullscreen") ? SDL_WINDOW_FULLSCREEN : 0) | SDL_WINDOW_RESIZABLE);
+	_window.create("The Window of Hope", GameData::screenDimensions.x, GameData::screenDimensions.y,(FileManager::readBool(properties,"fullscreen") ? SDL_WINDOW_FULLSCREEN : 0) | SDL_WINDOW_RESIZABLE);
 	
 	SDL_GL_SetSwapInterval(FileManager::readBool(properties, "vsync"));//vsync
 	if (FileManager::readBool(properties, "vsync"))_frameTimer.setFPSCap(60);
@@ -96,10 +97,10 @@ void Game::start() {
 	LineRenderer::init();
 	SpriteRenderer::init();
 
-	GlobalUI::setCameraSize(GameManager::screenDimensions.x, GameManager::screenDimensions.y);
+	GlobalUI::setCameraSize(GameData::screenDimensions.x, GameData::screenDimensions.y);
 
-	GameManager::camera = new Camera2D();
-	GameManager::camera->SetViewportSize(GameManager::screenDimensions.x, GameManager::screenDimensions.y);
+	GameData::camera = new Camera2D();
+	GameData::camera->SetViewportSize(GameData::screenDimensions.x, GameData::screenDimensions.y);
 
 	Menu::init();
 
@@ -113,14 +114,14 @@ void Game::beginGame(const char* level) {
 
 	////////////init
 	
-	GameManager::level = new Level();
-	GameManager::level->tileSheet = ResourceManager::getTextureRef("Game/Textures/tiles.png");;
-	GameManager::level->load(level);
+	GameData::level = new Level();
+	GameData::level->tileSheet = ResourceManager::getTextureRef("Game/Textures/tiles.png");;
+	GameData::level->load(level);
 
-	Vector2 spawn = GameManager::level->getSpawnPoint();
+	Vector2 spawn = GameData::level->getSpawnPoint();
 
 	_player->init(spawn.x + 32, spawn.y + 32, 128, 32, "Game/Textures/crosshair.png", "Game/Textures/player.png");
-	GameManager::addObject(_player);
+	GameManager::addEntity(_player);
 
 	log("Game started\n");
 	//////////////////
@@ -132,13 +133,13 @@ void Game::loop() {
 		_frameTimer.begin();
 
 		frameNumber++;
-		GameManager::runTime += _frameTimer.deltaTime;
+		GameData::runTime += _frameTimer.deltaTime;
 
 		handleInput();
 		GameManager::update();
 		render(_frameTimer.deltaTime);
 
-		if (frameNumber % 10 == 0)_window.setTitle("Boring Title (" + std::to_string(_frameTimer.getFramerate()) + " FPS, Time is " + std::to_string(GameManager::runTime) + ") (X:" + std::to_string(GameManager::mousePosition.x) + " Y:" + std::to_string(GameManager::mousePosition.y) + ')');
+		if (frameNumber % 10 == 0)_window.setTitle("Boring Title (" + std::to_string(_frameTimer.getFramerate()) + " FPS, Time is " + std::to_string(GameData::runTime) + ") (X:" + std::to_string(GameData::mousePosition.x) + " Y:" + std::to_string(GameData::mousePosition.y) + ')');
 
 		_frameTimer.end();
 	}
@@ -152,22 +153,22 @@ void Game::render(float deltaTime) {
 
 	/////////////////////////////////////////////////
 	_shaderlsd.useProgram();
-	_shaderlsd.set1f("time",GameManager::runTime);
+	_shaderlsd.set1f("time", GameData::runTime);
 	_bg.render();
 	_shaderlsd.unUseProgram();
 
 	////////////////////////////////////////////////
-	SpriteRenderer::UseProgram(*GameManager::camera);
+	SpriteRenderer::UseProgram(*GameData::camera);
 	GameManager::renderLevel(-2, 0);
 	SpriteRenderer::UnuseProgram();
 
 	_shader.useProgram();
 	_shader.set1i("sTexture", 0);
-	_shader.setMat4("projection", GameManager::camera->getCameraMatrix());
+	_shader.setMat4("projection", GameData::camera->getCameraMatrix());
 	GameManager::renderObjects(_shader, deltaTime);
 	_shader.unUseProgram();
 
-	SpriteRenderer::UseProgram(*GameManager::camera);
+	SpriteRenderer::UseProgram(*GameData::camera);
 	GameManager::renderLevel(1, 2);
 	SpriteRenderer::UnuseProgram();
 	////////////////////////////////////////////////
@@ -175,11 +176,11 @@ void Game::render(float deltaTime) {
 
 	_fontshader.useProgram();
 	_fontshader.set1i("sTexture", 0);
-	_fontshader.setMat4("projection", GameManager::camera->getScreenMatrix());
+	_fontshader.setMat4("projection", GameData::camera->getScreenMatrix());
 	GlobalUI::render(&_fontshader);
 	_fontshader.unUseProgram();
 	///////////////////////////////////////////////
-	LineRenderer::render(*GameManager::camera);
+	LineRenderer::render(*GameData::camera);
 
 	_window.swapBuffer();
 }
@@ -196,7 +197,7 @@ void Game::handleInput() {
 			_running = false;
 
 		case SDL_MOUSEBUTTONDOWN:
-			if (!GameManager::mouseOnGUI)_player->setShooting(true); 
+			if (!GameData::mouseOnGUI)_player->setShooting(true);
 			GlobalUI::click();
 			break;
 
@@ -205,15 +206,15 @@ void Game::handleInput() {
 
 		case SDL_MOUSEWHEEL:
 			if (event.wheel.y > 0)
-				GameManager::camera->scale(0.1f);
+				GameData::camera->scale(0.1f);
 			else
-				GameManager::camera->scale(-0.1f);
+				GameData::camera->scale(-0.1f);
 			break;
 
 		case SDL_KEYDOWN:
 			if (event.key.keysym.sym == SDLK_ESCAPE) { _running = false; break; }
-			if (event.key.keysym.sym == SDLK_i) { GameManager::camera->setAngle(GameManager::camera->getAngle() + .01f); break; }
-			if (event.key.keysym.sym == SDLK_o) { GameManager::camera->setAngle(GameManager::camera->getAngle() - .01f); break; }
+			if (event.key.keysym.sym == SDLK_i) { GameData::camera->setAngle(GameData::camera->getAngle() + .01f); break; }
+			if (event.key.keysym.sym == SDLK_o) { GameData::camera->setAngle(GameData::camera->getAngle() - .01f); break; }
 			if (event.key.keysym.sym == SDLK_f) { SDL_SetWindowFullscreen(_window.GetWindowID(), true); break; }
 			if (event.key.keysym.sym == SDLK_m) {
 				static bool toggletest = true; if (toggletest) {
@@ -234,11 +235,11 @@ void Game::handleInput() {
 
 		case SDL_WINDOWEVENT:
 			if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
-				GameManager::screenDimensions.x = event.window.data1;
-				GameManager::screenDimensions.y = event.window.data2;
-				glViewport(0,0, GameManager::screenDimensions.x, GameManager::screenDimensions.y);
-				GameManager::camera->SetViewportSize(GameManager::screenDimensions.x, GameManager::screenDimensions.y);
-				GlobalUI::setCameraSize(GameManager::screenDimensions.x, GameManager::screenDimensions.y);			}
+				GameData::screenDimensions.x = event.window.data1;
+				GameData::screenDimensions.y = event.window.data2;
+				glViewport(0,0, GameData::screenDimensions.x, GameData::screenDimensions.y);
+				GameData::camera->SetViewportSize(GameData::screenDimensions.x, GameData::screenDimensions.y);
+				GlobalUI::setCameraSize(GameData::screenDimensions.x, GameData::screenDimensions.y);			}
 			break;
 		}
 }
