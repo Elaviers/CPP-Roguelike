@@ -46,21 +46,19 @@ void Level::addTile(const Tile& tile) {
 			}
 			else return;
 
-	bool layerFound = false, IDFound = false, inIDRange = false;;
 	auto it = _tiles.begin();
-
-	for (it; it != _tiles.end(); it++) {
-		if (tile.layer == it->layer) {
-			layerFound = true;
-			if (tile.ID == it->ID) {
-				IDFound = true;
-				if (tile.ID != it->ID || tile.position.x > it->position.x || (tile.position.x == it->position.x && tile.position.y > it->position.y))
-					break;
-			}
-			else if (IDFound) break;
+	for (; it != _tiles.end(); it++) //For every tile
+		if (tile.layer == it->layer) { //If layer found
+			for (; it != _tiles.end() && it->layer == tile.layer; it++) //For each tile in layer
+				if (tile.ID == it->ID) { //If ID found
+					for (; it != _tiles.end() && it->layer == tile.layer && it->ID == tile.ID; it++) //For each tile in ID
+						if (tile.position.x > it->position.x || (tile.position.x == it->position.x && tile.position.y > it->position.y)) //If X is over or is on X and Y is over
+							break; //Break if X is larger or Y is larger and X is equal
+					break; //break after finding ID
+				}
+			break; //break after finding Layer
 		}
-		else if (layerFound) break;
-	}
+
 	_tiles.insert(it, tile);
 }
 
@@ -83,13 +81,16 @@ void Level::addEntityData(const EntityData& data) {
 			}
 			else return;
 
-	for (auto it = _entData.begin(); it != _entData.end(); it++)
-		if (*it < data) {
-			_entData.insert(it, data);
-			return;
+	auto it = _entData.begin();
+	for (; it < _entData.end(); it++)
+		if (data.ID == it->ID) {
+			for (; it != _entData.end() && it->ID == data.ID; it++)
+				if (data.position.x > it->position.x || (data.position.x == it->position.x && data.position.y > it->position.y))
+					break;
+			break;
 		}
 
-	_entData.push_back(data);
+	_entData.insert(it,data);
 }
 
 void Level::removeEntityData(const EntityData& data) {
