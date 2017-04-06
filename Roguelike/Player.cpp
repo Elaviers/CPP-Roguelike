@@ -2,6 +2,8 @@
 
 #include "Game.h"
 #include "GameData.h"
+#include "GameManager.h"
+#include "Projectile.h"
 
 #include <Engine/GUI.H>
 #include <Engine/LineRenderer.h>
@@ -32,23 +34,19 @@ void Player::render(Shader& shader,float frameTime) {
 	float movex = _moveX * moveSpeed * frameTime;
 	float movey = _moveY * moveSpeed * frameTime;
 
-	for (unsigned int i = 0; i < _projectiles.size(); i++) {
-		_projectiles[i].render(frameTime,shader);
-	}
-
 	shader.set2f("UVOffset", 0, 0); 
 	shader.setMat4("transform",glm::mat4());
 
 	if (movex != 0) {
 		Tile* collide = GameData::level->rectOverlaps(position + collision.min + Vector2f{ movex, 0 }, position + collision.max + Vector2f{ movex, 0 }, 0);
 		if (collide)
-			movex = (movex >= 0 ? collide->x - (position.x + collision.max.x) : (collide->x + 64) - (position.x + collision.min.x));
+			movex = (movex >= 0 ? collide->position.x - (position.x + collision.max.x) : (collide->position.x + 64) - (position.x + collision.min.x));
 	}
 
 	if (movey != 0) {
 		Tile* collide = GameData::level->rectOverlaps(position + collision.min + Vector2f{ 0, movey }, position + collision.max + Vector2f{ 0, movey }, 0);
 		if (collide)
-			movey = (movey >= 0 ? collide->y - (position.y + collision.max.y) : (collide->y + 64) - (position.y + collision.min.y));
+			movey = (movey >= 0 ? collide->position.y - (position.y + collision.max.y) : (collide->position.y + 64) - (position.y + collision.min.y));
 	}
 
 	position.x += movex;
@@ -61,8 +59,8 @@ void Player::render(Shader& shader,float frameTime) {
 
 	_playerSprite.render();
 
-	shader.setMat4("projection", GameData::camera->getScreenMatrix());
-	_crosshair.setPosition((float)GameData::mousePosition.x, (float)GameData::mousePosition.y);
+	Vector2f WorldCursorPosition = GameData::camera->screentoWorld(GameData::mousePosition.x, GameData::mousePosition.y);
+	_crosshair.setPosition(WorldCursorPosition.x, WorldCursorPosition.y);
 	_crosshair.render();
 
 	glBindTexture(GL_TEXTURE_2D,0);
@@ -75,16 +73,17 @@ void Player::render(Shader& shader,float frameTime) {
 }
 
 void  Player::shoot() {
-	Projectile p;
-	_projectiles.push_back(p);
 	Vector2f WorldCursorPosition = GameData::camera->screentoWorld(GameData::mousePosition.x, GameData::mousePosition.y);
 	float angle = std::atan2(WorldCursorPosition.y - (_playerSprite.y + 64), WorldCursorPosition.x - _playerSprite.x) * 180 / (float)M_PI;
-	_projectiles.back().init(_playerSprite.x,_playerSprite.y + 64, 64, angle, 512, "Game/Textures/proj.png");
+
+	Projectile* p = new Projectile();
+	p->init(_playerSprite.x,_playerSprite.y + 64, 64, angle, 512, "Game/Textures/proj.png");
+	GameManager::addEntity(p);
 }
 
 void Player::keyUp(SDL_Event action) {
 	switch (action.key.keysym.sym) {
-	case SDLK_w:u = false; break;
+	case SDLK_w:u = false; break;    
 	case SDLK_s:d = false; break;
 	case SDLK_a:l = false; break;
 	case SDLK_d:r = false; break;

@@ -11,7 +11,8 @@ class Game;
 class GameManager
 {
 private:
-	static std::vector<Entity*> Entities;
+	static std::vector<Entity*> _entities, _pending;
+	static bool _updating;
 public:
 	static void addEntity(Entity* Object);
 

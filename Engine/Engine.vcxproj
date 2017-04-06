@@ -198,6 +198,7 @@
     <ClCompile Include="UIRect.cpp" />
     <ClCompile Include="UIText.cpp" />
     <ClCompile Include="Utility.cpp" />
+    <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector2f.cpp" />
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="Window.cpp" />

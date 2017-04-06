@@ -8,19 +8,32 @@
 
 using namespace GameData;
 
-std::vector<Entity*> GameManager::Entities;
+std::vector<Entity*> GameManager::_entities, GameManager::_pending;
+bool GameManager::_updating;
 
 void GameManager::addEntity(Entity* obj) {
-	Entities.push_back(obj);
+	if (!_updating)_entities.push_back(obj);
+	else _pending.push_back(obj);
 }
 
 void GameManager::update() {
 	SDL_GetMouseState(&mousePosition.x,&mousePosition.y);
 	mousePosition.y = screenDimensions.y - mousePosition.y;
 	mouseOnGUI = GlobalUI::update(mousePosition.x,mousePosition.y);
+	///////////////////////////////////////////////////////////////////////////
 
-	for (auto it = Entities.begin(); it < Entities.end(); it++)
+	if (_pending.size() > 0) {
+		for (auto it = _pending.begin(); it != _pending.end(); it++)
+			_entities.push_back(*it);
+		_pending.clear();
+	}
+
+	_updating = true;
+
+	for (auto it = _entities.begin(); it != _entities.end(); it++)
 		(*it)->update();
+
+	_updating = false;
 }
 
 void GameManager::renderLevel(int StartingLayer, int EndLayer) {
@@ -31,6 +44,6 @@ void GameManager::renderLevel(int StartingLayer, int EndLayer) {
 }
 
 void GameManager::renderObjects(Shader& shader, float DeltaTime) {
-	for (auto it = Entities.begin(); it < Entities.end(); it++)
+	for (auto it = _entities.begin(); it != _entities.end(); it++)
 		(*it)->render(shader, DeltaTime);
 }

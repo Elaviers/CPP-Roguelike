@@ -8,8 +8,8 @@
 #include <Engine/Textbox.h>
 
 namespace PlayerEnums {
-	enum EditMode { NONE, PLACING_TILE, DELETING_TILE, PLACING_ENT, DELETING_ENT };
-	//enum PlacementEmun { TILE, FLAG, SPAWNPOINT };
+	enum EditMode { NONE, PLACE, DELETE };
+
 	enum Direction { RIGHT, UP, LEFT, DOWN };
 }
 

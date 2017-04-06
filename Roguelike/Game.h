@@ -1,4 +1,6 @@
 #pragma once
+#include "Player.h"
+
 #include <Engine/Shader.h>
 #include <Engine/Sprite.h>
 #include <Engine/Timing.h>
@@ -13,6 +15,8 @@ private:
 	/////////////////////
 	Sprite _bg;
 	Shader _shaderlsd,_shader,_fontshader;
+
+	Player* _player;
 public:
 	Game();
 	~Game() {};

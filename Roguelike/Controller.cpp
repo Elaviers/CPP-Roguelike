@@ -14,12 +14,12 @@ const char* Controller::levelname = "sample.lvl";
 
 using namespace PlayerEnums;
 
-Controller::Controller() : 
-	speed(768), 
-	_menuBar(0, 0, 1, -32, NORMALISED_WIDTH | FLIPPED_Y ),
-	_namebox(0, 0, 1/3.0f, 1, NORMALISED_WIDTH | NORMALISED_HEIGHT), 
-	_loadButton(1/3.0f, 0, 1/3.0f, 1, NORMALISED_X | NORMALISED_WIDTH | NORMALISED_HEIGHT),
-	_saveButton(2/3.0f, 0, 1/3.0f, 1, NORMALISED_X | NORMALISED_WIDTH | NORMALISED_HEIGHT),
+Controller::Controller() :
+	speed(768),
+	_menuBar(0, 0, 1, -32, NORMALISED_WIDTH | FLIPPED_Y),
+	_namebox(0, 0, 1 / 3.0f, 1, NORMALISED_WIDTH | NORMALISED_HEIGHT),
+	_loadButton(1 / 3.0f, 0, 1 / 3.0f, 1, NORMALISED_X | NORMALISED_WIDTH | NORMALISED_HEIGHT),
+	_saveButton(2 / 3.0f, 0, 1 / 3.0f, 1, NORMALISED_X | NORMALISED_WIDTH | NORMALISED_HEIGHT),
 	_counter(0, 0, 1, 32, NORMALISED_WIDTH)
 {}
 
@@ -31,9 +31,10 @@ void Controller::save() {
 }
 
 void Controller::load() {
-	if (levelname != nullptr)
+	if (levelname != nullptr) {
 		std::cout << "Loading \"" << levelname << "\"...\n";
 		currentLevel->load(levelname);
+	}
 }
 
 void Controller::setInputState(bool typing) {
@@ -45,13 +46,13 @@ void Controller::setInputState(bool typing) {
 
 void Controller::init() {
 	_namebox.label = "Sample.lvl";
-	_namebox.setColour(NormalisedColour(0,0,1));
-	_namebox.setSelectColour(NormalisedColour(0,0,0.5));
-	_namebox.label.setColour(NormalisedColour(1,1,1,1));
+	_namebox.setColour(NormalisedColour(0, 0, 1));
+	_namebox.setSelectColour(NormalisedColour(0, 0, 0.5));
+	_namebox.label.setColour(NormalisedColour(1, 1, 1, 1));
 	_namebox.onStateChanged = setInputState;
 
 	_loadButton.label = "LOAD";
-	_loadButton.label.setColour(NormalisedColour(0,0,0,1));
+	_loadButton.label.setColour(NormalisedColour(0, 0, 0, 1));
 	_loadButton.setColour(NormalisedColour(1, 1, 0));
 	_loadButton.setHoverColour(NormalisedColour(1, 0, 0));
 	_loadButton.bind_onClick(load);
@@ -63,7 +64,7 @@ void Controller::init() {
 	_saveButton.bind_onClick(save);
 
 	_counter = "TileID : 0|Layer : 0";
-	_counter.setColour(NormalisedColour(1,1,1,1));
+	_counter.setColour(NormalisedColour(1, 1, 1, 1));
 
 	_namebox.label.setFont(Constants::font);
 	_saveButton.label.setFont(Constants::font);
@@ -91,45 +92,51 @@ int gridSnap(int i, int snap) {
 	else return i - snap - (i % snap);
 }
 
-void Controller::render(float deltaTime,Camera2D& cam) {
+void Controller::render(float deltaTime, Camera2D& cam) {
 	cam.move(_moveX * speed * deltaTime, _moveY * speed * deltaTime);
 
-	Vector2f f = cam.screentoWorld(_mouseX,_mouseY);
-	_currentTile.x = gridSnap((int)f.x,64);
-	_currentTile.y = gridSnap((int)f.y,64);
+	Vector2f f = cam.screentoWorld(_mouseX, _mouseY);
+	_currentTile.position.x = gridSnap((int)f.x, 64);
+	_currentTile.position.y = gridSnap((int)f.y, 64);
 
 	switch (_editMode) {
-		case PLACING_TILE:
+	case PLACE:
+		if (_entMode)
+			_level.addEntityData(EntityData{ _currentTile.ID, NULL, _currentTile.position } );
+		else
 			_level.addTile(_currentTile);
-			break;
-		case DELETING_TILE:
+		break;
+	case DELETE:
+		if (_entMode)
+			_level.removeEntityData(EntityData{ _currentTile.ID, NULL, _currentTile.position } );
+		else
 			_level.removeTile(_currentTile);
-			break;
+		break;
 	}
-	
+
 	SpriteRenderer::UseProgram(cam);
-		for (int layer = -16;layer < _currentTile.layer;layer++)
-			_level.drawSprites(cam,layer);
+	for (int layer = -16; layer < _currentTile.layer; layer++)
+		_level.drawSprites(cam, layer);
 
-		_level.drawSprites(cam,_currentTile.layer,Colour(200,255,200,255));
+	_level.drawSprites(cam, _currentTile.layer, Colour(200, 255, 200, 255));
 
-		for (int layer = _currentTile.layer + 1; layer <= 16; layer++)
-			_level.drawSprites(cam, layer, Colour(255,255,255,127));
-				
-		_level.drawEntitySprites();
+	for (int layer = _currentTile.layer + 1; layer <= 16; layer++)
+		_level.drawSprites(cam, layer, Colour(255, 255, 255, 127));
 
-		if (!_usingUI)
-			if (!_entMode && _editMode != DELETING_TILE)
-				SpriteRenderer::drawSprite(_tiletexture, (float)_currentTile.x, (float)_currentTile.y, 64.0f, 64.0f, Colour(255, 255, 255, 128), 0.0f, 8, _currentTile.TileID);
-			else if (_entMode && _editMode != DELETING_ENT)
-				SpriteRenderer::drawSprite(_symboltexture, (float)_currentTile.x, (float)_currentTile.y, 64.0f, 64.0f, Colour(255, 255, 255, 128), 0.0f, 4, _currentTile.TileID);
+	_level.drawEntitySprites();
+
+	if (!_usingUI)
+		if (!_entMode && _editMode != DELETE)
+			SpriteRenderer::drawSprite(_tiletexture, (float)_currentTile.position.x, (float)_currentTile.position.y, 64.0f, 64.0f, Colour(255, 255, 255, 128), 0.0f, 8, _currentTile.ID);
+		else if (_entMode && _editMode != DELETE)
+			SpriteRenderer::drawSprite(_symboltexture, (float)_currentTile.position.x, (float)_currentTile.position.y, 64.0f, 64.0f, Colour(255, 255, 255, 128), 0.0f, 4, _currentTile.ID);
 
 	SpriteRenderer::UnuseProgram();
 
 	LineRenderer::render(cam);
 }
 
-void Controller::setMovement(Direction dir,bool s) {
+void Controller::setMovement(Direction dir, bool s) {
 	MovementInputs[dir] = s;
 
 	_moveX = (float)(MovementInputs[LEFT] ? (MovementInputs[RIGHT] ? 0 : -1) : MovementInputs[RIGHT] ? 1 : 0);
@@ -138,7 +145,7 @@ void Controller::setMovement(Direction dir,bool s) {
 
 void Controller::input(SDL_Event event, int screenh)
 {
-	SDL_GetMouseState(&_mouseX,&_mouseY);
+	SDL_GetMouseState(&_mouseX, &_mouseY);
 	_mouseY = screenh - _mouseY;
 
 	_usingUI = GlobalUI::update(_mouseX, _mouseY);
@@ -147,18 +154,19 @@ void Controller::input(SDL_Event event, int screenh)
 		_namebox.textInput(event.text.text[0]);
 		levelname = _namebox.label.text.c_str();
 	}
-
-	if (event.type == SDL_MOUSEBUTTONDOWN) {
+	else if (event.type == SDL_MOUSEBUTTONDOWN) {
 		if (!_usingUI)
 			switch (event.button.button) {
 			case SDL_BUTTON_LEFT:
-				_editMode = _entMode ? PLACING_ENT : PLACING_TILE; 
-				if (_entMode)_level.addEntityData(EntityData{ (unsigned char)_currentTile.TileID, NULL, Vector2{ _currentTile.x, _currentTile.y } });
-				break; 
+				_editMode = PLACE;
+				break;
 			case SDL_BUTTON_RIGHT:
-				_editMode = _entMode ? DELETING_ENT : DELETING_TILE; break;
+				_editMode = DELETE; break;
 			}
 		GlobalUI::click();
+	}
+	else if (event.type == SDL_MOUSEBUTTONUP) {
+		_editMode = NONE;
 	}
 	else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_BACKSPACE && _namebox.label.text.length() > 0) {
 		_namebox.label.text.pop_back();
@@ -169,23 +177,23 @@ void Controller::input(SDL_Event event, int screenh)
 	if (event.type == SDL_KEYDOWN) {
 		std::string path;
 		switch (event.key.keysym.sym) {
-		case SDLK_w:setMovement(UP,true); break;
+		case SDLK_w:setMovement(UP, true); break;
 		case SDLK_s:setMovement(DOWN, true); break;
 		case SDLK_a:setMovement(LEFT, true); break;
 		case SDLK_d:setMovement(RIGHT, true); break;
 
 		case SDLK_SPACE: _entMode = !_entMode; break;
 
-		case SDLK_r:_currentTile.TileID--; break;
-		case SDLK_t:_currentTile.TileID++; break;
+		case SDLK_r:_currentTile.ID--; break;
+		case SDLK_t:_currentTile.ID++; break;
 		case SDLK_LEFTBRACKET:_currentTile.layer--; break;
 		case SDLK_RIGHTBRACKET:_currentTile.layer++; break;
 		}
 
 		if (_entMode)
-			_counter = "EntID : " + std::to_string(_currentTile.TileID);
+			_counter = "EntID : " + std::to_string(_currentTile.ID);
 		else
-			_counter = "TileID : " + std::to_string(_currentTile.TileID) + "|Layer : " + std::to_string(_currentTile.layer);
+			_counter = "TileID : " + std::to_string(_currentTile.ID) + "|Layer : " + std::to_string(_currentTile.layer);
 	}
 	else if (event.type == SDL_KEYUP) {
 		switch (event.key.keysym.sym) {
@@ -200,8 +208,5 @@ void Controller::input(SDL_Event event, int screenh)
 			_CameraScale = 0.1f;
 		else if (event.wheel.y < 0)
 			_CameraScale = -0.1f;
-	}
-	else if (event.type == SDL_MOUSEBUTTONUP) {
-		_editMode = NONE;
 	}
 }

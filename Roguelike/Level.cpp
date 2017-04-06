@@ -36,12 +36,14 @@ Vector2 Level::getSpawnPoint() {
 }
 
 void Level::addTile(const Tile& tile) {
-	if (tile.x / tileSize > 123 || tile.x / tileSize < -124 || tile.y / tileSize > 123 || tile.y / tileSize < -124)return;
+	if (tile.position.x / tileSize > 123 || tile.position.x / tileSize < -124 || tile.position.y / tileSize > 123 || tile.position.y / tileSize < -124)return;
 
 	for (auto it = _tiles.begin(); it != _tiles.end(); it++) //Check for existing tile
-		if (it->x == tile.x && it->y == tile.y && it->layer == tile.layer)
-			if (it->TileID != tile.TileID)
+		if (it->position.x == tile.position.x && it->position.y == tile.position.y && it->layer == tile.layer)
+			if (it->ID != tile.ID) {
 				_tiles.erase(it);
+				return;
+			}
 			else return;
 
 	bool layerFound = false, IDFound = false, inIDRange = false;;
@@ -50,9 +52,9 @@ void Level::addTile(const Tile& tile) {
 	for (it; it != _tiles.end(); it++) {
 		if (tile.layer == it->layer) {
 			layerFound = true;
-			if (tile.TileID == it->TileID) {
+			if (tile.ID == it->ID) {
 				IDFound = true;
-				if (tile.TileID != it->TileID || tile.x > it->x || (tile.x == it->x && tile.y > it->y))
+				if (tile.ID != it->ID || tile.position.x > it->position.x || (tile.position.x == it->position.x && tile.position.y > it->position.y))
 					break;
 			}
 			else if (IDFound) break;
@@ -64,13 +66,23 @@ void Level::addTile(const Tile& tile) {
 
 void Level::removeTile(const Tile& tile) {
 	for (auto it = _tiles.begin(); it != _tiles.end(); it++)
-		if (it->layer == tile.layer && it->x == tile.x && it->y == tile.y) {
+		if (it->layer == tile.layer && it->position.x == tile.position.x && it->position.y == tile.position.y) {
 			_tiles.erase(it);
 			return;
 		}
 }
 
 void Level::addEntityData(const EntityData& data) {
+	if (data.position.x / tileSize > 123 || data.position.x / tileSize < -124 || data.position.y / tileSize > 123 || data.position.y / tileSize < -124)return;
+
+	for (auto it = _entData.begin(); it != _entData.end(); it++)
+		if (data.position == it->position)
+			if (data.ID != it->ID) {
+				_entData.erase(it);
+				return;
+			}
+			else return;
+
 	for (auto it = _entData.begin(); it != _entData.end(); it++)
 		if (*it < data) {
 			_entData.insert(it, data);
@@ -81,7 +93,11 @@ void Level::addEntityData(const EntityData& data) {
 }
 
 void Level::removeEntityData(const EntityData& data) {
-	_entData.erase(std::remove(_entData.begin(), _entData.end(), data), _entData.end());
+	for (auto it = _entData.begin(); it != _entData.end(); it++)
+		if (it->position == data.position) {
+			_entData.erase(it);
+			return;
+		}
 }
 
 bool Level::load(const char* path) {
@@ -98,14 +114,14 @@ bool Level::save(const char* path) {
 
 void Level::drawSprites(Camera2D& cam,int layer) {
 	for (auto t = _tiles.begin(); t != _tiles.end(); t++)
-		if (t->layer == layer)
-			SpriteRenderer::drawSprite(*tileSheet, cam.getMin(), cam.getMax(), (float)t->x, (float)t->y, tileSize, tileSize, 0.0f, 8, t->TileID);
+		if (t->layer == layer && t->ID != 255)
+			SpriteRenderer::drawSprite(*tileSheet, cam.getMin(), cam.getMax(), (float)t->position.x, (float)t->position.y, tileSize, tileSize, 0.0f, 8, t->ID);
 }
 
 void Level::drawSprites(Camera2D& cam, int layer, Colour c) {
 	for (auto t = _tiles.begin(); t != _tiles.end(); t++)
-		if (t->layer == layer)
-			SpriteRenderer::drawSprite(*tileSheet, cam.getMin(), cam.getMax(), (float)t->x, (float)t->y, tileSize, tileSize, c, 0.0f, 8, t->TileID);
+		if (t->layer == layer && t->ID != 255)
+			SpriteRenderer::drawSprite(*tileSheet, cam.getMin(), cam.getMax(), (float)t->position.x, (float)t->position.y, tileSize, tileSize, c, 0.0f, 8, t->ID);
 }
 
 void Level::drawEntitySprites() {
@@ -115,7 +131,7 @@ void Level::drawEntitySprites() {
 
 Tile* Level::rectOverlaps(Vector2f min, Vector2f max, int layer) {
 	for (auto t = _tiles.begin(); t != _tiles.end(); t++) {
-		if (t->layer == layer && !(max.x <= t->x || max.y <= t->y || min.x >= t->x + tileSize || min.y >= t->y + tileSize))
+		if (t->layer == layer && !(max.x <= t->position.x || max.y <= t->position.y || min.x >= t->position.x + tileSize || min.y >= t->position.y + tileSize))
 			return &(*t);
 		if (t->layer > layer)
 			break;

@@ -1,29 +1,28 @@
 #pragma once
 #include "Level.h"
-#include "Projectile.h"
 
 #include <Engine/Camera2D.h>
 #include <Engine/Entity.h>
 #include <Engine/Sprite.h>
 #include <SDL/SDL_events.h>
-#include <vector>
+#include <string>
 
 class Player : public Entity
 {
 private:
 	Sprite _crosshair,_playerSprite;
-	std::vector<Projectile> _projectiles;//Vector of all projectiles to be rendered
 
 	int _moveX,_moveY;//Player axis movement
 	float _lastShot;//Time (milliseconds after game start) when the last shot was fired
 	bool _shooting;//Whether the player is shooting or not
 	std::string tex;
-
+	
 	//variables
 	float fireRate;//Fire rate in shots per second
 	float moveSpeed;//Movement speed in pixels per second
 public:
-	Player() : fireRate(.125), moveSpeed(420) {};
+	Player() : _moveX(0), _moveY(0), _lastShot(0), _shooting(false), fireRate(.125), moveSpeed(420) {};
+	~Player() {};
 
 	void init(int XPosition,int YPosition,int Size,int CrosshairSize,std::string CrosshairTexture, std::string PointerTexture);
 

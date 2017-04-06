@@ -6,7 +6,7 @@
 #include <GLM/trigonometric.hpp>
 #include <iostream>
 
-Sprite::Sprite() : _vboID(0), UVGridDivisions(1) {
+Sprite::Sprite() : _vboID(0), _vaoID(0), UVGridDivisions(1), rotation(0) {
 }
 
 Sprite::Sprite(int divisions) : _vboID(0) {

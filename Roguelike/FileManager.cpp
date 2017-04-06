@@ -69,8 +69,8 @@ void FileManager::readLevelFile(const char* Path, int unitSize, vector<Tile>& ti
 	bool force = true;
 	bool placeEntity = false;
 	
-	unsigned char currentEntID;
-	int currentLayer, currentID, currentX;
+	unsigned char currentEntID, currentID;
+	int currentLayer, currentX;
 	auto it = buffer.begin();
 	while (it < buffer.end()) {
 		if (*it < 8) {
@@ -155,24 +155,24 @@ void FileManager::writeLevelFile(const std::vector<Tile>& tiles, const std::vect
 			currentLayer = t.layer;
 			force = true;
 		}
-		if (force || t.TileID != currentIndex) {
+		if (force || t.ID != currentIndex) {
 			if (!force)buffer.push_back(LevelFlags::TILEID);//Flag : new TileID
-			buffer.push_back(t.TileID + CHAR_OFFSET);
-			currentIndex = t.TileID;
-			printf("push new ID: %d (%d)\n", t.TileID + CHAR_OFFSET, t.TileID);
+			buffer.push_back(t.ID + CHAR_OFFSET);
+			currentIndex = t.ID;
+			printf("push new ID: %d (%d)\n", t.ID + CHAR_OFFSET, t.ID);
 			force = true;
 		}
-		if (force || t.x != currentX) {
+		if (force || t.position.x != currentX) {
 			if (!force)buffer.push_back(LevelFlags::X);//Flag : new X value
-			buffer.push_back(t.x / unitSize + CHAR_OFFSET);
-			currentX = (int)t.x;
-			printf("push new x: %d (%d)\n", t.x / unitSize + CHAR_OFFSET, t.x);
+			buffer.push_back(t.position.x / unitSize + CHAR_OFFSET);
+			currentX = (int)t.position.x;
+			printf("push new x: %d (%d)\n", t.position.x / unitSize + CHAR_OFFSET, t.position.x);
 			force = true;
 		}
-		if (force || t.y != currentY) {
-			buffer.push_back(t.y / unitSize + CHAR_OFFSET);
-			currentY = (int)t.y;
-			printf("push new y: %d (%d)\n", t.y / unitSize + CHAR_OFFSET, t.y);
+		if (force || t.position.y != currentY) {
+			buffer.push_back(t.position.y / unitSize + CHAR_OFFSET);
+			currentY = (int)t.position.y;
+			printf("push new y: %d (%d)\n", t.position.y / unitSize + CHAR_OFFSET, t.position.y);
 			force = false;
 		}
 	}

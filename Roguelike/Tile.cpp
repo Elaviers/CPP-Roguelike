@@ -1,9 +1,5 @@
 #include "Tile.h"
 
 bool operator==(const Tile& a, const Tile& b) {
-	return (a.layer == b.layer && a.TileID == b.TileID && a.x == b.y && a.y == b.y);
-}
-
-bool operator<(const Tile& a, const Tile& b) {
-	return (a.layer < b.layer || a.TileID < b.TileID || a.x < b.x || a.y < b.y);
+	return (a.layer == b.layer && a.ID == b.ID && a.position == b.position);
 }

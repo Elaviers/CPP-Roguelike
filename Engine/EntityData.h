@@ -7,5 +7,4 @@ struct EntityData {
 	Vector2 position;
 };
 
-bool operator==(const EntityData& a, const EntityData& b);
-bool operator<(const EntityData& a, const EntityData& b);
+const bool operator==(const EntityData& a, const EntityData& b);

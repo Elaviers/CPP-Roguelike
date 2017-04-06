@@ -1,10 +1,10 @@
 #pragma once
+#include <Engine/Vector2.h>
 
 struct Tile {
 	int layer;
-	int TileID;
-	int x, y;
+	unsigned char ID;
+	Vector2 position;
 };
 
 bool operator==(const Tile& a, const Tile& b);
-bool operator<(const Tile& a,const Tile& b);

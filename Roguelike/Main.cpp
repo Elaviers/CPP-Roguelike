@@ -7,7 +7,7 @@
 #include <windows.h>
 
 int main(int argsc, char* argsv[]) {
-	unsigned int t = time(NULL);
+	unsigned int t = (unsigned int)time(NULL);
 	srand(t);
 	
 	printf("%s (seeded with %d)\n",argsv[0],t);

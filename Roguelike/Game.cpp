@@ -18,7 +18,6 @@
 #include <Engine/SpriteRenderer.h>
 #include <SDL/SDL.h>
 
-Player* _player = new Player;
 /////////////////////////////////
 Game::Game() : _running(true) {}
 
@@ -120,7 +119,10 @@ void Game::beginGame(const char* level) {
 
 	Vector2 spawn = GameData::level->getSpawnPoint();
 
-	_player->init(spawn.x + 32, spawn.y + 32, 128, 32, "Game/Textures/crosshair.png", "Game/Textures/player.png");
+	std::printf("Spawn at %d %d\n",spawn.x + 32,spawn.y);
+
+	_player = new Player();
+	_player->init(spawn.x + 32, spawn.y, 128, 32, "Game/Textures/crosshair.png", "Game/Textures/player.png");
 	GameManager::addEntity(_player);
 
 	log("Game started\n");
@@ -190,19 +192,19 @@ void Game::handleInput() {
 	if (SDL_PollEvent(&event) == 1)
 		switch (event.type) {
 		case SDL_TEXTINPUT:
-
+			
 			break;
 
 		case SDL_QUIT:
 			_running = false;
 
 		case SDL_MOUSEBUTTONDOWN:
-			if (!GameData::mouseOnGUI)_player->setShooting(true);
+			if (_player && !GameData::mouseOnGUI)_player->setShooting(true);
 			GlobalUI::click();
 			break;
 
 		case SDL_MOUSEBUTTONUP:
-			_player->setShooting(false); break;
+			if (_player)_player->setShooting(false); break;
 
 		case SDL_MOUSEWHEEL:
 			if (event.wheel.y > 0)
@@ -228,10 +230,10 @@ void Game::handleInput() {
 				toggletest = !toggletest;
 			};
 
-			_player->keyDown(event); break;
+			if (_player)_player->keyDown(event); break;
 
 		case SDL_KEYUP:
-			_player->keyUp(event); break;
+			if (_player)_player->keyUp(event); break;
 
 		case SDL_WINDOWEVENT:
 			if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
@@ -239,7 +241,8 @@ void Game::handleInput() {
 				GameData::screenDimensions.y = event.window.data2;
 				glViewport(0,0, GameData::screenDimensions.x, GameData::screenDimensions.y);
 				GameData::camera->SetViewportSize(GameData::screenDimensions.x, GameData::screenDimensions.y);
-				GlobalUI::setCameraSize(GameData::screenDimensions.x, GameData::screenDimensions.y);			}
+				GlobalUI::setCameraSize(GameData::screenDimensions.x, GameData::screenDimensions.y);			
+			}
 			break;
 		}
 }
