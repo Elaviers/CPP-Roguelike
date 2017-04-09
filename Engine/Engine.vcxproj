@@ -172,6 +172,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera2D.cpp" />
+    <ClCompile Include="EntityContainer.cpp" />
     <ClCompile Include="ErrorHandling.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FontCache.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="Camera2D.h" />
     <ClInclude Include="Colour.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="EntityContainer.h" />
     <ClInclude Include="ErrorHandling.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FontCache.h" />

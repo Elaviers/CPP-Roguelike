@@ -89,7 +89,7 @@ void Level::addEntityData(const EntityData& data) {
 					break;
 			break;
 		}
-
+	
 	_entData.insert(it,data);
 }
 
@@ -130,12 +130,16 @@ void Level::drawEntitySprites() {
 		SpriteRenderer::drawSprite(*editorTileSheet, (float)t->position.x, (float)t->position.y, tileSize, tileSize, 0.0f, 4, t->ID);
 }
 
-Tile* Level::rectOverlaps(Vector2f min, Vector2f max, int layer) {
-	for (auto t = _tiles.begin(); t != _tiles.end(); t++) {
+Tile* Level::pointOverlaps(Vector2 point, int layer) {
+	for (auto t = _tiles.begin(); t != _tiles.end() && t->layer >= layer; t++)
+		if (t->layer == layer && point.x > t->position.x && point.y > t->position.y && point.x < t->position.x + tileSize && point.y < t->position.y + tileSize)
+			return &(*t);
+	return NULL;
+}
+
+Tile* Level::rectOverlaps(Vector2 min, Vector2 max, int layer) {
+	for (auto t = _tiles.begin(); t != _tiles.end() && t->layer >= layer; t++)
 		if (t->layer == layer && !(max.x <= t->position.x || max.y <= t->position.y || min.x >= t->position.x + tileSize || min.y >= t->position.y + tileSize))
 			return &(*t);
-		if (t->layer > layer)
-			break;
-	}
 	return NULL;
 }

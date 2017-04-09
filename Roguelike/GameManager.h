@@ -1,22 +1,19 @@
 #pragma once
-#include "Game.h"
 #include "Level.h"
 
 #include <Engine/Camera2D.h>
-#include <Engine/Entity.h>
+#include <Engine/EntityContainer.h>
 #include <vector>
-
-class Game;
 
 class GameManager
 {
 private:
-	static std::vector<Entity*> _entities, _pending;
+	static EntityContainer _root;
 	static bool _updating;
 public:
 	static void addEntity(Entity* Object);
 
-	static void update();
+	static void update(float DeltaTime);
 	static void renderLevel(int StartingLayer, int EndLayer);
-	static void renderObjects(Shader& s, float DeltaTime);
+	static void renderObjects(Shader& s);
 };

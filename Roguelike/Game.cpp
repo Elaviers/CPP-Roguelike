@@ -138,8 +138,8 @@ void Game::loop() {
 		GameData::runTime += _frameTimer.deltaTime;
 
 		handleInput();
-		GameManager::update();
-		render(_frameTimer.deltaTime);
+		GameManager::update(_frameTimer.deltaTime);
+		render();
 
 		if (frameNumber % 10 == 0)_window.setTitle("Boring Title (" + std::to_string(_frameTimer.getFramerate()) + " FPS, Time is " + std::to_string(GameData::runTime) + ") (X:" + std::to_string(GameData::mousePosition.x) + " Y:" + std::to_string(GameData::mousePosition.y) + ')');
 
@@ -149,7 +149,7 @@ void Game::loop() {
 	BASS_Free();
 }
 
-void Game::render(float deltaTime) {
+void Game::render() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearDepth(1);
 
@@ -167,7 +167,7 @@ void Game::render(float deltaTime) {
 	_shader.useProgram();
 	_shader.set1i("sTexture", 0);
 	_shader.setMat4("projection", GameData::camera->getCameraMatrix());
-	GameManager::renderObjects(_shader, deltaTime);
+	GameManager::renderObjects(_shader);
 	_shader.unUseProgram();
 
 	SpriteRenderer::UseProgram(*GameData::camera);

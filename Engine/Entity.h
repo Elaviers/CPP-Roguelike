@@ -1,24 +1,23 @@
 #pragma once
+#include "EntityContainer.h"
 #include "EntityData.h"
-#include "Rect.h"
-#include "RenderType.h"
-#include "Shader.h"
 #include "Vector2f.h"
 
 class Entity
 {
+protected:
+	EntityContainer* _parent;
 public:
 	Entity() {};
-	virtual ~Entity() {};
+	virtual ~Entity();
 
 	Vector2f position;
-	Rect collision;
 
-	RenderTypes::RenderType RenderType;
+	void setParent(EntityContainer* container);
 
 	virtual void init() {};
-	virtual void update() {};
-	virtual void render(Shader& Shader, float DeltaTime) {};
+	virtual void update(float DeltaTime) {};
+	virtual void render(Shader& Shader) {};
 
-	virtual EntityData* getData() const { return NULL; };
+	virtual EntityData* getData() const { return 0; };
 };

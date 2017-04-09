@@ -3,6 +3,7 @@
 
 #include <Engine/Camera2D.h>
 #include <Engine/Entity.h>
+#include <Engine/Rect.h>
 #include <Engine/Sprite.h>
 #include <SDL/SDL_events.h>
 #include <string>
@@ -24,10 +25,12 @@ public:
 	Player() : _moveX(0), _moveY(0), _lastShot(0), _shooting(false), fireRate(.125), moveSpeed(420) {};
 	~Player() {};
 
+	Rect collision;
+
 	void init(int XPosition,int YPosition,int Size,int CrosshairSize,std::string CrosshairTexture, std::string PointerTexture);
 
-	void update() override;
-	void render(Shader& s,float dt) override;
+	void update(float DeltaTime) override;
+	void render(Shader& s) override;
 
 	void keyUp(SDL_Event a);
 	void keyDown(SDL_Event a);

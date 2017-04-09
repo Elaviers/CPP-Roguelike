@@ -94,6 +94,9 @@
     <ClCompile Include="Vector2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EntityContainer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera2D.h">
@@ -199,6 +202,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="EntityData.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityContainer.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

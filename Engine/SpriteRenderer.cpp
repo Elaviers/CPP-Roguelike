@@ -22,7 +22,7 @@ void SpriteRenderer::drawSprite(Shader& shader, const Texture &t, float x, float
 
 	mat4 transform;
 	transform = translate(transform, vec3(width / 2 + x, height / 2 + y, 0));
-	transform = rotate(transform, angle * pi<float>() / 180, vec3(0, 0, 1));
+	transform = rotate(transform, angle, vec3(0, 0, 1));
 	transform = translate(transform, vec3(-width / 2, -height / 2, 0));
 	transform = scale(transform, vec3(width, height, 1));
 

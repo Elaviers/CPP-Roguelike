@@ -23,19 +23,14 @@ void Player::init(int x,int y,int size,int crosshairSize,std::string texture, st
 	collision = Rect{ Vector2f{-32,0}, Vector2f{32,64} };
 }
 
-void Player::update() {
+void Player::update(float frameTime) {
 	if (_shooting && GameData::runTime - _lastShot > fireRate) {
 		_lastShot = GameData::runTime;
 		shoot();
 	}
-}
 
-void Player::render(Shader& shader,float frameTime) {
 	float movex = _moveX * moveSpeed * frameTime;
 	float movey = _moveY * moveSpeed * frameTime;
-
-	shader.set2f("UVOffset", 0, 0); 
-	shader.setMat4("transform",glm::mat4());
 
 	if (movex != 0) {
 		Tile* collide = GameData::level->rectOverlaps(position + collision.min + Vector2f{ movex, 0 }, position + collision.max + Vector2f{ movex, 0 }, 0);
@@ -45,25 +40,26 @@ void Player::render(Shader& shader,float frameTime) {
 
 	if (movey != 0) {
 		Tile* collide = GameData::level->rectOverlaps(position + collision.min + Vector2f{ 0, movey }, position + collision.max + Vector2f{ 0, movey }, 0);
-		if (collide)
+		if (collide) 
 			movey = (movey >= 0 ? collide->position.y - (position.y + collision.max.y) : (collide->position.y + 64) - (position.y + collision.min.y));
 	}
 
 	position.x += movex;
 	position.y += movey;
 
-	_playerSprite.setPosition(position.x,position.y);
+	_playerSprite.setPosition(position.x, position.y);
 	GameData::camera->setPosition(position);
-
-	//std::cout << "X:" << _playerSprite.x << " Y:" << _playerSprite.y << std::endl;
-
-	_playerSprite.render();
 
 	Vector2f WorldCursorPosition = GameData::camera->screentoWorld(GameData::mousePosition.x, GameData::mousePosition.y);
 	_crosshair.setPosition(WorldCursorPosition.x, WorldCursorPosition.y);
-	_crosshair.render();
+}
 
-	glBindTexture(GL_TEXTURE_2D,0);
+void Player::render(Shader& shader) {
+	shader.set2f("UVOffset", 0, 0); 
+	shader.setMat4("transform",glm::mat4());
+
+	_playerSprite.render();
+	_crosshair.render();
 
 	/*LineRenderer::clear();
 	LineRenderer::addLine(position.x + collision.min.x, position.y + collision.min.y, position.x + collision.max.x, position.y + collision.min.y);

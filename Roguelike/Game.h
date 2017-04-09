@@ -27,7 +27,7 @@ public:
 
 	void beginGame(const char* level);
 
-	void render(float);
+	void render();
 
 	void handleInput();
 };

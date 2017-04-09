@@ -16,6 +16,6 @@ public:
 	~Projectile() {};
 
 	void init(float x, float y, float size,float direction,float speed, std::string);
-	void update() override {};
-	void render(Shader& s, float deltaTime) override;
+	void update(float DeltaTime) override;
+	void render(Shader& s) override;
 };
