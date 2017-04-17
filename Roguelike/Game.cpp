@@ -114,15 +114,33 @@ void Game::beginGame(const char* level) {
 	////////////init
 	
 	GameData::level = new Level();
-	GameData::level->tileSheet = ResourceManager::getTextureRef("Game/Textures/tiles.png");;
+	//GameData::level->tileSheet = ResourceManager::getTextureRef("Game/Textures/tiles.png");;
 	GameData::level->load(level);
 
-	Vector2 spawn = GameData::level->getSpawnPoint();
+	GameManager::setTileTexture("Game/Textures/tiles.png");
 
-	std::printf("Spawn at %d %d\n",spawn.x + 32,spawn.y);
+	int spawnX = 0, spawnY = 0;
+	{
+		std::vector<unsigned int> spawnpoints;
+
+		int i = 0;
+
+		for (auto it = GameData::level->entityData()->begin(); it != GameData::level->entityData()->end(); it++, i++) {
+			if (it->ID == 0)
+				spawnpoints.push_back(i);
+		}
+
+		if (spawnpoints.size() > 0) {
+			int index = rand() % spawnpoints.size();
+			spawnX = (*GameData::level->entityData())[index].x;
+			spawnY = (*GameData::level->entityData())[index].y;
+		}
+	}
+
+	std::printf("Spawn at %d %d\n",spawnX + 32,spawnY);
 
 	_player = new Player();
-	_player->init(spawn.x + 32, spawn.y, 128, 32, "Game/Textures/crosshair.png", "Game/Textures/player.png");
+	_player->init(spawnX + 32, spawnY, 128, 32, "Game/Textures/crosshair.png", "Game/Textures/player.png");
 	GameManager::addEntity(_player);
 
 	log("Game started\n");
@@ -161,7 +179,7 @@ void Game::render() {
 
 	////////////////////////////////////////////////
 	SpriteRenderer::UseProgram(*GameData::camera);
-	GameManager::renderLevel(-2, 0);
+	GameManager::renderLevel(0);
 	SpriteRenderer::UnuseProgram();
 
 	_shader.useProgram();
@@ -171,7 +189,7 @@ void Game::render() {
 	_shader.unUseProgram();
 
 	SpriteRenderer::UseProgram(*GameData::camera);
-	GameManager::renderLevel(1, 2);
+	GameManager::renderLevel(127,true);
 	SpriteRenderer::UnuseProgram();
 	////////////////////////////////////////////////
 	GlobalUI::render(NULL);

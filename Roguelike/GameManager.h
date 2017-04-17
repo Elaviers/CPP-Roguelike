@@ -3,6 +3,7 @@
 
 #include <Engine/Camera2D.h>
 #include <Engine/EntityContainer.h>
+#include <Engine/ResourceManager.h>
 #include <vector>
 
 class GameManager
@@ -10,10 +11,16 @@ class GameManager
 private:
 	static EntityContainer _root;
 	static bool _updating;
+
+	static Texture* _tilesheet;
+
+	static unsigned int _currentTileIndex;
 public:
 	static void addEntity(Entity* Object);
 
 	static void update(float DeltaTime);
-	static void renderLevel(int StartingLayer, int EndLayer);
+	static void renderLevel(signed char lastLayer, bool keepIterator = false);
 	static void renderObjects(Shader& s);
+
+	static void setTileTexture(const char* path) { _tilesheet = ResourceManager::getTextureRef(path); };
 };

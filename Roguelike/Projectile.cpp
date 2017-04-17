@@ -13,7 +13,7 @@ Projectile::Projectile() { }
 void Projectile::init(float x, float y, float s, float direction, float speed, std::string path) {
 	position = Vector2f{ x,y };
 	_size = s;
-	_direction = direction * mathConstants::pi / 180;
+	_direction = direction * mathConstants::pi_f / 180;
 	_speed = speed;
 	_texture = ResourceManager::getTexture(path);
 
@@ -25,7 +25,7 @@ void Projectile::update(float deltaTime) {
 	position.x += std::cos(_direction) * deltaTime * _speed;
 	position.y += std::sin(_direction) * deltaTime * _speed;
 
-	if (GameData::level->pointOverlaps(position + Vector2f{std::cos(_direction) * _size / 2, std::sin(_direction) * _size / 2}, 0))
+	if (TileData::pointOverlaps(*GameData::level->tileData(), 64, 0, position.x + std::cos(_direction) * _size / 4, position.y + std::sin(_direction) * _size / 4))
 		delete this;
 }
 

@@ -1,40 +1,26 @@
 #pragma once
-#include "Tile.h"
+#include "TileData.h"
 
-#include <Engine/Camera2D.h>
-#include <Engine/Colour.h>
 #include <Engine/EntityData.h>
-#include <Engine/Texture.h>
-#include <Engine/Vector2.h>
 #include <vector>
 
 class Level
 {
 private:
-	std::vector<Tile> _tiles;
+	std::vector<TileData> _tileData;
 	std::vector<EntityData> _entData;
 public:
 	Level();
 	~Level();
+	const std::vector<TileData> *tileData() { return &_tileData; };
+	const std::vector<EntityData> *entityData() { return &_entData; };
 
-	Vector2 getSpawnPoint();
-	Texture *tileSheet, *editorTileSheet;
-
-	Tile* getData();
-
-	void drawSprites(Camera2D&,int layer);
-	void drawSprites(Camera2D&, int layer, Colour c);
-	void drawEntitySprites();
-
-	void addTile(const Tile&);
-	void removeTile(const Tile&);
+	void addTileData(const TileData&);
+	void removeTileData(const TileData&);
 
 	void addEntityData(const EntityData&);
 	void removeEntityData(const EntityData&);
 
 	bool save(const char*);
 	bool load(const char*);
-
-	Tile* pointOverlaps(Vector2 point, int layer);
-	Tile* rectOverlaps(Vector2 min, Vector2 max, int layer);
 };

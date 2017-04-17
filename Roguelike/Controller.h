@@ -6,6 +6,7 @@
 #include <Engine/Camera2D.h>
 #include <Engine/Button.h>
 #include <Engine/Textbox.h>
+#include <Engine/Texture.h>
 
 namespace PlayerEnums {
 	enum EditMode { NONE, PLACE, DELETE };
@@ -27,7 +28,13 @@ private:
 	static bool _inputLock;
 	static const char* levelname;
 
-	Tile _currentTile;
+	struct {
+		signed char layer;
+		unsigned char id;
+		int x;
+		int y;
+	} _currentTile;
+
 	Level _level;
 	Texture _tiletexture,_symboltexture;
 

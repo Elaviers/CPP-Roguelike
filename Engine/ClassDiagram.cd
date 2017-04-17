@@ -1,46 +1,132 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Sprite">
-    <Position X="0.5" Y="0.5" Width="1.75" />
+  <Class Name="GUI::Button">
+    <Position X="1.5" Y="5.75" Width="1.5" />
+    <AssociationLine Name="label" Type="GUI::UIText" ManuallyRouted="true">
+      <Path>
+        <Point X="2.625" Y="5.75" />
+        <Point X="2.625" Y="5.07" />
+        <Point X="3.854" Y="5.07" Type="JumpStart" />
+        <Point X="4.021" Y="5.07" Type="JumpEnd" />
+        <Point X="4.917" Y="5.07" Type="JumpStart" />
+        <Point X="5.083" Y="5.07" Type="JumpEnd" />
+        <Point X="6.375" Y="5.07" />
+        <Point X="6.375" Y="4.531" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="panel" Type="GUI::UIRect" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3" Y="6.868" />
+        <Point X="3.938" Y="6.868" />
+        <Point X="3.938" Y="3.761" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AIAAAAAAAQwQAASQQACQEAACCAAwAAIQAgBgAQAQAEI=</HashCode>
-      <FileName>Sprite.h</FileName>
+      <HashCode>AEAAgAAAAAAIABAAAAAAAAAAAAAAgQBUAAATAQEAAAA=</HashCode>
+      <FileName>Button.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="vertices" />
-      <Field Name="_texture" />
+      <Field Name="label" />
+      <Field Name="panel" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="Camera2D">
-    <Position X="8.75" Y="6.5" Width="1.5" />
+  <Class Name="GUI::TextBox">
+    <Position X="6" Y="5.75" Width="1.5" />
+    <AssociationLine Name="panel" Type="GUI::UIRect" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6" Y="7.987" />
+        <Point X="5" Y="7.987" />
+        <Point X="5" Y="3.761" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>RAAAIGAQBABAAADAAAAAAAICAAAgwCACACAAgAAEACA=</HashCode>
+      <HashCode>AACAIAIAAAIAABQAAAAAAAAQAAEAgQAQAAASAQAAAAA=</HashCode>
+      <FileName>Textbox.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="label" />
+      <Field Name="panel" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="GUI::UIContainer">
+    <Position X="1.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAEABAAAAAAAAAAAIAAAAAAAAwAAAEACAAAQAAE=</HashCode>
+      <FileName>UIContainer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUI::UIElement" Collapsed="true">
+    <Position X="3.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RAAABACAAAAAAAAAAAAGMBAQAAAAQQAEMEBCgGJQAAA=</HashCode>
+      <FileName>UIElement.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUI::UIRect">
+    <Position X="3.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAAAAAAEAAAAAgAAQAAAAAAAQAAA=</HashCode>
+      <FileName>UIRect.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUI::UIText">
+    <Position X="6" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAACAgAAYAAAgAAAQABA=</HashCode>
+      <FileName>UIText.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Camera2D">
+    <Position X="7.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>VAAAIGAQBABAAADAAAAAAAICAAAgwCACACAAggEEACA=</HashCode>
       <FileName>Camera2D.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Font">
-    <Position X="13.25" Y="6.5" Width="1.5" />
+  <Class Name="Colour">
+    <Position X="22.75" Y="5.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAEAAAAAAAAAAAABAAAAAAAIAAAAIAAAAAAAACgAE=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAoAQABABAAAAA=</HashCode>
+      <FileName>Colour.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EntityContainer">
+    <Position X="18" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAIAAAAAAAIAIAAAAAAAAQAAAAEAACUEAA=</HashCode>
+      <FileName>EntityContainer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Font">
+    <Position X="24.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAFAAAAAACAAABABAAAAAAAIAAAAIAAAAAAAACgAE=</HashCode>
       <FileName>Font.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ImageIO">
-    <Position X="16.75" Y="6.5" Width="1.5" />
+  <Class Name="FontCache">
+    <Position X="26" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAQAAAEAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
-      <FileName>ImageIO.h</FileName>
+      <HashCode>AAAAAIAAAAIAAAACAAAAAAAAAAAAAAAJAAgAAAAAAAA=</HashCode>
+      <FileName>FontCache.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="IOManager">
-    <Position X="16.75" Y="8" Width="1.5" />
+  <Class Name="Entity">
+    <Position X="16.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>IOManager.h</FileName>
+      <HashCode>EAAQAAAAAAAAAAAAAAAAIAAQACAAAAIAAAAAAABUAAA=</HashCode>
+      <FileName>Entity.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GlobalUI">
+    <Position X="1.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAACAAAAQAAAEAAAAAAAAAAAAAAAAAAACAAAXgAA=</HashCode>
+      <FileName>GUI.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="LineRenderer">
-    <Position X="8.75" Y="0.5" Width="1.5" />
+    <Position X="9.75" Y="2.5" Width="1.5" />
     <NestedTypes>
       <Struct Name="LineRenderer::VertexNoUV" Collapsed="true">
         <TypeIdentifier>
@@ -49,25 +135,19 @@
       </Struct>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAIAAAAABAAAAAAAAAAQAIAAAgAAAAQAAA=</HashCode>
+      <HashCode>AEAAAAAAAAAIAAAAABAAAAAAAAAAAAIABAgAAAAYAAA=</HashCode>
       <FileName>LineRenderer.h</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="_shader" />
-    </ShowAsAssociation>
   </Class>
-  <Class Name="ResourceManager">
-    <Position X="18.25" Y="6.5" Width="1.5" />
+  <Class Name="NormalisedColour">
+    <Position X="24.25" Y="5.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAgAAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ResourceManager.h</FileName>
+      <HashCode>AAAAAgAAAAIAAAAAAAQAAAAAAAAAAAAoAQABAAAAAAA=</HashCode>
+      <FileName>NormalisedColour.h</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="_tCache" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="Shader">
-    <Position X="12" Y="0.5" Width="1.5" />
+    <Position X="24.25" Y="8.75" Width="1.5" />
     <NestedTypes>
       <Class Name="Shader::Presets" Collapsed="true">
         <TypeIdentifier>
@@ -76,135 +156,190 @@
       </Class>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>QIAAQAQCAIAIAAABABAAAAAAAAgCEAAABAA4SAEAQEA=</HashCode>
+      <HashCode>QIAAQAQiAIAIAAABABAAAAAAAAgCEAAABAA4SAEAQEA=</HashCode>
       <FileName>Shader.h</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="ImageIO">
+    <Position X="27.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAEAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>ImageIO.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IOManager">
+    <Position X="26" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IOManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResourceManager">
+    <Position X="21.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAgAAAAAAAQAAIBAAAAAIAAAAAAQAAAA=</HashCode>
+      <FileName>ResourceManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sprite">
+    <Position X="22.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAQ0QAASQQgCQEAACCAAwAAIQAgBgAQAQAEI=</HashCode>
+      <FileName>Sprite.h</FileName>
+    </TypeIdentifier>
+  </Class>
   <Class Name="Batch">
-    <Position X="17" Y="0.5" Width="1.5" />
+    <Position X="9.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AQCAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAACAA=</HashCode>
       <FileName>SpriteBatch.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SpriteBatch">
-    <Position X="15.5" Y="0.5" Width="1.5" />
+    <Position X="20.75" Y="8.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAAAAACAAoAABAAAEAgAAAQAAAAAAICRAQEAAQQABA=</HashCode>
       <FileName>SpriteBatch.h</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="_sortType" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="SpriteRenderer">
-    <Position X="8.75" Y="3.25" Width="1.5" />
+    <Position X="11.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAQAgAAAAIAAAAEBAAASABAACAEAIAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAQAgAAAAIAAAAEBAAASABAACAEAIAAAAAAAQAAAA=</HashCode>
       <FileName>SpriteRenderer.h</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="_shader" />
-    </ShowAsAssociation>
-  </Class>
-  <Class Name="Text">
-    <Position X="1" Y="7" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>EAIAUAAAAAAAAACAAIAAAACAAAAAAgIIAABgCAAQAAA=</HashCode>
-      <FileName>Text.h</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="colour" />
-      <Field Name="font" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="Texture">
-    <Position X="7" Y="5.75" Width="1.5" />
+    <Position X="15" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAABIAAgAAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Texture.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TextureCache">
-    <Position X="18.25" Y="8" Width="1.5" />
+    <Position X="16.5" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAgABAAAAAAAAAAAAAAAAAAAAEAAAAAI=</HashCode>
       <FileName>TextureCache.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Timing">
-    <Position X="11.75" Y="6.5" Width="1.5" />
+    <Position X="19" Y="5.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAACAAEAgAAAACAAAAAQAAAAAQIAAAAAAQAAAAA=</HashCode>
       <FileName>Timing.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Colour">
-    <Position X="7" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAoAQABABAAAAA=</HashCode>
-      <FileName>Vertex.h</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="Window">
-    <Position X="10.25" Y="6.5" Width="1.5" />
+    <Position X="13.25" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QQAAAAAAAAAEBAAAAAAAAAAAAQAAQAAAAABQCAAEAAA=</HashCode>
       <FileName>Window.h</FileName>
     </TypeIdentifier>
   </Class>
   <Struct Name="Character">
-    <Position X="14.75" Y="8.5" Width="1.5" />
+    <Position X="26" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIIAAAAgAAAAAAAAAAAEAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Font.h</FileName>
     </TypeIdentifier>
   </Struct>
+  <Struct Name="EntityData">
+    <Position X="15" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAIAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>EntityData.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Rect">
+    <Position X="15" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Rect.h</FileName>
+    </TypeIdentifier>
+  </Struct>
   <Struct Name="Glyph">
-    <Position X="14.75" Y="6.5" Width="1.5" />
+    <Position X="11.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAEAAABAAAAAAIAIAEAA=</HashCode>
       <FileName>SpriteBatch.h</FileName>
     </TypeIdentifier>
   </Struct>
+  <Struct Name="Vector2f">
+    <Position X="11.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>Vector2f.h</FileName>
+    </TypeIdentifier>
+  </Struct>
   <Struct Name="Vector2">
-    <Position X="7" Y="2.75" Width="1.5" />
+    <Position X="9.75" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAA=</HashCode>
-      <FileName>Vertex.h</FileName>
+      <FileName>Vector2.h</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="UV">
-    <Position X="7" Y="4" Width="1.5" />
+    <Position X="16.75" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAABIAAAAAAAA=</HashCode>
       <FileName>Vertex.h</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="Vertex">
-    <Position X="4" Y="2.5" Width="1.5" />
+    <Position X="13.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EAAAAAAAACAAAAAAAIAAIAACAAAAAAAQAAAAAAAAAgA=</HashCode>
       <FileName>Vertex.h</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="position" />
-      <Field Name="colour" />
-      <Field Name="uv" />
-    </ShowAsAssociation>
   </Struct>
-  <Enum Name="ShaderPreset::ShaderPreset">
-    <Position X="13.5" Y="0.5" Width="1.5" />
+  <Typedef Name="GLubyte" Collapsed="true">
+    <Position X="9.75" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Colour.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="GLuint" Collapsed="true">
+    <Position X="11.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Shader.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Enum Name="GUI::UIFlags" Collapsed="true">
+    <Position X="16.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAEAAAAAAAAAQAAAAAgAAAAAAAA=</HashCode>
+      <FileName>UIElement.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="sortType" Collapsed="true">
+    <Position X="15" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAQAAIAAAAAAAAAAAAABAAAAAgAA=</HashCode>
+      <FileName>SpriteBatch.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="RenderTypes::RenderType" Collapsed="true">
+    <Position X="11.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAQIAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>RenderType.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ShaderPreset::ShaderPreset" Collapsed="true">
+    <Position X="13.25" Y="10" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAEAEAAAAAAAAAEAAAAAA=</HashCode>
       <FileName>Shader.h</FileName>
     </TypeIdentifier>
   </Enum>
-  <Enum Name="sortType">
-    <Position X="18.5" Y="1" Width="1.5" />
+  <Enum Name="CornerEnum::CornerEnum" Collapsed="true">
+    <Position X="9.75" Y="10" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAQAAIAAAAAAAAAAAAABAAAAAgAA=</HashCode>
-      <FileName>SpriteBatch.h</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAGAAAAAAAABAgAAAAAAAAAA=</HashCode>
+      <FileName>Sprite.h</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Segoe UI" Size="9" />

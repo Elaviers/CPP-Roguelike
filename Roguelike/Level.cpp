@@ -3,6 +3,7 @@
 #include "FileManager.h"
 
 #include <algorithm>
+#include <Engine/IOManager.h>
 #include <Engine/ResourceManager.h>
 #include <Engine/SpriteRenderer.h>
 
@@ -15,12 +16,7 @@ Level::~Level()
 {
 }
 
-Tile* Level::getData() {
-	return _tiles.data();
-}
-
-const float tileSize = 64;
-
+/* deprecated
 Vector2 Level::getSpawnPoint() {
 	std::vector<unsigned int> spawnpoints;
 
@@ -32,95 +28,115 @@ Vector2 Level::getSpawnPoint() {
 	if (spawnpoints.size() > 0)
 		return _entData[spawnpoints[rand() % spawnpoints.size()]].position;
 
-	return Vector2 { 0,0 };
+	return Vector2{ 0,0 };
 }
+*/
 
-void Level::addTile(const Tile& tile) {
-	if (tile.position.x / tileSize > 123 || tile.position.x / tileSize < -124 || tile.position.y / tileSize > 123 || tile.position.y / tileSize < -124)return;
+void Level::addTileData(const TileData& tile) {
+	if (tile.x > 123 || tile.x < -124 || tile.y > 123 || tile.y < -124)return;
 
-	for (auto it = _tiles.begin(); it != _tiles.end(); it++) //Check for existing tile
-		if (it->position.x == tile.position.x && it->position.y == tile.position.y && it->layer == tile.layer)
-			if (it->ID != tile.ID) {
-				_tiles.erase(it);
+	for (auto it = _tileData.begin(); it != _tileData.end(); it++) //Check for existing tile
+		if (it->x == tile.x && it->y == tile.y && it->layer == tile.layer)
+			if (it->id != tile.id) {
+				_tileData.erase(it);
 				return;
 			}
 			else return;
 
-	auto it = _tiles.begin();
-	for (; it != _tiles.end(); it++) //For every tile
-		if (tile.layer == it->layer) { //If layer found
-			for (; it != _tiles.end() && it->layer == tile.layer; it++) //For each tile in layer
-				if (tile.ID == it->ID) { //If ID found
-					for (; it != _tiles.end() && it->layer == tile.layer && it->ID == tile.ID; it++) //For each tile in ID
-						if (tile.position.x > it->position.x || (tile.position.x == it->position.x && tile.position.y > it->position.y)) //If X is over or is on X and Y is over
-							break; //Break if X is larger or Y is larger and X is equal
-					break; //break after finding ID
+			auto it = _tileData.begin();
+			for (; it != _tileData.end(); it++) //For every tile
+				if (tile.layer == it->layer) { //If layer found
+					for (; it != _tileData.end() && it->layer == tile.layer; it++) //For each tile in layer
+						if (tile.id == it->id) { //If ID found
+							for (; it != _tileData.end() && it->layer == tile.layer && it->id == tile.id; it++) //For each tile in ID
+								if (tile.x > it->x || (tile.x == it->x && tile.y > it->y)) //If X is over or is on X and Y is over
+									break; //Break if X is larger or Y is larger and X is equal
+							break; //break after finding ID
+						}
+					break; //break after finding Layer
 				}
-			break; //break after finding Layer
-		}
 
-	_tiles.insert(it, tile);
+			_tileData.insert(it, tile);
 }
 
-void Level::removeTile(const Tile& tile) {
-	for (auto it = _tiles.begin(); it != _tiles.end(); it++)
-		if (it->layer == tile.layer && it->position.x == tile.position.x && it->position.y == tile.position.y) {
-			_tiles.erase(it);
+void Level::removeTileData(const TileData& tile) {
+	for (auto it = _tileData.begin(); it != _tileData.end(); it++)
+		if (it->layer == tile.layer && it->x == tile.x && it->y == tile.y) {
+			_tileData.erase(it);
 			return;
 		}
 }
 
 void Level::addEntityData(const EntityData& data) {
-	if (data.position.x / tileSize > 123 || data.position.x / tileSize < -124 || data.position.y / tileSize > 123 || data.position.y / tileSize < -124)return;
+	if (data.x > 123 || data.x < -124 || data.y > 123 || data.y < -124)return;
 
 	for (auto it = _entData.begin(); it != _entData.end(); it++)
-		if (data.position == it->position)
+		if (data.x == it->x && data.y == it->y)
 			if (data.ID != it->ID) {
 				_entData.erase(it);
 				return;
 			}
 			else return;
 
-	auto it = _entData.begin();
-	for (; it < _entData.end(); it++)
-		if (data.ID == it->ID) {
-			for (; it != _entData.end() && it->ID == data.ID; it++)
-				if (data.position.x > it->position.x || (data.position.x == it->position.x && data.position.y > it->position.y))
+			auto it = _entData.begin();
+			for (; it < _entData.end(); it++)
+				if (data.ID == it->ID) {
+					for (; it != _entData.end() && it->ID == data.ID; it++)
+						if (data.x > it->x || (data.x == it->x && data.y > it->y))
+							break;
 					break;
-			break;
-		}
-	
-	_entData.insert(it,data);
+				}
+
+			_entData.insert(it, data);
 }
 
 void Level::removeEntityData(const EntityData& data) {
 	for (auto it = _entData.begin(); it != _entData.end(); it++)
-		if (it->position == data.position) {
+		if (it->x == data.x && it->y == data.y) {
 			_entData.erase(it);
 			return;
 		}
 }
 
 bool Level::load(const char* path) {
-	FileManager::readLevelFile(path, (int)tileSize, _tiles, _entData);
+	FileManager::readLevelFile(path, _tileData, _entData);
 
 	return true;
 }
+
+/* deprecated
+bool Level::loadMulti(const char* path, float levelCount) {
+	std::vector<std::string>* levelnames = &IOManager::getFilesInDirectory(path, "level");
+	if (levelnames->size() == 0) return false;
+
+	std::vector<Tile> *alltiles = new std::vector<Tile>[levelnames->size()];
+	std::vector<EntityData> *allentities = new std::vector<EntityData>[levelnames->size()];
+
+
+	for (auto it = levelnames->begin(); it != levelnames->end(); it++) {
+
+	}
+
+
+	return true;
+}
+*/
 
 bool Level::save(const char* path) {
-	FileManager::writeLevelFile(_tiles, _entData, path, (int)tileSize);
+	FileManager::writeLevelFile(_tileData, _entData, path);
 
 	return true;
 }
 
-void Level::drawSprites(Camera2D& cam,int layer) {
-	for (auto t = _tiles.begin(); t != _tiles.end(); t++)
+/* deprecated
+void Level::drawSprites(Camera2D& cam, int layer) {
+	for (auto t = _tileData.begin(); t != _tileData.end(); t++)
 		if (t->layer == layer && t->ID != 255)
 			SpriteRenderer::drawSprite(*tileSheet, cam.getMin(), cam.getMax(), (float)t->position.x, (float)t->position.y, tileSize, tileSize, 0.0f, 8, t->ID);
 }
 
 void Level::drawSprites(Camera2D& cam, int layer, Colour c) {
-	for (auto t = _tiles.begin(); t != _tiles.end(); t++)
+	for (auto t = _tileData.begin(); t != _tileData.end(); t++)
 		if (t->layer == layer && t->ID != 255)
 			SpriteRenderer::drawSprite(*tileSheet, cam.getMin(), cam.getMax(), (float)t->position.x, (float)t->position.y, tileSize, tileSize, c, 0.0f, 8, t->ID);
 }
@@ -131,15 +147,16 @@ void Level::drawEntitySprites() {
 }
 
 Tile* Level::pointOverlaps(Vector2 point, int layer) {
-	for (auto t = _tiles.begin(); t != _tiles.end() && t->layer >= layer; t++)
+	for (auto t = _tileData.begin(); t != _tileData.end() && t->layer >= layer; t++)
 		if (t->layer == layer && point.x > t->position.x && point.y > t->position.y && point.x < t->position.x + tileSize && point.y < t->position.y + tileSize)
 			return &(*t);
 	return NULL;
 }
 
 Tile* Level::rectOverlaps(Vector2 min, Vector2 max, int layer) {
-	for (auto t = _tiles.begin(); t != _tiles.end() && t->layer >= layer; t++)
+	for (auto t = _tileData.begin(); t != _tileData.end() && t->layer >= layer; t++)
 		if (t->layer == layer && !(max.x <= t->position.x || max.y <= t->position.y || min.x >= t->position.x + tileSize || min.y >= t->position.y + tileSize))
 			return &(*t);
 	return NULL;
 }
+*/

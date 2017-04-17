@@ -80,9 +80,6 @@ void Controller::init() {
 	_tiletexture = ResourceManager::getTexture("Game/Textures/tiles.png");
 	_symboltexture = ResourceManager::getTexture("Game/Textures/symbols.png");
 
-	_level.tileSheet = &_tiletexture;
-	_level.editorTileSheet = &_symboltexture;
-
 	currentLevel = &_level;
 }
 
@@ -96,40 +93,66 @@ void Controller::render(float deltaTime, Camera2D& cam) {
 	cam.move(_moveX * speed * deltaTime, _moveY * speed * deltaTime);
 
 	Vector2f f = cam.screentoWorld(_mouseX, _mouseY);
-	_currentTile.position.x = gridSnap((int)f.x, 64);
-	_currentTile.position.y = gridSnap((int)f.y, 64);
+	_currentTile.x = gridSnap((int)f.x, 64);
+	_currentTile.y = gridSnap((int)f.y, 64);
 
 	switch (_editMode) {
 	case PLACE:
 		if (_entMode)
-			_level.addEntityData(EntityData{ _currentTile.ID, NULL, _currentTile.position } );
+			_level.addEntityData(EntityData{ _currentTile.id, NULL, (signed char)(_currentTile.x / 64), (signed char)(_currentTile.y / 64) });
 		else
-			_level.addTile(_currentTile);
+			_level.addTileData(TileData{ _currentTile.layer, _currentTile.id, (signed char)(_currentTile.x / 64), (signed char)(_currentTile.y / 64) });
 		break;
 	case DELETE:
 		if (_entMode)
-			_level.removeEntityData(EntityData{ _currentTile.ID, NULL, _currentTile.position } );
+			_level.removeEntityData(EntityData{ 0, NULL, (signed char)(_currentTile.x / 64), (signed char)(_currentTile.y / 64) });
 		else
-			_level.removeTile(_currentTile);
+			_level.removeTileData(TileData{ _currentTile.layer, 0, (signed char)(_currentTile.x / 64), (signed char)(_currentTile.y / 64) });
 		break;
 	}
 
 	SpriteRenderer::UseProgram(cam);
-	for (int layer = -16; layer < _currentTile.layer; layer++)
-		_level.drawSprites(cam, layer);
+	//for (int layer = -16; layer < _currentTile.layer; layer++)
+	//	_level.drawSprites(cam, layer);
 
-	_level.drawSprites(cam, _currentTile.layer, Colour(200, 255, 200, 255));
+	{ //Draw Tiles
+		const std::vector<TileData>* tiles = _level.tileData();
+		auto it = tiles->begin();
 
-	for (int layer = _currentTile.layer + 1; layer <= 16; layer++)
-		_level.drawSprites(cam, layer, Colour(255, 255, 255, 127));
+		Vector2 cameraMin = cam.getMin(), cameraMax = cam.getMax();
 
-	_level.drawEntitySprites();
+		for (; it != tiles->end(); it++) {
+			if (it->x * 64 < cameraMax.x && it->y * 64 < cameraMax.y && it->x * 64 + 64 > cameraMin.x && it->y * 64 + 64 > cameraMin.y)
+			{
+				if (it->layer < _currentTile.layer)
+					SpriteRenderer::drawSprite(_tiletexture, it->x * 64, it->y * 64, 64, 64, Colour(255, 255, 255, 255), 0.f, 8, it->id);
+				else if (it->layer == _currentTile.layer)
+					SpriteRenderer::drawSprite(_tiletexture, it->x * 64, it->y * 64, 64, 64, Colour(127, 255, 127, 255), 0.f, 8, it->id);
+				else
+					SpriteRenderer::drawSprite(_tiletexture, it->x * 64, it->y * 64, 64, 64, Colour(255, 255, 255, 127), 0.f, 8, it->id);
+			}
+		}
+	}
+
+	{
+		const std::vector<EntityData>* entities = _level.entityData();
+
+		for (auto it = entities->begin(); it != entities->end(); it++)
+			SpriteRenderer::drawSprite(_symboltexture, it->x * 64, it->y * 64, 64, 64, Colour(255, 255, 255, 127), 0.f, 8, it->ID);
+	}
+
+	//_level.drawSprites(cam, _currentTile.layer, Colour(200, 255, 200, 255));
+
+	//for (int layer = _currentTile.layer + 1; layer <= 16; layer++)
+	//	_level.drawSprites(cam, layer, Colour(255, 255, 255, 127));
+
+	//_level.drawEntitySprites();
 
 	if (!_usingUI)
 		if (!_entMode && _editMode != DELETE)
-			SpriteRenderer::drawSprite(_tiletexture, (float)_currentTile.position.x, (float)_currentTile.position.y, 64.0f, 64.0f, Colour(255, 255, 255, 128), 0.0f, 8, _currentTile.ID);
+			SpriteRenderer::drawSprite(_tiletexture, (float)_currentTile.x, (float)_currentTile.y, 64.f, 64.f, Colour(255, 255, 255, 128), 0.0f, 8, _currentTile.id);
 		else if (_entMode && _editMode != DELETE)
-			SpriteRenderer::drawSprite(_symboltexture, (float)_currentTile.position.x, (float)_currentTile.position.y, 64.0f, 64.0f, Colour(255, 255, 255, 128), 0.0f, 4, _currentTile.ID);
+			SpriteRenderer::drawSprite(_symboltexture, (float)_currentTile.x, (float)_currentTile.y, 64.f, 64.f, Colour(255, 255, 255, 128), 0.0f, 4, _currentTile.id);
 
 	SpriteRenderer::UnuseProgram();
 
@@ -184,16 +207,16 @@ void Controller::input(SDL_Event event, int screenh)
 
 		case SDLK_SPACE: _entMode = !_entMode; break;
 
-		case SDLK_r:_currentTile.ID--; break;
-		case SDLK_t:_currentTile.ID++; break;
+		case SDLK_r:_currentTile.id--; break;
+		case SDLK_t:_currentTile.id++; break;
 		case SDLK_LEFTBRACKET:_currentTile.layer--; break;
 		case SDLK_RIGHTBRACKET:_currentTile.layer++; break;
 		}
 
 		if (_entMode)
-			_counter = "EntID : " + std::to_string(_currentTile.ID);
+			_counter = "EntID : " + std::to_string(_currentTile.id);
 		else
-			_counter = "TileID : " + std::to_string(_currentTile.ID) + "|Layer : " + std::to_string(_currentTile.layer);
+			_counter = "TileID : " + std::to_string(_currentTile.id) + "|Layer : " + std::to_string(_currentTile.layer);
 	}
 	else if (event.type == SDL_KEYUP) {
 		switch (event.key.keysym.sym) {

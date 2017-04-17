@@ -4,7 +4,8 @@
 struct EntityData {
 	unsigned char ID;
 	unsigned char *data;
-	Vector2 position;
+	signed char x;
+	signed char y;
 };
 
 const bool operator==(const EntityData& a, const EntityData& b);

@@ -22,7 +22,7 @@ void SpriteRenderer::drawSprite(Shader& shader, const Texture &t, float x, float
 
 	mat4 transform;
 	transform = translate(transform, vec3(width / 2 + x, height / 2 + y, 0));
-	transform = rotate(transform, angle, vec3(0, 0, 1));
+	if (angle != 0)transform = rotate(transform, angle, vec3(0, 0, 1));
 	transform = translate(transform, vec3(-width / 2, -height / 2, 0));
 	transform = scale(transform, vec3(width, height, 1));
 
@@ -47,14 +47,6 @@ void SpriteRenderer::drawSprite(const Texture& a, float b, float c, float d, flo
 
 void SpriteRenderer::drawSprite(const Texture& a, float b, float c, float d, float e, Colour f, float g, int h, int i) {
 	drawSprite(_shader, a, b, c, d, e, f, g, h, i);
-};
-
-void SpriteRenderer::drawSprite(const Texture& a, Vector2f c1, Vector2f c2, float x, float y, float width, float height, float f, int g, int h) {
-	if (x < c2.x && y < c2.y && x + width > c1.x && y + height > c1.y)drawSprite(a, x, y, width, height, f, g, h);
-};
-
-void SpriteRenderer::drawSprite(const Texture& a, Vector2f c1, Vector2f c2, float x, float y, float width, float height, Colour f, float g, int h, int i) {
-	if (x < c2.x && y < c2.y && x + width > c1.x && y + height > c1.y)drawSprite(a, x, y, width, height, f, g, h, i);
 };
 
 void SpriteRenderer::UseProgram(const Camera2D& cam) {

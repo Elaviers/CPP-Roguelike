@@ -5,7 +5,7 @@
 #include <iostream>
 #include <iterator>
 
-const int CHAR_OFFSET = 132;
+const unsigned char CHAR_OFFSET = 132;
 
 using namespace std;
 
@@ -53,7 +53,7 @@ int FileManager::readInt(const vector<StringPair>& arr, const string& name) {
 	return -1;
 }
 
-void FileManager::readLevelFile(const char* Path, int unitSize, vector<Tile>& tileList, vector<EntityData>& entityList)
+void FileManager::readLevelFile(const char* Path, vector<TileData>& tileList, vector<EntityData>& entityList)
 {
 	ifstream stream(Path, ios::binary | ios::in);
 	stream >> std::noskipws;
@@ -68,9 +68,10 @@ void FileManager::readLevelFile(const char* Path, int unitSize, vector<Tile>& ti
 
 	bool force = true;
 	bool placeEntity = false;
-	
+
 	unsigned char currentEntID, currentID;
-	int currentLayer, currentX;
+	signed char currentLayer, currentX;
+
 	auto it = buffer.begin();
 	while (it < buffer.end()) {
 		if (*it < 8) {
@@ -79,7 +80,7 @@ void FileManager::readLevelFile(const char* Path, int unitSize, vector<Tile>& ti
 				placeEntity = false;
 				force = true;
 				//it++;
-				std::cout << "layer " << currentLayer << '\n';
+				std::cout << "layer " << (int)currentLayer << '\n';
 			}
 			else if (*it == LevelFlags::ENTLAYER) {
 				currentEntID = *++it;
@@ -93,18 +94,18 @@ void FileManager::readLevelFile(const char* Path, int unitSize, vector<Tile>& ti
 				currentID = *++it - CHAR_OFFSET;
 				force = true;
 				//it++;
-				std::cout << u8"├──id " << currentID << '\n';
+				std::cout << u8"├──id " << (int)currentID << '\n';
 			}
 			if (force || *it == LevelFlags::X) {
 				currentX = *++it - CHAR_OFFSET;
 				force = false;
 				it++;
-				std::cout << u8"│  ├──x " << currentX << '\n';
+				std::cout << u8"│  ├──x " << (int)currentX << '\n';
 			}
 		}
 
 		if (!placeEntity) {
-			tileList.push_back(Tile { currentLayer, currentID, currentX * unitSize, (*it - CHAR_OFFSET) * unitSize });
+			tileList.push_back(TileData{ currentLayer, currentID, currentX, (*it - CHAR_OFFSET) });
 			std::cout << u8"│  │  ├──y " << *it - CHAR_OFFSET << '\n';
 			it++;
 		}
@@ -122,7 +123,7 @@ void FileManager::readLevelFile(const char* Path, int unitSize, vector<Tile>& ti
 			}
 			else data = NULL;
 
-			entityList.push_back(EntityData{ currentEntID, data, Vector2 {currentX * unitSize, (*it - CHAR_OFFSET) * unitSize} });
+			entityList.push_back(EntityData{ currentEntID, data, currentX, (signed char)((unsigned char)*it - CHAR_OFFSET) });
 
 			std::cout << u8"│  │  ├──y " << *it - CHAR_OFFSET << '\n';
 
@@ -134,19 +135,19 @@ void FileManager::readLevelFile(const char* Path, int unitSize, vector<Tile>& ti
 	stream.close();
 }
 
-void FileManager::writeLevelFile(const std::vector<Tile>& tiles, const std::vector<EntityData>& entities, const char* path, int unitSize) {
+void FileManager::writeLevelFile(const std::vector<TileData>& tiles, const std::vector<EntityData>& entities, const char* path) {
 
 	ofstream stream(path, ios::binary | ios::out);
 	if (!stream.is_open())return;
 
 	bool force = true;
-
-	std::printf("(DEBUG) saved %d tiles\n", (int)tiles.size());
-
 	vector<unsigned char> buffer;
 
-	int currentLayer, currentIndex, currentX, currentY;
-	for (Tile t : tiles) {
+	signed char currentLayer;
+	unsigned char currentID;
+	signed char currentX, currentY;
+
+	for (TileData t : tiles) {
 		//Values 0-7 are load flags
 		if (force || t.layer != currentLayer) {
 			buffer.push_back(LevelFlags::LAYER);//Flag : new Layer
@@ -155,32 +156,31 @@ void FileManager::writeLevelFile(const std::vector<Tile>& tiles, const std::vect
 			currentLayer = t.layer;
 			force = true;
 		}
-		if (force || t.ID != currentIndex) {
+		if (force || t.id != currentID) {
 			if (!force)buffer.push_back(LevelFlags::TILEID);//Flag : new TileID
-			buffer.push_back(t.ID + CHAR_OFFSET);
-			currentIndex = t.ID;
-			printf("push new ID: %d (%d)\n", t.ID + CHAR_OFFSET, t.ID);
+			buffer.push_back(t.id + CHAR_OFFSET);
+			currentID = t.id;
+			printf("push new ID: %d (%d)\n", t.id + CHAR_OFFSET, t.id);
 			force = true;
 		}
-		if (force || t.position.x != currentX) {
+		if (force || t.x != currentX) {
 			if (!force)buffer.push_back(LevelFlags::X);//Flag : new X value
-			buffer.push_back(t.position.x / unitSize + CHAR_OFFSET);
-			currentX = (int)t.position.x;
-			printf("push new x: %d (%d)\n", t.position.x / unitSize + CHAR_OFFSET, t.position.x);
+			buffer.push_back((unsigned char)t.x + CHAR_OFFSET);
+			currentX = t.x;
+			printf("push new x: %d (%d)\n", (unsigned char)t.x + CHAR_OFFSET, t.x);
 			force = true;
 		}
-		if (force || t.position.y != currentY) {
-			buffer.push_back(t.position.y / unitSize + CHAR_OFFSET);
-			currentY = (int)t.position.y;
-			printf("push new y: %d (%d)\n", t.position.y / unitSize + CHAR_OFFSET, t.position.y);
+		if (force || t.y != currentY) {
+			buffer.push_back((unsigned char)t.y + CHAR_OFFSET);
+			currentY = t.y;
+			printf("push new y: %d (%d)\n", (unsigned char)t.y + CHAR_OFFSET, t.y);
 			force = false;
 		}
 	}
 
 	force = true;
 
-	unsigned char currentID;
-	currentX = currentY = 0;
+	currentX = currentY = currentID = 0;
 	for (EntityData e : entities) {
 		if (force || e.ID != currentID) {
 			buffer.push_back(LevelFlags::ENTLAYER);
@@ -189,27 +189,29 @@ void FileManager::writeLevelFile(const std::vector<Tile>& tiles, const std::vect
 			currentID = e.ID;
 			force = true;
 		}
-		if (force || e.position.x != currentX) {
+		if (force || e.x != currentX) {
 			if (!force)buffer.push_back(LevelFlags::X);//Flag : new X value
-			buffer.push_back(e.position.x / unitSize + CHAR_OFFSET);
-			currentX = e.position.x;
-			printf("push new x: %d (%d)\n", e.position.x / unitSize + CHAR_OFFSET, e.position.x);
+			buffer.push_back((unsigned char)e.x + CHAR_OFFSET);
+			currentX = e.x;
+			printf("push new x: %d (%d)\n", (unsigned char)e.x + CHAR_OFFSET, e.x);
 			force = true;
 		}
-		if (force || e.position.y != currentY) {
-			buffer.push_back(e.position.y / unitSize + CHAR_OFFSET);
-			currentY = e.position.y;
+		if (force || e.y != currentY) {
+			buffer.push_back((unsigned char)e.y + CHAR_OFFSET);
+			currentY = e.y;
 
 			if (e.data != NULL)
 				for (int i = 0; e.data[i] != 0; i++)
 					buffer.push_back(e.data[i]);
 
 			buffer.push_back(0);
-			printf("push new y: %d (%d)\n", e.position.y / unitSize + CHAR_OFFSET, e.position.y);
+			printf("push new y: %d (%d)\n", (unsigned char)e.y + CHAR_OFFSET, e.y);
 			force = false;
 		}
 	}
 
 	stream.write((const char*)buffer.data(), sizeof(unsigned char) * buffer.size());
 	stream.close();
+
+	std::printf("(DEBUG) saved %d tiles\n", (int)tiles.size());
 }

@@ -33,22 +33,22 @@ void Player::update(float frameTime) {
 	float movey = _moveY * moveSpeed * frameTime;
 
 	if (movex != 0) {
-		Tile* collide = GameData::level->rectOverlaps(position + collision.min + Vector2f{ movex, 0 }, position + collision.max + Vector2f{ movex, 0 }, 0);
+		const TileData* collide = TileData::rectOverlaps(*GameData::level->tileData(), 64, 0, position.x + collision.min.x + movex, position.y + collision.min.y, position.x + collision.max.x + movex, position.y + collision.max.y);
 		if (collide)
-			movex = (movex >= 0 ? collide->position.x - (position.x + collision.max.x) : (collide->position.x + 64) - (position.x + collision.min.x));
+			movex = (movex >= 0 ? collide->x * 64 - (position.x + collision.max.x) : (collide->x * 64 + 64) - (position.x + collision.min.x));
 	}
 
 	if (movey != 0) {
-		Tile* collide = GameData::level->rectOverlaps(position + collision.min + Vector2f{ 0, movey }, position + collision.max + Vector2f{ 0, movey }, 0);
+		const TileData* collide = TileData::rectOverlaps(*GameData::level->tileData(), 64, 0, position.x + collision.min.x, position.y + collision.min.y + movey, position.x + collision.max.x, position.y + collision.max.y + movey);
 		if (collide) 
-			movey = (movey >= 0 ? collide->position.y - (position.y + collision.max.y) : (collide->position.y + 64) - (position.y + collision.min.y));
+			movey = (movey >= 0 ? collide->y * 64 - (position.y + collision.max.y) : (collide->y * 64 + 64) - (position.y + collision.min.y));
 	}
 
 	position.x += movex;
 	position.y += movey;
 
-	_playerSprite.setPosition(position.x, position.y);
-	GameData::camera->setPosition(position);
+	_playerSprite.setPosition(std::truncf(position.x), std::truncf(position.y));
+	GameData::camera->setPosition(Vector2f{ std::truncf(position.x), std::truncf(position.y) });
 
 	Vector2f WorldCursorPosition = GameData::camera->screentoWorld(GameData::mousePosition.x, GameData::mousePosition.y);
 	_crosshair.setPosition(WorldCursorPosition.x, WorldCursorPosition.y);
