@@ -1,6 +1,7 @@
 #pragma once
-#include "Shader.h"
 #include "Vector2f.h"
+
+class Shader;
 
 namespace GUI {
 	extern Vector2f cameraScale;

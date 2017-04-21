@@ -1,7 +1,11 @@
 #pragma once
-#include "Font.h"
 #include "NormalisedColour.h"
 #include "UIElement.h"
+
+#include <string>
+
+class Font;
+class Shader;
 
 namespace GUI {
 	class UIText : public UIElement

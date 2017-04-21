@@ -1,10 +1,11 @@
 #pragma once
-#include "Camera2D.h"
 #include "Shader.h"
-#include "Texture.h"
 #include "Vertex.h"
 
 #include <glm/glm.hpp>
+
+class Camera2D;
+class Texture;
 
 class SpriteRenderer
 {

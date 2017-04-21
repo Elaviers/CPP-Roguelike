@@ -1,5 +1,4 @@
 #pragma once
-#include <GL/glew.h>
 #include <SDL/SDL_video.h>
 #include <string>
 

@@ -1,5 +1,6 @@
 #include "GUI.h"
 #include "RenderType.h"
+#include "Shader.h"
 #include "Vector2f.h"
 
 #include <GL/glew.h>

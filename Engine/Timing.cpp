@@ -1,5 +1,7 @@
 #include "Timing.h"
 
+#include <SDL/SDL_timer.h>
+
 void Timing::init(int cVal) {
 	setFPSCap(cVal);
 }

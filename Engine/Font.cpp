@@ -1,7 +1,10 @@
 #include "Font.h"
 
 #include "ErrorHandling.h"
+#include "Shader.h"
 #include "Vertex.h"
+
+#include <GL/glew.h>
 
 Font::Font()
 {

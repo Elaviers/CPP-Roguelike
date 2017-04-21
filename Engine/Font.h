@@ -1,11 +1,12 @@
 #pragma once
-#include "Shader.h"
-
 #include <ft2build.h>
 #include FT_FREETYPE_H
-#include <Gl/glew.h>
 #include <glm/vec2.hpp>
+#include <glm/vec4.hpp>
 #include <map>
+
+class Shader;
+typedef unsigned int GLuint;
 
 struct Character {
 	GLuint TextureID;
@@ -18,7 +19,7 @@ class Font
 {
 private:
 	FT_Face _face;
-	std::map <GLchar, Character> _chars;
+	std::map <char, Character> _chars;
 	GLuint _vao, _vbo;
 	int _pointsize;
 public:

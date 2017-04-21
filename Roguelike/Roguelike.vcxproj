@@ -89,6 +89,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <ShowIncludes>
+      </ShowIncludes>
     </ClCompile>
     <Link>
       <AdditionalDependencies>bass.lib;freetype27.lib;opengl32.lib;glew32.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -104,6 +106,8 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x32  $(TargetDir)</Command>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <ShowIncludes>
+      </ShowIncludes>
     </ClCompile>
     <Link>
       <AdditionalDependencies>bass.lib;freetype27.lib;opengl32.lib;glew32.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -121,6 +125,8 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x64  $(TargetDir)</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <ShowIncludes>
+      </ShowIncludes>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -141,6 +147,8 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x32  $(TargetDir)</Command>
       <SDLCheck>true</SDLCheck>
       <BrowseInformation>true</BrowseInformation>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <ShowIncludes>
+      </ShowIncludes>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -195,9 +203,6 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x64  $(TargetDir)</Command>
     <ClCompile Include="TileData.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="UIWindow.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc" />

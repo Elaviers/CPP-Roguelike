@@ -1,7 +1,7 @@
 #pragma once
 #include "Vertex.h"
 
-#include <glm/glm.hpp>
+#include <glm/vec2.hpp>
 #include <string>
 #include <vector>
 

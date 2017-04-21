@@ -1,5 +1,7 @@
 #include "SpriteRenderer.h"
 
+#include "Camera2D.h"
+#include "Texture.h"
 #include "Utility.h"
 
 #include <GL/glew.h>

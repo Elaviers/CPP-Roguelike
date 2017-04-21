@@ -3,6 +3,7 @@
 
 #include <Engine/Camera2D.h>
 #include <Engine/Timing.h>
+#include <Engine/Shader.h>
 #include <Engine/Window.h>
 
 class Editor

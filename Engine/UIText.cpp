@@ -2,6 +2,7 @@
 
 #include "RenderType.h"
 #include "ResourceManager.h"
+#include "Shader.h"
 
 using namespace GUI;
 

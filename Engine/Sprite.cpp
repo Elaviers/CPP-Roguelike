@@ -3,6 +3,7 @@
 #include "ResourceManager.h"
 #include "Shader.h"
 
+#include <GL/glew.h>
 #include <GLM/trigonometric.hpp>
 #include <iostream>
 

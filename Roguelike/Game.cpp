@@ -10,6 +10,7 @@
 
 #include <bass.h>
 #include <ft2build.h>
+#include <GL/glew.h>
 #include FT_FREETYPE_H
 #include <Engine/ErrorHandling.h>
 #include <Engine/GUI.h>

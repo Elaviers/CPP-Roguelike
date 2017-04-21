@@ -1,6 +1,7 @@
 #include "UIRect.h"
 
 #include "RenderType.h"
+#include "Shader.h"
 
 #include <GL/glew.h>
 
