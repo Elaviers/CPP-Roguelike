@@ -112,8 +112,6 @@ void Controller::render(float deltaTime, Camera2D& cam) {
 	}
 
 	SpriteRenderer::UseProgram(cam);
-	//for (int layer = -16; layer < _currentTile.layer; layer++)
-	//	_level.drawSprites(cam, layer);
 
 	{ //Draw Tiles
 		const std::vector<TileData>* tiles = _level.tileData();
@@ -125,11 +123,11 @@ void Controller::render(float deltaTime, Camera2D& cam) {
 			if (it->x * 64 < cameraMax.x && it->y * 64 < cameraMax.y && it->x * 64 + 64 > cameraMin.x && it->y * 64 + 64 > cameraMin.y)
 			{
 				if (it->layer < _currentTile.layer)
-					SpriteRenderer::drawSprite(_tiletexture, it->x * 64, it->y * 64, 64, 64, Colour(255, 255, 255, 255), 0.f, 8, it->id);
+					SpriteRenderer::drawSprite(_tiletexture, it->x * 64.f, it->y * 64.f, 64.f, 64.f, Colour(255, 255, 255, 255), 0.f, 8, it->id);
 				else if (it->layer == _currentTile.layer)
-					SpriteRenderer::drawSprite(_tiletexture, it->x * 64, it->y * 64, 64, 64, Colour(127, 255, 127, 255), 0.f, 8, it->id);
+					SpriteRenderer::drawSprite(_tiletexture, it->x * 64.f, it->y * 64.f, 64.f, 64.f, Colour(127, 255, 127, 255), 0.f, 8, it->id);
 				else
-					SpriteRenderer::drawSprite(_tiletexture, it->x * 64, it->y * 64, 64, 64, Colour(255, 255, 255, 127), 0.f, 8, it->id);
+					SpriteRenderer::drawSprite(_tiletexture, it->x * 64.f, it->y * 64.f, 64.f, 64.f, Colour(255, 255, 255, 127), 0.f, 8, it->id);
 			}
 		}
 	}
@@ -138,15 +136,8 @@ void Controller::render(float deltaTime, Camera2D& cam) {
 		const std::vector<EntityData>* entities = _level.entityData();
 
 		for (auto it = entities->begin(); it != entities->end(); it++)
-			SpriteRenderer::drawSprite(_symboltexture, it->x * 64, it->y * 64, 64, 64, Colour(255, 255, 255, 127), 0.f, 8, it->ID);
+			SpriteRenderer::drawSprite(_symboltexture, it->x * 64.f, it->y * 64.f, 64.f, 64.f, Colour(255, 255, 255, 127), 0.f, 8, it->ID);
 	}
-
-	//_level.drawSprites(cam, _currentTile.layer, Colour(200, 255, 200, 255));
-
-	//for (int layer = _currentTile.layer + 1; layer <= 16; layer++)
-	//	_level.drawSprites(cam, layer, Colour(255, 255, 255, 127));
-
-	//_level.drawEntitySprites();
 
 	if (!_usingUI)
 		if (!_entMode && _editMode != DELETE)
@@ -175,7 +166,7 @@ void Controller::input(SDL_Event event, int screenh)
 
 	if (event.type == SDL_TEXTINPUT) {
 		_namebox.textInput(event.text.text[0]);
-		levelname = _namebox.label.text.c_str();
+		levelname = _namebox.label.getText().c_str();
 	}
 	else if (event.type == SDL_MOUSEBUTTONDOWN) {
 		if (!_usingUI)
@@ -191,8 +182,8 @@ void Controller::input(SDL_Event event, int screenh)
 	else if (event.type == SDL_MOUSEBUTTONUP) {
 		_editMode = NONE;
 	}
-	else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_BACKSPACE && _namebox.label.text.length() > 0) {
-		_namebox.label.text.pop_back();
+	else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_BACKSPACE && _namebox.label.getText().length() > 0) {
+		_namebox.label.pop();
 	}
 
 	if (_inputLock)return;

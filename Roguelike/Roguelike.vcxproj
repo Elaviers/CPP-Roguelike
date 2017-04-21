@@ -69,20 +69,20 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LibraryPath>$(SolutionDir)\dependencies\libs\x64;$(SolutionDir)\x64\Release;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)/dependencies/include;$(SolutionDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)dependencies\libs\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)dependencies\include;$(SolutionDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)/dependencies/include;$(SolutionDir);$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\dependencies\libs\x64;$(SolutionDir)\x64\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)dependencies\include;$(SolutionDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)dependencies\libs\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>$(SolutionDir)/dependencies/libs;$(SolutionDir)/Debug;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)/dependencies/include;$(SolutionDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)dependencies\libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)dependencies\include;$(SolutionDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LibraryPath>$(SolutionDir)\dependencies\libs;$(SolutionDir)\Release;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)/dependencies/include;$(SolutionDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)dependencies\libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)dependencies\include;$(SolutionDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -91,7 +91,7 @@
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;glu32.lib;freetype27.lib;bass.lib;Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>bass.lib;freetype27.lib;opengl32.lib;glew32.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
@@ -106,7 +106,7 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x32  $(TargetDir)</Command>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;glu32.lib;freetype27.lib;bass.lib;Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>bass.lib;freetype27.lib;opengl32.lib;glew32.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
@@ -125,7 +125,7 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x64  $(TargetDir)</Command>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;glu32.lib;freetype27.lib;bass.lib;Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>bass.lib;freetype27.lib;opengl32.lib;glew32.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
@@ -145,7 +145,7 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x32  $(TargetDir)</Command>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;glu32.lib;freetype27.lib;bass.lib;Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>bass.lib;freetype27.lib;opengl32.lib;glew32.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
     <Bscmake>
@@ -158,6 +158,9 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x64  $(TargetDir)</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityContainer.h" />
+    <ClInclude Include="EntityData.h" />
     <ClInclude Include="GameData.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="Editor.h" />
@@ -177,6 +180,9 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x64  $(TargetDir)</Command>
     <ClCompile Include="Constants.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Editor.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityContainer.cpp" />
+    <ClCompile Include="EntityData.cpp" />
     <ClCompile Include="GameData.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Level.cpp" />
@@ -195,6 +201,11 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x64  $(TargetDir)</Command>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Engine\Engine.vcxproj">
+      <Project>{bb565847-e81e-4c1e-97b3-af543e9c9764}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

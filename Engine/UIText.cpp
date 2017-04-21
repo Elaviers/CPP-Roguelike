@@ -16,7 +16,7 @@ void UIText::render(Shader *shader) {
 	}
 
 	if (shader && shader->Channel == RenderTypes::FONT)
-		_font->drawString(text, _min.x * cameraScale.x, _min.y * cameraScale.y,
-		(text.length() * cameraScale.y * getHeight() > cameraScale.x * getWidth()) ? (int)((cameraScale.x * getWidth()) / text.length()) : (int)(cameraScale.y * getHeight()),
+		_font->drawString(_text, _min.x * cameraScale.x, _min.y * cameraScale.y,
+		(_text.length() * cameraScale.y * getHeight() > cameraScale.x * getWidth()) ? (int)((cameraScale.x * getWidth()) / _text.length()) : (int)(cameraScale.y * getHeight()),
 			_colour.vec4(), *shader);
 }

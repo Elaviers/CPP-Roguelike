@@ -34,18 +34,19 @@ void Game::start() {
 	////////
 
 	std::vector<StringPair> properties;
-	FileManager::readFile("Game/wololo.zestyconfig",properties);
-	GameData::screenDimensions.x = FileManager::readInt(properties,"resx");
+	FileManager::readFile("Game/config.cfg", properties);
+	GameData::screenDimensions.x = FileManager::readInt(properties, "resx");
 	GameData::screenDimensions.y = FileManager::readInt(properties, "resy");
 
 	////////////SDL
 	log("Creating window...");
 
 	SDL_Init(SDL_INIT_EVERYTHING);
-	_window.create("The Window of Hope", GameData::screenDimensions.x, GameData::screenDimensions.y,(FileManager::readBool(properties,"fullscreen") ? SDL_WINDOW_FULLSCREEN : 0) | SDL_WINDOW_RESIZABLE);
-	
+	_window.create("The Window of Hope", GameData::screenDimensions.x, GameData::screenDimensions.y, (FileManager::readBool(properties, "fullscreen") ? SDL_WINDOW_FULLSCREEN : 0) | SDL_WINDOW_RESIZABLE);
+
 	SDL_GL_SetSwapInterval(FileManager::readBool(properties, "vsync"));//vsync
-	if (FileManager::readBool(properties, "vsync"))_frameTimer.setFPSCap(60);
+	int fpscap = FileManager::readInt(properties, "fpslimit");
+	if (fpscap > 0)_frameTimer.setFPSCap(fpscap);
 
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
@@ -56,8 +57,8 @@ void Game::start() {
 
 	music = BASS_StreamCreateFile(FALSE, "Game/Audio/Loop.wav", 0, 0, 0);
 	music2 = BASS_StreamCreateFile(FALSE, "Game/Audio/SoundTest.wav", 0, 0, 0);
-	BASS_ChannelSetAttribute(music,BASS_ATTRIB_VOL,0.25f);
-	BASS_ChannelFlags(music,BASS_SAMPLE_LOOP,BASS_SAMPLE_LOOP);
+	BASS_ChannelSetAttribute(music, BASS_ATTRIB_VOL, 0.25f);
+	BASS_ChannelFlags(music, BASS_SAMPLE_LOOP, BASS_SAMPLE_LOOP);
 	BASS_ChannelSetAttribute(music2, BASS_ATTRIB_VOL, 0.5f);
 	BASS_ChannelFlags(music2, BASS_SAMPLE_LOOP, BASS_SAMPLE_LOOP);
 	//BASS_ChannelPlay(music, FALSE);
@@ -90,7 +91,7 @@ void Game::start() {
 	_shaderlsd.addAttribute("vertColour");
 	_shaderlsd.addAttribute("vertUV");
 	_shaderlsd.link();
-	
+
 	log("done!\n");
 	//other init
 	LineRenderer::init();
@@ -112,7 +113,7 @@ void Game::beginGame(const char* level) {
 	SDL_ShowCursor(SDL_DISABLE);
 
 	////////////init
-	
+
 	GameData::level = new Level();
 	//GameData::level->tileSheet = ResourceManager::getTextureRef("Game/Textures/tiles.png");;
 	GameData::level->load(level);
@@ -137,7 +138,7 @@ void Game::beginGame(const char* level) {
 		}
 	}
 
-	std::printf("Spawn at %d %d\n",spawnX + 32,spawnY);
+	std::printf("Spawn at %d %d\n", spawnX + 32, spawnY);
 
 	_player = new Player();
 	_player->init(spawnX + 32, spawnY, 128, 32, "Game/Textures/crosshair.png", "Game/Textures/player.png");
@@ -189,7 +190,7 @@ void Game::render() {
 	_shader.unUseProgram();
 
 	SpriteRenderer::UseProgram(*GameData::camera);
-	GameManager::renderLevel(127,true);
+	GameManager::renderLevel(127, true);
 	SpriteRenderer::UnuseProgram();
 	////////////////////////////////////////////////
 	GlobalUI::render(NULL);
@@ -210,7 +211,7 @@ void Game::handleInput() {
 	if (SDL_PollEvent(&event) == 1)
 		switch (event.type) {
 		case SDL_TEXTINPUT:
-			
+
 			break;
 
 		case SDL_QUIT:
@@ -238,7 +239,7 @@ void Game::handleInput() {
 			if (event.key.keysym.sym == SDLK_f) { SDL_SetWindowFullscreen(_window.GetWindowID(), true); break; }
 			if (event.key.keysym.sym == SDLK_m) {
 				static bool toggletest = true; if (toggletest) {
-					BASS_ChannelPlay(music2,false);
+					BASS_ChannelPlay(music2, false);
 					BASS_ChannelPause(music);
 				}
 				else {
@@ -257,9 +258,9 @@ void Game::handleInput() {
 			if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
 				GameData::screenDimensions.x = event.window.data1;
 				GameData::screenDimensions.y = event.window.data2;
-				glViewport(0,0, GameData::screenDimensions.x, GameData::screenDimensions.y);
+				glViewport(0, 0, GameData::screenDimensions.x, GameData::screenDimensions.y);
 				GameData::camera->SetViewportSize(GameData::screenDimensions.x, GameData::screenDimensions.y);
-				GlobalUI::setCameraSize(GameData::screenDimensions.x, GameData::screenDimensions.y);			
+				GlobalUI::setCameraSize(GameData::screenDimensions.x, GameData::screenDimensions.y);
 			}
 			break;
 		}

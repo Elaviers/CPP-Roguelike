@@ -38,12 +38,8 @@ void GameManager::renderLevel(signed char maxLayer, bool keepiterator) {
 
 	for (auto it = GameData::level->tileData()->begin() + _currentTileIndex; it->layer <= maxLayer && it != end; it++, _currentTileIndex++) {
 		if (it->x * 64 < cameraMax.x && it->y * 64 < cameraMax.y && it->x * 64 + 64 > cameraMin.x && it->y * 64 + 64 > cameraMin.y)
-			SpriteRenderer::drawSprite(*_tilesheet, it->x * 64, it->y * 64, 64, 64, 0.f, 8, it->id);
-		//std::printf("draw %d\n",_currentTileIndex);
+			SpriteRenderer::drawSprite(*_tilesheet, it->x * 64.f, it->y * 64.f, 64.f, 64.f, 0.f, 8, it->id);
 	}
-
-	//for (int i = StartingLayer; i <= EndLayer; i++)
-	//	level->drawSprites(*camera, i);
 }
 
 void GameManager::renderObjects(Shader& shader) {

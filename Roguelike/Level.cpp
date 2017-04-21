@@ -16,22 +16,6 @@ Level::~Level()
 {
 }
 
-/* deprecated
-Vector2 Level::getSpawnPoint() {
-	std::vector<unsigned int> spawnpoints;
-
-	for (int i = 0; i < _entData.size(); i++) {
-		if (_entData[i].ID == 0)
-			spawnpoints.push_back(i);
-	}
-
-	if (spawnpoints.size() > 0)
-		return _entData[spawnpoints[rand() % spawnpoints.size()]].position;
-
-	return Vector2{ 0,0 };
-}
-*/
-
 void Level::addTileData(const TileData& tile) {
 	if (tile.x > 123 || tile.x < -124 || tile.y > 123 || tile.y < -124)return;
 
@@ -104,59 +88,8 @@ bool Level::load(const char* path) {
 	return true;
 }
 
-/* deprecated
-bool Level::loadMulti(const char* path, float levelCount) {
-	std::vector<std::string>* levelnames = &IOManager::getFilesInDirectory(path, "level");
-	if (levelnames->size() == 0) return false;
-
-	std::vector<Tile> *alltiles = new std::vector<Tile>[levelnames->size()];
-	std::vector<EntityData> *allentities = new std::vector<EntityData>[levelnames->size()];
-
-
-	for (auto it = levelnames->begin(); it != levelnames->end(); it++) {
-
-	}
-
-
-	return true;
-}
-*/
-
 bool Level::save(const char* path) {
 	FileManager::writeLevelFile(_tileData, _entData, path);
 
 	return true;
 }
-
-/* deprecated
-void Level::drawSprites(Camera2D& cam, int layer) {
-	for (auto t = _tileData.begin(); t != _tileData.end(); t++)
-		if (t->layer == layer && t->ID != 255)
-			SpriteRenderer::drawSprite(*tileSheet, cam.getMin(), cam.getMax(), (float)t->position.x, (float)t->position.y, tileSize, tileSize, 0.0f, 8, t->ID);
-}
-
-void Level::drawSprites(Camera2D& cam, int layer, Colour c) {
-	for (auto t = _tileData.begin(); t != _tileData.end(); t++)
-		if (t->layer == layer && t->ID != 255)
-			SpriteRenderer::drawSprite(*tileSheet, cam.getMin(), cam.getMax(), (float)t->position.x, (float)t->position.y, tileSize, tileSize, c, 0.0f, 8, t->ID);
-}
-
-void Level::drawEntitySprites() {
-	for (auto t = _entData.begin(); t != _entData.end(); t++)
-		SpriteRenderer::drawSprite(*editorTileSheet, (float)t->position.x, (float)t->position.y, tileSize, tileSize, 0.0f, 4, t->ID);
-}
-
-Tile* Level::pointOverlaps(Vector2 point, int layer) {
-	for (auto t = _tileData.begin(); t != _tileData.end() && t->layer >= layer; t++)
-		if (t->layer == layer && point.x > t->position.x && point.y > t->position.y && point.x < t->position.x + tileSize && point.y < t->position.y + tileSize)
-			return &(*t);
-	return NULL;
-}
-
-Tile* Level::rectOverlaps(Vector2 min, Vector2 max, int layer) {
-	for (auto t = _tileData.begin(); t != _tileData.end() && t->layer >= layer; t++)
-		if (t->layer == layer && !(max.x <= t->position.x || max.y <= t->position.y || min.x >= t->position.x + tileSize || min.y >= t->position.y + tileSize))
-			return &(*t);
-	return NULL;
-}
-*/

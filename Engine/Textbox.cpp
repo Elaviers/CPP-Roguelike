@@ -27,6 +27,6 @@ bool TextBox::isOverlapping(int x, int y) {
 
 void TextBox::textInput(char ch) {
 	if (_active) {
-		label.text += ch;
+		label.push(ch);
 	}
 }

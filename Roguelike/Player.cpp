@@ -33,13 +33,13 @@ void Player::update(float frameTime) {
 	float movey = _moveY * moveSpeed * frameTime;
 
 	if (movex != 0) {
-		const TileData* collide = TileData::rectOverlaps(*GameData::level->tileData(), 64, 0, position.x + collision.min.x + movex, position.y + collision.min.y, position.x + collision.max.x + movex, position.y + collision.max.y);
+		const TileData* collide = TileData::rectOverlaps(*GameData::level->tileData(), 64, 0, (int)(position.x + collision.min.x + movex), (int)(position.y + collision.min.y), (int)(position.x + collision.max.x + movex), (int)(position.y + collision.max.y));
 		if (collide)
 			movex = (movex >= 0 ? collide->x * 64 - (position.x + collision.max.x) : (collide->x * 64 + 64) - (position.x + collision.min.x));
 	}
 
 	if (movey != 0) {
-		const TileData* collide = TileData::rectOverlaps(*GameData::level->tileData(), 64, 0, position.x + collision.min.x, position.y + collision.min.y + movey, position.x + collision.max.x, position.y + collision.max.y + movey);
+		const TileData* collide = TileData::rectOverlaps(*GameData::level->tileData(), 64, 0, (int)(position.x + collision.min.x), (int)(position.y + collision.min.y + movey), (int)(position.x + collision.max.x), (int)(position.y + collision.max.y + movey));
 		if (collide) 
 			movey = (movey >= 0 ? collide->y * 64 - (position.y + collision.max.y) : (collide->y * 64 + 64) - (position.y + collision.min.y));
 	}

@@ -1,7 +1,7 @@
 #pragma once
+#include "EntityData.h"
 #include "TileData.h"
 
-#include <Engine/EntityData.h>
 #include <vector>
 
 class Level

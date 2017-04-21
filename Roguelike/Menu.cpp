@@ -17,11 +17,12 @@ UIWindow *mainMenu, *options;
 Window_LevelSelect *levelSelect;
 
 void Quit_OnClick() {
+	std::cout << "CLOSTING\n\n\n";
 	GameData::gameInstance->stop();
 }
 
 void Level_OnClick(UIElement* caller) {
-	GameData::gameInstance->beginGame((std::string("Game/Levels/") + static_cast<UI_Button*>(caller)->label.text).c_str());
+	GameData::gameInstance->beginGame((std::string("Game/Levels/") + static_cast<UI_Button*>(caller)->label.getText()).c_str());
 	GlobalUI::clear();
 }
 

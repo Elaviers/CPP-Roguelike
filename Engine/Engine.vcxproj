@@ -30,27 +30,31 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>
+    </CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>
+    </CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>
+    </CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>
+    </CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -172,12 +176,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera2D.cpp" />
-    <ClCompile Include="EntityContainer.cpp" />
     <ClCompile Include="ErrorHandling.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FontCache.cpp" />
-    <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="EntityData.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="LineRenderer.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -209,12 +210,9 @@
     <ClInclude Include="Camera2D.h" />
     <ClInclude Include="Colour.h" />
     <ClInclude Include="Constants.h" />
-    <ClInclude Include="EntityContainer.h" />
     <ClInclude Include="ErrorHandling.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FontCache.h" />
-    <ClInclude Include="Entity.h" />
-    <ClInclude Include="EntityData.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="LineRenderer.h" />
     <ClInclude Include="NormalisedColour.h" />

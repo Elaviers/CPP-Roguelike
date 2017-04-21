@@ -21,7 +21,7 @@ UIWindow::UIWindow(float x,float y,float w,float h,unsigned char f, const char* 
 	titleRect.setColour(NormalisedColour(0,0,1));
 	titleText.setFont(font);
 	titleText.setColour(NormalisedColour(1,1,1));
-	titleText.text = name;
+	titleText = name;
 
 	closeButton.setColour(NormalisedColour(1,0,0));
 	closeButton.setHoverColour(NormalisedColour(0.25f,0,0));
