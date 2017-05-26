@@ -4,14 +4,14 @@
 
 #include <vector>
 
-class Level
+class LevelData
 {
 private:
 	std::vector<TileData> _tileData;
 	std::vector<EntityData> _entData;
 public:
-	Level();
-	~Level();
+	LevelData();
+	~LevelData();
 	const std::vector<TileData> *tileData() { return &_tileData; };
 	const std::vector<EntityData> *entityData() { return &_entData; };
 

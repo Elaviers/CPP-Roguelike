@@ -115,7 +115,7 @@ void Game::beginGame(const char* level) {
 
 	////////////init
 
-	GameData::level = new Level();
+	GameData::level = new LevelData();
 	//GameData::level->tileSheet = ResourceManager::getTextureRef("Game/Textures/tiles.png");;
 	GameData::level->load(level);
 
@@ -181,7 +181,7 @@ void Game::render() {
 
 	////////////////////////////////////////////////
 	SpriteRenderer::UseProgram(*GameData::camera);
-	GameManager::renderLevel(0);
+	GameManager::renderLevel(0, false);
 	SpriteRenderer::UnuseProgram();
 
 	_shader.useProgram();

@@ -2,6 +2,8 @@
 
 #include "UIContainer.h"
 
+#include <cstdio>
+
 using namespace GUI;
 
 UIElement::UIElement(float x, float y, float w, float h, unsigned char flags) : _flags(flags), _position{ x, y }, _size{ w, h } {

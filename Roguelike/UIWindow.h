@@ -1,11 +1,13 @@
 #pragma once
+#include "Types.h"
+
 #include <Engine/Button.h>
 #include <vector>
 
 class UIWindow : public GUI::UIContainer
 {
 public:
-	UIWindow(float x,float y,float w,float h,unsigned char flags, const char* name, const std::string&,bool addCloseButton = true);
+	UIWindow(float x,float y,float w,float h,uByte flags, const char* name, const std::string&,bool addCloseButton = true);
 	virtual ~UIWindow();
 
 	void bind_close(void(*function)()) { closeButton.bind_onClick(function); }

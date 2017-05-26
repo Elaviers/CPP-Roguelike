@@ -1,5 +1,6 @@
 #pragma once
-#include "Level.h"
+#include "EntityData.h"
+#include "TileData.h"
 
 #include <string>
 #include <vector>

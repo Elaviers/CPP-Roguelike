@@ -36,9 +36,9 @@ void GameManager::renderLevel(signed char maxLayer, bool keepiterator) {
 	auto end = GameData::level->tileData()->end();
 	Vector2 cameraMin = GameData::camera->getMin(), cameraMax = GameData::camera->getMax();
 
-	for (auto it = GameData::level->tileData()->begin() + _currentTileIndex; it->layer <= maxLayer && it != end; it++, _currentTileIndex++) {
+	for (auto it = GameData::level->tileData()->begin() + _currentTileIndex;  it != end && it->layer <= maxLayer; it++, _currentTileIndex++) {
 		if (it->x * 64 < cameraMax.x && it->y * 64 < cameraMax.y && it->x * 64 + 64 > cameraMin.x && it->y * 64 + 64 > cameraMin.y)
-			SpriteRenderer::drawSprite(*_tilesheet, it->x * 64.f, it->y * 64.f, 64.f, 64.f, 0.f, 8, it->id);
+			SpriteRenderer::drawSprite(*_tilesheet, (float)(it->x * 64), (float)(it->y * 64), 64, 64, 0.f, 8, it->id);
 	}
 }
 

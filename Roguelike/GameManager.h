@@ -1,6 +1,6 @@
 #pragma once
 #include "EntityContainer.h"
-#include "Level.h"
+#include "LevelData.h"
 
 #include <Engine/Camera2D.h>
 #include <Engine/ResourceManager.h>

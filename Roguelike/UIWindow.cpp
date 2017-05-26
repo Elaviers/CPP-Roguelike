@@ -8,29 +8,29 @@ void UIWindow::CloseWindow(UIElement* closebutton) {
 	delete closebutton->getParent()->getParent();
 }
 
-UIWindow::UIWindow(float x,float y,float w,float h,unsigned char f, const char* name, const std::string& font,bool addclosebutton) : 
-	UIContainer(x,y,w,h,f),
+UIWindow::UIWindow(float x, float y, float w, float h, uByte f, const char* name, const std::string& font, bool addclosebutton) :
+	UIContainer(x, y, w, h, f),
 	titleBar(0, 1, 1, -32, NORMALISED_Y | NORMALISED_WIDTH),
 	titleRect(0, 0, 1, 1, NORMALISED_WIDTH | NORMALISED_HEIGHT),
 	titleText(0, 0, 1, 1, NORMALISED_WIDTH | NORMALISED_HEIGHT),
 	closeButton(0, 0, -64, 1, NORMALISED_HEIGHT | FLIPPED_X),
 	bg(0, 0, 1, 1, NORMALISED_WIDTH | NORMALISED_HEIGHT)
-	{
+{
 	//Title Bar
 
-	titleRect.setColour(NormalisedColour(0,0,1));
+	titleRect.setColour(NormalisedColour(0, 0, 1));
 	titleText.setFont(font);
-	titleText.setColour(NormalisedColour(1,1,1));
+	titleText.setColour(NormalisedColour(1, 1, 1));
 	titleText = name;
 
-	closeButton.setColour(NormalisedColour(1,0,0));
-	closeButton.setHoverColour(NormalisedColour(0.25f,0,0));
+	closeButton.setColour(NormalisedColour(1, 0, 0));
+	closeButton.setHoverColour(NormalisedColour(0.25f, 0, 0));
 	closeButton.label.setFont(font);
-	closeButton.label.setColour(NormalisedColour(1,1,1));
+	closeButton.label.setColour(NormalisedColour(1, 1, 1));
 	closeButton.label = "X";
 	closeButton.bind_onClick(UIWindow::CloseWindow);
 
-	bg.setColour(NormalisedColour(0,0.8f,0));
+	bg.setColour(NormalisedColour(0, 0.8f, 0));
 
 	this->addElement(bg);
 	this->addElement(titleBar);

@@ -6,4 +6,4 @@ struct Vector2 {
 
 const bool operator==(const Vector2& a, const Vector2& b);
 
-const Vector2& operator+ (const Vector2& a, const Vector2& b);
+const Vector2 operator+ (const Vector2& a, const Vector2& b);

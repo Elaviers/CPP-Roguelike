@@ -8,7 +8,7 @@
 #include <Engine/SpriteRenderer.h>
 #include <iostream>
 
-Level* Controller::currentLevel;
+LevelData* Controller::currentLevel;
 bool Controller::_inputLock;
 const char* Controller::levelname = "sample.lvl";
 
@@ -99,13 +99,13 @@ void Controller::render(float deltaTime, Camera2D& cam) {
 	switch (_editMode) {
 	case PLACE:
 		if (_entMode)
-			_level.addEntityData(EntityData{ _currentTile.id, NULL, (signed char)(_currentTile.x / 64), (signed char)(_currentTile.y / 64) });
+			_level.addEntityData(EntityData{ _currentTile.id, (signed char)(_currentTile.x / 64), (signed char)(_currentTile.y / 64), NULL });
 		else
 			_level.addTileData(TileData{ _currentTile.layer, _currentTile.id, (signed char)(_currentTile.x / 64), (signed char)(_currentTile.y / 64) });
 		break;
 	case DELETE:
 		if (_entMode)
-			_level.removeEntityData(EntityData{ 0, NULL, (signed char)(_currentTile.x / 64), (signed char)(_currentTile.y / 64) });
+			_level.removeEntityData(EntityData{ 0, (signed char)(_currentTile.x / 64), (signed char)(_currentTile.y / 64), NULL });
 		else
 			_level.removeTileData(TileData{ _currentTile.layer, 0, (signed char)(_currentTile.x / 64), (signed char)(_currentTile.y / 64) });
 		break;

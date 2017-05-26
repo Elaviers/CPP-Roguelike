@@ -1,6 +1,6 @@
 #pragma once
 
-class Menu {
+class Menu { //this is stupid
 private:
 	static bool _enabled;
 

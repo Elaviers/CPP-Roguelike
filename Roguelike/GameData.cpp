@@ -11,5 +11,5 @@ namespace GameData {
 	float runTime;
 
 	Camera2D* camera;
-	Level* level;
+	LevelData* level;
 }

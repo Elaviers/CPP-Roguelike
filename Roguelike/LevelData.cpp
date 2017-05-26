@@ -1,22 +1,21 @@
-#include "Level.h"
+#include "LevelData.h"
 
 #include "FileManager.h"
 
-#include <algorithm>
 #include <Engine/IOManager.h>
 #include <Engine/ResourceManager.h>
 #include <Engine/SpriteRenderer.h>
 
-Level::Level()
+LevelData::LevelData()
 {
 }
 
 
-Level::~Level()
+LevelData::~LevelData()
 {
 }
 
-void Level::addTileData(const TileData& tile) {
+void LevelData::addTileData(const TileData& tile) {
 	if (tile.x > 123 || tile.x < -124 || tile.y > 123 || tile.y < -124)return;
 
 	for (auto it = _tileData.begin(); it != _tileData.end(); it++) //Check for existing tile
@@ -43,7 +42,7 @@ void Level::addTileData(const TileData& tile) {
 			_tileData.insert(it, tile);
 }
 
-void Level::removeTileData(const TileData& tile) {
+void LevelData::removeTileData(const TileData& tile) {
 	for (auto it = _tileData.begin(); it != _tileData.end(); it++)
 		if (it->layer == tile.layer && it->x == tile.x && it->y == tile.y) {
 			_tileData.erase(it);
@@ -51,7 +50,7 @@ void Level::removeTileData(const TileData& tile) {
 		}
 }
 
-void Level::addEntityData(const EntityData& data) {
+void LevelData::addEntityData(const EntityData& data) {
 	if (data.x > 123 || data.x < -124 || data.y > 123 || data.y < -124)return;
 
 	for (auto it = _entData.begin(); it != _entData.end(); it++)
@@ -74,7 +73,7 @@ void Level::addEntityData(const EntityData& data) {
 			_entData.insert(it, data);
 }
 
-void Level::removeEntityData(const EntityData& data) {
+void LevelData::removeEntityData(const EntityData& data) {
 	for (auto it = _entData.begin(); it != _entData.end(); it++)
 		if (it->x == data.x && it->y == data.y) {
 			_entData.erase(it);
@@ -82,13 +81,13 @@ void Level::removeEntityData(const EntityData& data) {
 		}
 }
 
-bool Level::load(const char* path) {
+bool LevelData::load(const char* path) {
 	FileManager::readLevelFile(path, _tileData, _entData);
 
 	return true;
 }
 
-bool Level::save(const char* path) {
+bool LevelData::save(const char* path) {
 	FileManager::writeLevelFile(_tileData, _entData, path);
 
 	return true;

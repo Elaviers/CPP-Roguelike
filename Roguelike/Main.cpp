@@ -9,8 +9,8 @@
 int main(int argsc, char* argsv[]) {
 	unsigned int t = (unsigned int)time(NULL);
 	srand(t);
-	
-	printf("%s (seeded with %d)\n",argsv[0],t);
+
+	printf("%s (seeded with %d)\n", argsv[0], t);
 	system("chcp 65001"); //FOR UNICODE CONSOLE OUTPUT--OMIT THIS FOR MAC PORT OBVIOUSLY.
 
 	if (argsc >= 2) {

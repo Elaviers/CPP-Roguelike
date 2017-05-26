@@ -15,8 +15,6 @@ private:
 		Colour Colour;
 	};
 
-	glm::vec2 l;
-
 	static std::vector<VertexNoUV> _vertices;
 	static GLuint _vbo, _vao;
 	static Shader _shader;

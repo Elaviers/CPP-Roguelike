@@ -38,7 +38,7 @@ namespace GUI {
 		void setY(float y) { _position.y = y; calculate(); }; //Just sets the y of corner 1. Normalises y if necessary.
 		void setWidth(float width) { _size.x = width; calculate(); }; //Sets the x of corner 2 to corner 1's x plus a normalised version of width
 		void setHeight(float height) { _size.y = height; calculate(); }; //Sets the y of corner 2 to corner 1's y plus a normalised version of height
-																		 //Basic getters. All values are normalised.
+		//Basic getters. All values are normalised.
 		float getX() const { return _min.x; };
 		float getY() const { return _min.y; };
 		float getWidth() const { return _max.x - _min.x; };

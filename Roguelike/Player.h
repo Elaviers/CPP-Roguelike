@@ -1,6 +1,5 @@
 #pragma once
 #include "Entity.h"
-#include "Level.h"
 
 #include <Engine/Camera2D.h>
 #include <Engine/Rect.h>
@@ -36,5 +35,4 @@ public:
 	void keyDown(SDL_Event a);
 	void setShooting(bool state) { _shooting = state; };
 	void shoot();
-
 };

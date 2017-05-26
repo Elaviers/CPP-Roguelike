@@ -1,4 +1,5 @@
 ﻿#include "FileManager.h"
+#include "Types.h"
 
 #include <Engine/Utility.h>
 #include <fstream>
@@ -60,7 +61,7 @@ void FileManager::readLevelFile(const char* Path, vector<TileData>& tileList, ve
 
 	if (!stream.is_open())return;
 
-	std::vector<unsigned char>buffer((istream_iterator<unsigned char>(stream)), istream_iterator<unsigned char>());
+	std::vector<uByte>buffer((istream_iterator<unsigned char>(stream)), istream_iterator<unsigned char>());
 
 	std::cout << "(FileManager) : Beginning load..." << endl;
 	tileList.clear();
@@ -123,7 +124,7 @@ void FileManager::readLevelFile(const char* Path, vector<TileData>& tileList, ve
 			}
 			else data = NULL;
 
-			entityList.push_back(EntityData{ currentEntID, data, currentX, (signed char)((unsigned char)*it - CHAR_OFFSET) });
+			entityList.push_back(EntityData{ currentEntID, currentX, (signed char)(*it - CHAR_OFFSET), data });
 
 			std::cout << u8"│  │  ├──y " << *it - CHAR_OFFSET << '\n';
 

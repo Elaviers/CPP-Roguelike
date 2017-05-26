@@ -10,7 +10,7 @@ public:
 	Window();
 	~Window();
 
-	int create(std::string title,int width,int height,unsigned int flag);
+	int create(std::string title, int width, int height, unsigned int flag);
 	void swapBuffer();
 	void setTitle(std::string title);
 	int getWidth() { return _w; };
