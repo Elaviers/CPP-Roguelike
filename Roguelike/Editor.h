@@ -2,7 +2,7 @@
 #include "Controller.h"
 
 #include <Engine/Camera2D.h>
-#include <Engine/Timing.h>
+#include <Engine/Timer.h>
 #include <Engine/Shader.h>
 #include <Engine/Window.h>
 
@@ -13,7 +13,7 @@ private:
 	bool running;
 	int screenX, screenY;
 
-	Timing _frameCounter;
+	Timer _frameCounter;
 	Camera2D _camera;
 	Controller _controller;
 

@@ -4,12 +4,13 @@ namespace GameData {
 	char* exedir;
 	Game* gameInstance;
 
-	Vector2 screenDimensions;
-	Vector2 mousePosition;
+	Vector2i screenDimensions;
+	Vector2i mousePosition;
 	bool mouseOnGUI;
 
 	float runTime;
+	float timeScale = 1.0f;
 
 	Camera2D* camera;
-	LevelData* level;
+	Level* level;
 }

@@ -11,6 +11,12 @@ LevelConnector::~LevelConnector()
 {
 }
 
-unsigned char* LevelConnector::getData() const {
-	return 0;
+void LevelConnector::GetProperties(PropertySet& properties) const {
+	properties.setChar("ConnectionID",connectionID);
+	properties.setChar("Direction",direction);
+}
+
+void LevelConnector::SetProperties(const PropertySet& properties) {
+	connectionID = properties.getChar("ConnectionID");
+	direction = properties.getChar("Direction");
 }

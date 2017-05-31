@@ -115,7 +115,7 @@ void Game::beginGame(const char* level) {
 
 	////////////init
 
-	GameData::level = new LevelData();
+	GameData::level = new Level();
 	//GameData::level->tileSheet = ResourceManager::getTextureRef("Game/Textures/tiles.png");;
 	GameData::level->load(level);
 
@@ -127,15 +127,15 @@ void Game::beginGame(const char* level) {
 
 		int i = 0;
 
-		for (auto it = GameData::level->entityData()->begin(); it != GameData::level->entityData()->end(); it++, i++) {
-			if (it->ID == 0)
+		for (auto it = GameData::level->entities()->begin(); it != GameData::level->entities()->end(); it++, i++) {
+			if ((*it)->getID() == 0)
 				spawnpoints.push_back(i);
 		}
 
 		if (spawnpoints.size() > 0) {
 			int index = rand() % spawnpoints.size();
-			spawnX = (*GameData::level->entityData())[index].x;
-			spawnY = (*GameData::level->entityData())[index].y;
+			spawnX = (int)(*GameData::level->entities())[index]->position.x;
+			spawnY = (int)(*GameData::level->entities())[index]->position.y;
 		}
 	}
 
@@ -155,13 +155,12 @@ void Game::loop() {
 		_frameTimer.begin();
 
 		frameNumber++;
-		GameData::runTime += _frameTimer.deltaTime;
 
 		handleInput();
-		GameManager::update(_frameTimer.deltaTime);
+		GameManager::update(_frameTimer.deltaTime * GameData::timeScale);
 		render();
 
-		if (frameNumber % 10 == 0)_window.setTitle("Boring Title (" + std::to_string(_frameTimer.getFramerate()) + " FPS, Time is " + std::to_string(GameData::runTime) + ") (X:" + std::to_string(GameData::mousePosition.x) + " Y:" + std::to_string(GameData::mousePosition.y) + ')');
+		if (frameNumber % 10 == 0)_window.setTitle("Boring Title (" + std::to_string(_frameTimer.deltaTime) + " FPS, Time is " + std::to_string(GameData::runTime) + ") (X:" + std::to_string(GameData::mousePosition.x) + " Y:" + std::to_string(GameData::mousePosition.y) + ')');
 
 		_frameTimer.end();
 	}
@@ -209,7 +208,7 @@ void Game::render() {
 
 void Game::handleInput() {
 	static SDL_Event event;
-	if (SDL_PollEvent(&event) == 1)
+	while (SDL_PollEvent(&event))
 		switch (event.type) {
 		case SDL_TEXTINPUT:
 
@@ -217,6 +216,7 @@ void Game::handleInput() {
 
 		case SDL_QUIT:
 			_running = false;
+			break;
 
 		case SDL_MOUSEBUTTONDOWN:
 			if (_player && !GameData::mouseOnGUI)_player->setShooting(true);

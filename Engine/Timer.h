@@ -1,6 +1,6 @@
 #pragma once
 
-class Timing
+class Timer
 {
 public:
 	void init(int FPSCAP = -1);

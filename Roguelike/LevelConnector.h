@@ -11,5 +11,6 @@ public:
 	unsigned char connectionID;
 	unsigned char direction;
 
-	virtual unsigned char* getData() const override;
+	virtual void GetProperties(PropertySet&) const;
+	virtual void SetProperties(const PropertySet&);
 };

@@ -173,7 +173,7 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x64  $(TargetDir)</Command>
     <ClInclude Include="Controller.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="GameManager.h" />
-    <ClInclude Include="LevelData.h" />
+    <ClInclude Include="Level.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="LevelConnector.h" />
@@ -181,9 +181,10 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x64  $(TargetDir)</Command>
     <ClInclude Include="Player.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="Property.h" />
+    <ClInclude Include="PropertySet.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SpawnPoint.h" />
-    <ClInclude Include="TileData.h" />
+    <ClInclude Include="Tile.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="UIWindow.h" />
@@ -197,7 +198,7 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x64  $(TargetDir)</Command>
     <ClCompile Include="EntityData.cpp" />
     <ClCompile Include="GameData.cpp" />
     <ClCompile Include="GameManager.cpp" />
-    <ClCompile Include="LevelData.cpp" />
+    <ClCompile Include="Level.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="LevelConnector.cpp" />
@@ -205,9 +206,9 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x64  $(TargetDir)</Command>
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Projectile.cpp" />
-    <ClCompile Include="Property.cpp" />
+    <ClCompile Include="PropertySet.cpp" />
     <ClCompile Include="SpawnPoint.cpp" />
-    <ClCompile Include="TileData.cpp" />
+    <ClCompile Include="Tile.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="UIWindow.cpp" />
   </ItemGroup>

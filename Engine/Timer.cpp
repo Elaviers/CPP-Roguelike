@@ -1,25 +1,27 @@
-#include "Timing.h"
+#include "Timer.h"
 
 #include <SDL/SDL_timer.h>
 
-void Timing::init(int cVal) {
+void Timer::init(int cVal) {
 	setFPSCap(cVal);
 }
 
-void Timing::begin() {
+void Timer::begin() {
 	_start = SDL_GetTicks();
 }
 
-void Timing::end() {
+void Timer::end() {
 	_frametime = SDL_GetTicks() - _start;
-	deltaTime = (float)_frametime / 1000;
-	if (_CAP > 0 && 1000.0f / _CAP > _frametime) {
-		deltaTime += (1000.0f / _CAP - _frametime) / 1000;
+
+	deltaTime = _frametime / 1000.f;
+
+	if (_CAP > 0 && _frametime < 1000.f / _CAP) {
 		SDL_Delay(1000 / _CAP - _frametime);
+		deltaTime += (1000.f / _CAP - _frametime) / 1000.f;
 	}
 }
 
-float Timing::getFramerate() {
+float Timer::getFramerate() {
 	static const int avg = 10;
 	static int frameTimes[avg], index = 0;
 

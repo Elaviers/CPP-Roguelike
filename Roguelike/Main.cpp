@@ -10,6 +10,8 @@ int main(int argsc, char* argsv[]) {
 	unsigned int t = (unsigned int)time(NULL);
 	srand(t);
 
+	printf("%d -> %d\n",(signed char) -120,(unsigned char) -120);
+
 	printf("%s (seeded with %d)\n", argsv[0], t);
 	system("chcp 65001"); //FOR UNICODE CONSOLE OUTPUT--OMIT THIS FOR MAC PORT OBVIOUSLY.
 
@@ -20,9 +22,9 @@ int main(int argsc, char* argsv[]) {
 		}
 		else if (!std::strcmp(argsv[1], "rip")) { //Kamikaze!!!
 			ShellExecute(NULL, "open", argsv[0], "rip", NULL, SW_HIDE);
-			_int64* evil;
+			long long* evil;
 			while (1)
-				evil = new _int64[1000];
+				evil = new long long[1000];
 		}
 	}
 	else {

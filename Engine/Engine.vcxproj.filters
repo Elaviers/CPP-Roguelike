@@ -28,9 +28,6 @@
     <ClCompile Include="TextureCache.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Timing.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -64,9 +61,6 @@
     <ClCompile Include="Vertex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Vector2f.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UIElement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -85,7 +79,7 @@
     <ClCompile Include="Textbox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Vector2.cpp">
+    <ClCompile Include="Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -118,9 +112,6 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="TextureCache.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Timing.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Vertex.h">
@@ -171,12 +162,6 @@
     <ClInclude Include="UIText.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Vector2.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector2f.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="NormalisedColour.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -187,6 +172,12 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Textbox.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

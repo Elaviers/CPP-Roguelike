@@ -2,7 +2,7 @@
 #include "Camera2D.h"
 #include "Colour.h"
 #include "Shader.h"
-#include "Vector2f.h"
+#include "Vector2.h"
 
 #include <glm/vec2.hpp>
 #include <vector>

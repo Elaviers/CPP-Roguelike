@@ -3,14 +3,14 @@
 
 #include <Engine/Shader.h>
 #include <Engine/Sprite.h>
-#include <Engine/Timing.h>
+#include <Engine/Timer.h>
 #include <Engine/Window.h>
 
 class Game
 {
 private:
 	Window _window;
-	Timing _frameTimer;
+	Timer _frameTimer;
 	bool _running;
 	/////////////////////
 	Sprite _bg;

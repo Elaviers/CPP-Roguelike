@@ -4,14 +4,21 @@
 #include <string>
 #include <vector>
 
-class Property
-{
+template <class T>
+class Property {
 protected:
 	std::string name;
+	T value;
 public:
-	Property(std::string name) : name(name) {};
-	virtual ~Property() = 0;
+	Property(const std::string& name) : name(name) {};
+	Property(const std::string& name, const T& value) : name(name), value(value) {};
+	virtual ~Property() {};
+	////
+	const std::string& getName() const { return name; };
+	const T& getValue() const { return value; };
+	////
+	Property<T>& operator=(const T& other) { value = other; return *this; };
+	Property<T>& operator+=(const T& other) { value += other; return *this; };
 
-	virtual void addDataToBuffer(std::vector<uByte>*) = 0;
+	//operator T() const { return value; }; //too confusing
 };
-

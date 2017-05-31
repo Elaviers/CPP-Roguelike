@@ -25,7 +25,7 @@ void Projectile::update(float deltaTime) {
 	position.x += std::cos(_direction) * deltaTime * _speed;
 	position.y += std::sin(_direction) * deltaTime * _speed;
 
-	if (TileData::pointOverlaps(*GameData::level->tileData(), 64, 0, (int)(position.x + std::cos(_direction) * _size / 4), (int)(position.y + std::sin(_direction) * _size / 4)))
+	if (Tile::pointOverlaps(*GameData::level->tileData(), 64, 0, (int)(position.x + std::cos(_direction) * _size / 4), (int)(position.y + std::sin(_direction) * _size / 4)))
 		delete this;
 }
 

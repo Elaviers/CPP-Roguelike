@@ -19,6 +19,8 @@ void GameManager::addEntity(Entity* obj) {
 }
 
 void GameManager::update(float deltaTime) {
+	runTime += deltaTime;
+	////
 	SDL_GetMouseState(&mousePosition.x, &mousePosition.y);
 	mousePosition.y = screenDimensions.y - mousePosition.y;
 	mouseOnGUI = GlobalUI::update(mousePosition.x, mousePosition.y);
@@ -34,7 +36,7 @@ void GameManager::renderLevel(signed char maxLayer, bool keepiterator) {
 		_currentTileIndex = 0;
 
 	auto end = GameData::level->tileData()->end();
-	Vector2 cameraMin = GameData::camera->getMin(), cameraMax = GameData::camera->getMax();
+	Vector2i cameraMin = GameData::camera->getMin(), cameraMax = GameData::camera->getMax();
 
 	for (auto it = GameData::level->tileData()->begin() + _currentTileIndex;  it != end && it->layer <= maxLayer; it++, _currentTileIndex++) {
 		if (it->x * 64 < cameraMax.x && it->y * 64 < cameraMax.y && it->x * 64 + 64 > cameraMin.x && it->y * 64 + 64 > cameraMin.y)

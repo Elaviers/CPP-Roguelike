@@ -1,4 +1,5 @@
 ﻿#include "FileManager.h"
+#include "PropertySet.h"
 #include "Types.h"
 
 #include <Engine/Utility.h>
@@ -54,7 +55,7 @@ int FileManager::readInt(const vector<StringPair>& arr, const string& name) {
 	return -1;
 }
 
-void FileManager::readLevelFile(const char* Path, vector<TileData>& tileList, vector<EntityData>& entityList)
+void FileManager::readLevelFile(const char* Path, vector<Tile>& tileList, vector<Entity*>& entityList)
 {
 	ifstream stream(Path, ios::binary | ios::in);
 	stream >> std::noskipws;
@@ -88,7 +89,7 @@ void FileManager::readLevelFile(const char* Path, vector<TileData>& tileList, ve
 				placeEntity = true;
 				force = true;
 				//it++;
-				std::cout << "entity id " << (int)currentEntID << '\n';
+				std::cout << "entid " << (int)currentEntID << '\n';
 			}
 
 			if (!placeEntity && (force || *it == LevelFlags::TILEID)) {
@@ -100,43 +101,37 @@ void FileManager::readLevelFile(const char* Path, vector<TileData>& tileList, ve
 			if (force || *it == LevelFlags::X) {
 				currentX = *++it - CHAR_OFFSET;
 				force = false;
-				it++;
 				std::cout << u8"│  ├──x " << (int)currentX << '\n';
+				it++;
 			}
 		}
 
 		if (!placeEntity) {
-			tileList.push_back(TileData{ currentLayer, currentID, currentX, (*it - CHAR_OFFSET) });
+			tileList.push_back(Tile{ currentLayer, currentID, currentX, (*it - CHAR_OFFSET) });
 			std::cout << u8"│  │  ├──y " << *it - CHAR_OFFSET << '\n';
 			it++;
 		}
 		else {
-			int data_len = 0;
+			Entity* ent = Entity::createClassForID(currentEntID);
+			static PropertySet properties;
+			ent->GetProperties(properties);
+			properties.getFromBuffer(it);
+			ent->SetProperties(properties);
+			properties.clear();
+			ent->position = Vector2f((float)currentX, (float)(*it - CHAR_OFFSET));
 
-			for (unsigned char* ch = &(*it) + 1; *ch != 0; ch++) data_len++;
-
-			unsigned char* data;
-
-			if (data_len > 0) {
-				data = new unsigned char[data_len];
-				for (int i = 0; i < data_len; i++)
-					data[i] = *(&(*it) + 1 + i);
-			}
-			else data = NULL;
-
-			entityList.push_back(EntityData{ currentEntID, currentX, (signed char)(*it - CHAR_OFFSET), data });
+			entityList.push_back(ent);
 
 			std::cout << u8"│  │  ├──y " << *it - CHAR_OFFSET << '\n';
-
-
-			it += data_len + 2; //It's data_len + 2 because the iterator is before the data and it has to skip until it's passed the null char
+			it++;
+			it++; //Skip null char (until newer levels are saved)
 		}
 	}
 
 	stream.close();
 }
 
-void FileManager::writeLevelFile(const std::vector<TileData>& tiles, const std::vector<EntityData>& entities, const char* path) {
+void FileManager::writeLevelFile(const std::vector<Tile>& tiles, const std::vector<Entity*>& entities, const char* path) {
 
 	ofstream stream(path, ios::binary | ios::out);
 	if (!stream.is_open())return;
@@ -148,12 +143,12 @@ void FileManager::writeLevelFile(const std::vector<TileData>& tiles, const std::
 	unsigned char currentID;
 	signed char currentX, currentY;
 
-	for (TileData t : tiles) {
+	for (Tile t : tiles) {
 		//Values 0-7 are load flags
 		if (force || t.layer != currentLayer) {
 			buffer.push_back(LevelFlags::LAYER);//Flag : new Layer
 			buffer.push_back(t.layer + CHAR_OFFSET);
-			printf("push new layer: %d (%d)\n", t.layer + CHAR_OFFSET, t.layer);
+			printf("push new layer: %d (%d)\n", (unsigned char)t.layer + CHAR_OFFSET, t.layer);
 			currentLayer = t.layer;
 			force = true;
 		}
@@ -182,31 +177,34 @@ void FileManager::writeLevelFile(const std::vector<TileData>& tiles, const std::
 	force = true;
 
 	currentX = currentY = currentID = 0;
-	for (EntityData e : entities) {
-		if (force || e.ID != currentID) {
+	for (const Entity* e : entities) {
+		if (force || e->getID() != currentID) {
+			currentID = e->getID();
 			buffer.push_back(LevelFlags::ENTLAYER);
-			buffer.push_back(e.ID);
-			printf("push new entity layer: ID %d\n", e.ID);
-			currentID = e.ID;
+			buffer.push_back(currentID);
+			printf("push new entity layer: ID %d\n", currentID);
 			force = true;
 		}
-		if (force || e.x != currentX) {
+		if (force || e->position.x != currentX) {
+			currentX = (signed char)e->position.x;
 			if (!force)buffer.push_back(LevelFlags::X);//Flag : new X value
-			buffer.push_back((unsigned char)e.x + CHAR_OFFSET);
-			currentX = e.x;
-			printf("push new x: %d (%d)\n", (unsigned char)e.x + CHAR_OFFSET, e.x);
+			buffer.push_back((unsigned char)currentX + CHAR_OFFSET);
+			printf("push new x: %d (%d)\n", (unsigned char)currentX + CHAR_OFFSET, currentX);
 			force = true;
 		}
-		if (force || e.y != currentY) {
-			buffer.push_back((unsigned char)e.y + CHAR_OFFSET);
-			currentY = e.y;
+		if (force || e->position.y != currentY) {
+			currentY = (signed char)e->position.y;
+			buffer.push_back((unsigned char)currentY + CHAR_OFFSET);
 
-			if (e.data != NULL)
-				for (int i = 0; e.data[i] != 0; i++)
-					buffer.push_back(e.data[i]);
+			static PropertySet entProperties;
+			e->GetProperties(entProperties);
+			entProperties.addToBuffer(buffer);
+			entProperties.clear();
 
-			buffer.push_back(0);
-			printf("push new y: %d (%d)\n", (unsigned char)e.y + CHAR_OFFSET, e.y);
+			
+
+			//buffer.push_back(0);
+			printf("push new y: %d (%d)\n", (unsigned char)currentY + CHAR_OFFSET, currentY);
 			force = false;
 		}
 	}

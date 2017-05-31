@@ -1,6 +1,6 @@
 #pragma once
 #include "Colour.h"
-#include "Vector2f.h"
+#include "Vector2.h"
 
 struct UV { 
 	float u, v;

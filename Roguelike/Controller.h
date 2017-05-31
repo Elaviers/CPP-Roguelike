@@ -1,6 +1,6 @@
 #pragma once
 #include "FileManager.h"
-#include "LevelData.h"
+#include "Level.h"
 
 #include <SDL/SDL_events.h>
 #include <Engine/Camera2D.h>
@@ -33,9 +33,9 @@ private:
 		unsigned char id;
 		int x;
 		int y;
-	} _currentTile;
+	} _selection;
 
-	LevelData _level;
+	Level _level;
 	Texture _tiletexture,_symboltexture;
 
 	bool _usingUI;
@@ -53,7 +53,7 @@ private:
 
 	static void save(), load(), setInputState(bool);
 public:
-	static LevelData* currentLevel;
+	static Level* currentLevel;
 
 	float speed;
 
