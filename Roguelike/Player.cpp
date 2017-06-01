@@ -20,7 +20,7 @@ void Player::init(int x,int y,int size,int crosshairSize,std::string texture, st
 	ResourceManager::getTexture("Game/Textures/proj.png");//Cache projectile texture
 
 	position = Vector2f{ (float)x, (float)y };
-	collision = Rect{ Vector2f{-32,0}, Vector2f{32,64} };
+	collision = Rect_f( Vector2f(-32,0), Vector2f(32,64) );
 }
 
 void Player::update(float frameTime) {

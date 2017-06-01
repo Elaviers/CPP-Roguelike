@@ -1,6 +1,7 @@
 #include "Game.h"
 
 #include "Constants.h"
+#include "EntityRegistry.h"
 #include "FileManager.h"
 #include "GameData.h"
 #include "GameManager.h"
@@ -95,13 +96,18 @@ void Game::start() {
 
 	log("done!\n");
 	//other init
+	EntityRegistry::init();
+
 	LineRenderer::init();
 	SpriteRenderer::init();
+	SpriteRenderer::setUVData(8, Colour()); //render all things with 8 divs
 
 	GlobalUI::setCameraSize(GameData::screenDimensions.x, GameData::screenDimensions.y);
 
 	GameData::camera = new Camera2D();
 	GameData::camera->SetViewportSize(GameData::screenDimensions.x, GameData::screenDimensions.y);
+
+
 
 	Menu::init();
 
@@ -160,7 +166,7 @@ void Game::loop() {
 		GameManager::update(_frameTimer.deltaTime * GameData::timeScale);
 		render();
 
-		if (frameNumber % 10 == 0)_window.setTitle("Boring Title (" + std::to_string(_frameTimer.deltaTime) + " FPS, Time is " + std::to_string(GameData::runTime) + ") (X:" + std::to_string(GameData::mousePosition.x) + " Y:" + std::to_string(GameData::mousePosition.y) + ')');
+		if (frameNumber % 10 == 0)_window.setTitle("Boring Title (" + std::to_string(_frameTimer.getFramerate()) + " FPS, Time is " + std::to_string(GameData::runTime) + ") (X:" + std::to_string(GameData::mousePosition.x) + " Y:" + std::to_string(GameData::mousePosition.y) + ')');
 
 		_frameTimer.end();
 	}
@@ -178,9 +184,12 @@ void Game::render() {
 	_bg.render();
 	_shaderlsd.unUseProgram();
 
+	static Rect_i cameradims;
+	cameradims = Rect_i(GameData::camera->getMin(),GameData::camera->getMax());
+
 	////////////////////////////////////////////////
 	SpriteRenderer::UseProgram(*GameData::camera);
-	GameManager::renderLevel(0, false);
+	GameManager::renderLevel(0, true, cameradims);
 	SpriteRenderer::UnuseProgram();
 
 	_shader.useProgram();
@@ -190,7 +199,7 @@ void Game::render() {
 	_shader.unUseProgram();
 
 	SpriteRenderer::UseProgram(*GameData::camera);
-	GameManager::renderLevel(127, true);
+	GameManager::renderLevel(127, false, cameradims);
 	SpriteRenderer::UnuseProgram();
 	////////////////////////////////////////////////
 	GlobalUI::render(NULL);

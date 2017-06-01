@@ -1,6 +1,7 @@
 #include "Controller.h"
 
 #include "Constants.h"
+#include "EntityRegistry.h"
 
 #include <Engine/GUI.h>
 #include <Engine/LineRenderer.h>
@@ -66,10 +67,10 @@ void Controller::init() {
 	_counter = "TileID : 0|Layer : 0";
 	_counter.setColour(NormalisedColour(1, 1, 1, 1));
 
-	_namebox.label.setFont(Constants::font);
-	_saveButton.label.setFont(Constants::font);
-	_loadButton.label.setFont(Constants::font);
-	_counter.setFont(Constants::font);
+	_namebox.label.setFont(Constants::font_editor);
+	_saveButton.label.setFont(Constants::font_editor);
+	_loadButton.label.setFont(Constants::font_editor);
+	_counter.setFont(Constants::font_editor);
 
 	GlobalUI::add(_counter);
 	GlobalUI::add(_menuBar);
@@ -83,7 +84,7 @@ void Controller::init() {
 	currentLevel = &_level;
 }
 
-int gridSnap(int i, int snap) {
+inline int gridSnap(int i, int snap) {
 	if (i % snap > 0)
 		return i - (i % snap);
 	else return i - snap - (i % snap);
@@ -99,11 +100,10 @@ void Controller::render(float deltaTime, Camera2D& cam) {
 	switch (_editMode) {
 	case PLACE:
 		if (_entMode) {
-			Entity* ent = Entity::createClassForID(_selection.id);
+			Entity* ent = EntityRegistry::createEntity(_selection.id);
+			if (!ent) break;
 			ent->position = Vector2f((float)_selection.x,(float)_selection.y);
 			_level.addEntity(ent);
-
-
 		}
 		else
 			_level.addTile(Tile{ _selection.layer, _selection.id, (signed char)(_selection.x / 64), (signed char)(_selection.y / 64) });
@@ -118,37 +118,25 @@ void Controller::render(float deltaTime, Camera2D& cam) {
 
 	SpriteRenderer::UseProgram(cam);
 
-	{ //Draw Tiles
-		const std::vector<Tile>* tiles = _level.tileData();
-		auto it = tiles->begin();
+	Rect_i cameraDimensions(cam.getMin(), cam.getMax());
+	SpriteRenderer::setUVData(8, Colour(255,255,255,255));
+	_level.drawTiles(_selection.layer - 1,	true ,cameraDimensions, _tiletexture);
+	SpriteRenderer::setUVData(8, Colour(127, 255, 127, 255));
+	_level.drawTiles(_selection.layer,		false, cameraDimensions, _tiletexture);
+	SpriteRenderer::setUVData(8, Colour(255, 255, 255, 64));
+	_level.drawTiles(127,					false, cameraDimensions, _tiletexture);
 
-		Vector2i cameraMin = cam.getMin(), cameraMax = cam.getMax();
-
-		for (; it != tiles->end(); it++) {
-			if (it->x * 64 < cameraMax.x && it->y * 64 < cameraMax.y && it->x * 64 + 64 > cameraMin.x && it->y * 64 + 64 > cameraMin.y)
-			{
-				if (it->layer < _selection.layer)
-					SpriteRenderer::drawSprite(_tiletexture, it->x * 64.f, it->y * 64.f, 64.f, 64.f, Colour(255, 255, 255, 255), 0.f, 8, it->id);
-				else if (it->layer == _selection.layer)
-					SpriteRenderer::drawSprite(_tiletexture, it->x * 64.f, it->y * 64.f, 64.f, 64.f, Colour(127, 255, 127, 255), 0.f, 8, it->id);
-				else
-					SpriteRenderer::drawSprite(_tiletexture, it->x * 64.f, it->y * 64.f, 64.f, 64.f, Colour(255, 255, 255, 127), 0.f, 8, it->id);
-			}
-		}
-	}
-
-	{
-		const std::vector<Entity*>* entities = _level.entities();
-
-		for (auto it = entities->begin(); it != entities->end(); it++)
-			SpriteRenderer::drawSprite(_symboltexture, (*it)->position.x * 64.f, (*it)->position.y * 64.f, 64.f, 64.f, Colour(255, 255, 255, 127), 0.f, 8, (*it)->getID());
-	}
+	_level.drawEntities(SpriteRenderer::GetShader());
 
 	if (!_usingUI)
-		if (!_entMode && _editMode != DELETE)
-			SpriteRenderer::drawSprite(_tiletexture, (float)_selection.x, (float)_selection.y, 64.f, 64.f, Colour(255, 255, 255, 128), 0.0f, 8, _selection.id);
-		else if (_entMode && _editMode != DELETE)
-			SpriteRenderer::drawSprite(_symboltexture, (float)_selection.x, (float)_selection.y, 64.f, 64.f, Colour(255, 255, 255, 128), 0.0f, 4, _selection.id);
+		if (!_entMode && _editMode != DELETE) {
+			SpriteRenderer::setUVData(8, Colour(255, 255, 255, 127));
+			SpriteRenderer::drawSprite(_tiletexture, (float)_selection.x, (float)_selection.y, 64.f, 64.f, 0.0f, _selection.id);
+		}
+		/*else if (_entMode && _editMode != DELETE) {
+			SpriteRenderer::setUVData(4, Colour(255, 255, 255, 127));
+			SpriteRenderer::drawSprite(_symboltexture, (float)_selection.x, (float)_selection.y, 64.f, 64.f, 0.0f, _selection.id);
+		}*/
 
 	SpriteRenderer::UnuseProgram();
 
@@ -209,8 +197,9 @@ void Controller::input(SDL_Event event, int screenh)
 		case SDLK_RIGHTBRACKET:_selection.layer++; break;
 		}
 
-		if (_entMode)
-			_counter = "EntID : " + std::to_string(_selection.id);
+		if (_entMode) {
+			_counter = "EntID : " + std::to_string(_selection.id) + " (" + EntityRegistry::getNameOfID(_selection.id) +")";
+		}
 		else
 			_counter = "TileID : " + std::to_string(_selection.id) + "|Layer : " + std::to_string(_selection.layer);
 	}

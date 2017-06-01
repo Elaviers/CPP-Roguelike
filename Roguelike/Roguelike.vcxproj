@@ -169,6 +169,8 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x64  $(TargetDir)</Command>
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityContainer.h" />
     <ClInclude Include="EntityData.h" />
+    <ClInclude Include="EntityRegister.h" />
+    <ClInclude Include="EntityRegistry.h" />
     <ClInclude Include="GameData.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="Editor.h" />
@@ -196,6 +198,7 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x64  $(TargetDir)</Command>
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityContainer.cpp" />
     <ClCompile Include="EntityData.cpp" />
+    <ClCompile Include="EntityRegistry.cpp" />
     <ClCompile Include="GameData.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Level.cpp" />

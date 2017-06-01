@@ -1,4 +1,5 @@
 ﻿#include "FileManager.h"
+#include "EntityRegistry.h"
 #include "PropertySet.h"
 #include "Types.h"
 
@@ -112,7 +113,7 @@ void FileManager::readLevelFile(const char* Path, vector<Tile>& tileList, vector
 			it++;
 		}
 		else {
-			Entity* ent = Entity::createClassForID(currentEntID);
+			Entity* ent = EntityRegistry::createEntity(currentEntID);
 			static PropertySet properties;
 			ent->GetProperties(properties);
 			properties.getFromBuffer(it);

@@ -24,7 +24,7 @@ public:
 	Player() : _moveX(0), _moveY(0), _lastShot(0), _shooting(false), fireRate(.125), moveSpeed(420) {};
 	~Player() {};
 
-	Rect collision;
+	Rect_f collision;
 
 	void init(int XPosition,int YPosition,int Size,int CrosshairSize,std::string CrosshairTexture, std::string PointerTexture);
 

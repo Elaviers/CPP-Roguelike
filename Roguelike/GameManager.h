@@ -19,7 +19,7 @@ public:
 	static void addEntity(Entity* Object);
 
 	static void update(float DeltaTime);
-	static void renderLevel(signed char lastLayer, bool keepIterator = false);
+	static void renderLevel(signed char lastLayer, bool resetIterator, const Rect_i& cameradimensions);
 	static void renderObjects(Shader& s);
 
 	static void setTileTexture(const char* path) { _tilesheet = ResourceManager::getTextureRef(path); };

@@ -1,6 +1,7 @@
 #include "Editor.h"
 
 #include "Constants.h"
+#include "EntityRegistry.h"
 #include "FileManager.h"
 
 #include <Engine/GUI.h>
@@ -32,10 +33,11 @@ void Editor::start() {
 	FT_Init_FreeType(&ft);
 	//_font.init(ft, "Game/Fonts/font.ttf", 32);
 	ResourceManager::setFontLibrary(ft);
-	ResourceManager::getFontRef(Constants::font);
+	ResourceManager::getFontRef(Constants::font_editor);
 	FT_Done_FreeType(ft);
 	///////////////////////////////////////////////////////////////////////
-	
+	EntityRegistry::init();
+
 	_camera.SetViewportSize(screenX, screenY);
 
 	GlobalUI::setCameraSize(screenX, screenY);

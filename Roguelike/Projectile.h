@@ -4,14 +4,16 @@
 #include <Engine/Shader.h>
 #include <Engine/Sprite.h>
 #include <Engine/Texture.h>
+#include <Engine/Vector2.h>
 #include <glm/vec2.hpp>
 #include <string>
 
 class Projectile : public Entity
 {
 private:
-	Texture _texture;
-	float _size, _direction, _speed;
+	Sprite _sprite;
+	Vector2f _direction;
+	float _size, _speed;
 public:
 	Projectile();
 	~Projectile() {};
