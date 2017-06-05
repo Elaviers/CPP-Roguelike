@@ -1,18 +1,17 @@
 #include "Game.h"
 
 #include "Constants.h"
-#include "EntityRegistry.h"
 #include "FileManager.h"
 #include "GameData.h"
-#include "GameManager.h"
 #include "Menu.h"
 #include "Player.h"
 #include "UIWindow.h"
+#include "World.h"
 
 #include <bass.h>
 #include <ft2build.h>
-#include <GL/glew.h>
 #include FT_FREETYPE_H
+#include <GL/glew.h>
 #include <Engine/ErrorHandling.h>
 #include <Engine/GUI.h>
 #include <Engine/LineRenderer.h>
@@ -96,8 +95,7 @@ void Game::start() {
 
 	log("done!\n");
 	//other init
-	EntityRegistry::init();
-
+	Constants::create_registry();
 	LineRenderer::init();
 	SpriteRenderer::init();
 	SpriteRenderer::setUVData(8, Colour()); //render all things with 8 divs
@@ -121,11 +119,8 @@ void Game::beginGame(const char* level) {
 
 	////////////init
 
-	GameData::level = new Level();
-	//GameData::level->tileSheet = ResourceManager::getTextureRef("Game/Textures/tiles.png");;
-	GameData::level->load(level);
-
-	GameManager::setTileTexture("Game/Textures/tiles.png");
+	_tileSheet = ResourceManager::getTextureRef("Game/Textures/tiles.png");;
+	World::load(level);
 
 	int spawnX = 0, spawnY = 0;
 	{
@@ -133,15 +128,15 @@ void Game::beginGame(const char* level) {
 
 		int i = 0;
 
-		for (auto it = GameData::level->entities()->begin(); it != GameData::level->entities()->end(); it++, i++) {
+		for (auto it = World::entities()->begin(); it != World::entities()->end(); it++, i++) {
 			if ((*it)->getID() == 0)
 				spawnpoints.push_back(i);
 		}
 
 		if (spawnpoints.size() > 0) {
 			int index = rand() % spawnpoints.size();
-			spawnX = (int)(*GameData::level->entities())[index]->position.x;
-			spawnY = (int)(*GameData::level->entities())[index]->position.y;
+			spawnX = (int)(*World::entities())[index]->position.x;
+			spawnY = (int)(*World::entities())[index]->position.y;
 		}
 	}
 
@@ -149,7 +144,7 @@ void Game::beginGame(const char* level) {
 
 	_player = new Player();
 	_player->init(spawnX + 32, spawnY, 128, 32, "Game/Textures/crosshair.png", "Game/Textures/player.png");
-	GameManager::addEntity(_player);
+	World::addEntity(_player);
 
 	log("Game started\n");
 	//////////////////
@@ -163,7 +158,7 @@ void Game::loop() {
 		frameNumber++;
 
 		handleInput();
-		GameManager::update(_frameTimer.deltaTime * GameData::timeScale);
+		update();
 		render();
 
 		if (frameNumber % 10 == 0)_window.setTitle("Boring Title (" + std::to_string(_frameTimer.getFramerate()) + " FPS, Time is " + std::to_string(GameData::runTime) + ") (X:" + std::to_string(GameData::mousePosition.x) + " Y:" + std::to_string(GameData::mousePosition.y) + ')');
@@ -172,6 +167,17 @@ void Game::loop() {
 	}
 
 	BASS_Free();
+}
+
+void Game::update() {
+	float deltaTime = _frameTimer.deltaTime * GameData::timeScale;
+	GameData::runTime += deltaTime;
+	
+	SDL_GetMouseState(&GameData::mousePosition.x, &GameData::mousePosition.y);
+	GameData::mousePosition.y = GameData::screenDimensions.y - GameData::mousePosition.y;
+	GameData::mouseOnGUI = GlobalUI::update(GameData::mousePosition.x, GameData::mousePosition.y);
+	
+	World::updateEntities(deltaTime);
 }
 
 void Game::render() {
@@ -189,17 +195,17 @@ void Game::render() {
 
 	////////////////////////////////////////////////
 	SpriteRenderer::UseProgram(*GameData::camera);
-	GameManager::renderLevel(0, true, cameradims);
+	World::drawTiles(0, true, cameradims, *_tileSheet);
 	SpriteRenderer::UnuseProgram();
 
 	_shader.useProgram();
 	_shader.set1i("sTexture", 0);
 	_shader.setMat4("projection", GameData::camera->getCameraMatrix());
-	GameManager::renderObjects(_shader);
+	World::drawEntities(_shader);
 	_shader.unUseProgram();
 
 	SpriteRenderer::UseProgram(*GameData::camera);
-	GameManager::renderLevel(127, false, cameradims);
+	World::drawTiles(127, false, cameradims, *_tileSheet);
 	SpriteRenderer::UnuseProgram();
 	////////////////////////////////////////////////
 	GlobalUI::render(NULL);

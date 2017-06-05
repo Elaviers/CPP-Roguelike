@@ -1,22 +1,20 @@
-#include "Level.h"
+#include "World.h"
 
-#include "Entity.h"
 #include "FileManager.h"
 
+#include <algorithm>
+#include <Engine/Entity.h>
 #include <Engine/IOManager.h>
 #include <Engine/ResourceManager.h>
 #include <Engine/SpriteRenderer.h>
 
-Level::Level() : _tileSize(64)
-{
-}
+std::vector<Tile> World::_tiles;
+std::vector<Entity*> World::_entities;
+int World::_tileSize = 64;
 
+std::vector<Entity*>::iterator World::_iterator = _entities.begin();
 
-Level::~Level()
-{
-}
-
-void Level::addTile(const Tile& tile) {
+void World::addTile(const Tile& tile) {
 	if (tile.x > 123 || tile.x < -124 || tile.y > 123 || tile.y < -124)return;
 
 	for (auto it = _tiles.begin(); it != _tiles.end(); it++) { //Check for existing tile
@@ -46,7 +44,7 @@ void Level::addTile(const Tile& tile) {
 	_tiles.insert(it, tile);
 }
 
-void Level::removeTile(signed char layer, signed char x, signed char y) {
+void World::removeTile(signed char layer, signed char x, signed char y) {
 	for (auto it = _tiles.begin(); it != _tiles.end(); it++)
 		if (it->layer == layer && it->x == x && it->y == y) {
 			_tiles.erase(it);
@@ -54,33 +52,39 @@ void Level::removeTile(signed char layer, signed char x, signed char y) {
 		}
 }
 
-void Level::addEntity(Entity* ent) {
+void World::addEntity(Entity* ent, bool sort) {
 	//if (ent->position.x > 123 || ent->position.x < -124 || ent->position.y > 123 || ent->position.y < -124)return;
 
-	for (auto it = _entities.begin(); it != _entities.end(); it++) {
-		if (ent->position == (*it)->position) {
-			if (ent->getID() == (*it)->getID()) return;
-			else {
-				_entities.erase(it);
-				break;
+	if (sort) {
+		for (auto it = _entities.begin(); it != _entities.end(); it++) {
+			if (ent->position == (*it)->position) {
+				if (ent->getID() == (*it)->getID()) return;
+				else {
+					_entities.erase(it);
+					break;
+				}
 			}
 		}
-	}
 
-	auto it = _entities.begin();
-	for (; it != _entities.end(); it++)
-		if (ent->getID() == (*it)->getID()) {
-			for (; it != _entities.end() && (*it)->getID() == ent->getID(); it++)
-				if (ent->position.x > (*it)->position.x || (ent->position == (*it)->position))
-					break;
-			break;
-		}
-			
-	_entities.insert(it, ent);
-	std::printf("Created entity (id %d, name %s)\n", ent->getID(), ent->getName().c_str());
+		auto it = _entities.begin();
+		for (; it != _entities.end(); it++)
+			if (ent->getID() == (*it)->getID()) {
+				for (; it != _entities.end() && (*it)->getID() == ent->getID(); it++)
+					if (ent->position.x > (*it)->position.x || (ent->position == (*it)->position))
+						break;
+				break;
+			}
+
+		_entities.insert(it, ent);
+	}
+	else { _iterator = _entities.insert(_iterator, ent) + 2; }
 }
 
-void Level::removeEntity(const Vector2f& position) {
+void World::removeEntity(Entity* ent) {
+	_entities.erase(std::remove(_entities.begin(),_entities.end(), ent), _entities.end());
+}
+
+void World::removeEntityAtPosition(const Vector2f& position) {
 	for (auto it = _entities.begin(); it != _entities.end(); it++)
 		if ((*it)->position == position) {
 			_entities.erase(it);
@@ -88,19 +92,19 @@ void Level::removeEntity(const Vector2f& position) {
 		}
 }
 
-bool Level::load(const char* path) {
-	FileManager::readLevelFile(path, _tiles, _entities);
+bool World::load(const char* path) {
+	bool success = FileManager::readLevelFile(path, _tiles, _entities);
 
-	return true;
+	_iterator = _entities.begin();
+
+	return success;
 }
 
-bool Level::save(const char* path) const {
-	FileManager::writeLevelFile(_tiles, _entities, path);
-
-	return true;
+bool World::save(const char* path) {
+	return FileManager::writeLevelFile(_tiles, _entities, path);
 }
 
-void Level::drawTiles(signed char maxlayer, bool resetiterator, const Rect_i& cameradimensions, const Texture& texture) const {
+void World::drawTiles(signed char maxlayer, bool resetiterator, const Rect_i& cameradimensions, const Texture& texture) {
 	static int _tileIndex = 0;
 
 	if (resetiterator)
@@ -112,12 +116,14 @@ void Level::drawTiles(signed char maxlayer, bool resetiterator, const Rect_i& ca
 	}
 }
 
-void Level::drawEntities(Shader& shader) const {
+void World::drawEntities(Shader& shader) {
 	for (auto it = _entities.begin(); it != _entities.end(); it++)
 		(*it)->render(shader);
 }
 
-void Level::updateEntities(float deltatime) const {
-	for (auto it = _entities.begin(); it != _entities.end(); it++)
-		(*it)->update(deltatime);
+void World::updateEntities(float deltatime) {
+	_iterator = _entities.begin();
+
+ 	for (; _iterator != _entities.end(); _iterator++)
+		(*_iterator)->update(deltatime);
 }

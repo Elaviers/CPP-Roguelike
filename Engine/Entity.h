@@ -1,21 +1,21 @@
 #pragma once
-#include "EntityContainer.h"
-#include "EntityData.h"
-#include "PropertySet.h"
+#include "Registry.h"
+#include "Vector2.h"
+#include <string>
 
-#include <Engine/Vector2.h>
+class PropertySet;
+class Shader;
 
 class Entity
 {
 protected:
-	EntityContainer* _parent;
+	EntityRegister* _register;
 public:
 	Entity();
 	virtual ~Entity();
 
 	Vector2f position;
 
-	void setParent(EntityContainer* container);
 	const unsigned char getID() const;
 	const std::string getName() const;
 

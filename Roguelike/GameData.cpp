@@ -12,5 +12,4 @@ namespace GameData {
 	float timeScale = 1.0f;
 
 	Camera2D* camera;
-	Level* level;
 }

@@ -1,5 +1,6 @@
 #include "LevelConnector.h"
 
+#include <Engine/PropertySet.h>
 
 
 LevelConnector::LevelConnector()

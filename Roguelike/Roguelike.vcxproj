@@ -166,23 +166,16 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x64  $(TargetDir)</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h" />
-    <ClInclude Include="Entity.h" />
-    <ClInclude Include="EntityContainer.h" />
-    <ClInclude Include="EntityData.h" />
-    <ClInclude Include="EntityRegister.h" />
-    <ClInclude Include="EntityRegistry.h" />
     <ClInclude Include="GameData.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="Editor.h" />
-    <ClInclude Include="GameManager.h" />
-    <ClInclude Include="Level.h" />
+    <ClInclude Include="World.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="LevelConnector.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Projectile.h" />
-    <ClInclude Include="Property.h" />
     <ClInclude Include="PropertySet.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SpawnPoint.h" />
@@ -195,13 +188,8 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x64  $(TargetDir)</Command>
     <ClCompile Include="Constants.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Editor.cpp" />
-    <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="EntityContainer.cpp" />
-    <ClCompile Include="EntityData.cpp" />
-    <ClCompile Include="EntityRegistry.cpp" />
     <ClCompile Include="GameData.cpp" />
-    <ClCompile Include="GameManager.cpp" />
-    <ClCompile Include="Level.cpp" />
+    <ClCompile Include="World.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="LevelConnector.cpp" />
@@ -209,7 +197,6 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x64  $(TargetDir)</Command>
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Projectile.cpp" />
-    <ClCompile Include="PropertySet.cpp" />
     <ClCompile Include="SpawnPoint.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="UI.cpp" />

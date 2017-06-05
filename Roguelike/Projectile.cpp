@@ -1,6 +1,6 @@
 #include "Projectile.h"
 
-#include "GameData.h"
+#include "World.h"
 
 #include <bass.h>
 #include <Engine/Constants.h>
@@ -31,8 +31,10 @@ void Projectile::update(float deltaTime) {
 
 	_sprite.setPosition(position.x,position.y);
 
-	if (Tile::pointOverlaps(*GameData::level->tileData(), 64, 0, (int)(position.x + _direction.x * _size / 4), (int)(position.y + _direction.y * _size / 4)))
+	if (Tile::pointOverlaps(*World::tileData(), 64, 0, (int)(position.x + _direction.x * _size / 4), (int)(position.y + _direction.y * _size / 4))) {
+		World::removeEntity(this);
 		delete this;
+	}
 }
 
 void Projectile::render(Shader& shader) {

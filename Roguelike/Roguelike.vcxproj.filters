@@ -57,9 +57,6 @@
     <ClCompile Include="Menu.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="GameManager.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
     <ClCompile Include="UI.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
@@ -72,15 +69,6 @@
     <ClCompile Include="GameData.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Source Files\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="EntityContainer.cpp">
-      <Filter>Source Files\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="EntityData.cpp">
-      <Filter>Source Files\Common</Filter>
-    </ClCompile>
     <ClCompile Include="LevelConnector.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
@@ -90,13 +78,7 @@
     <ClCompile Include="Tile.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
-    <ClCompile Include="PropertySet.cpp">
-      <Filter>Source Files\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="Level.cpp">
-      <Filter>Source Files\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="EntityRegistry.cpp">
+    <ClCompile Include="World.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
   </ItemGroup>
@@ -125,9 +107,6 @@
     <ClInclude Include="Menu.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="GameManager.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
     <ClInclude Include="UI.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
@@ -140,15 +119,6 @@
     <ClInclude Include="GameData.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="EntityContainer.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="EntityData.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
     <ClInclude Include="LevelConnector.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
@@ -158,22 +128,13 @@
     <ClInclude Include="Types.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Property.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
     <ClInclude Include="Tile.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
     <ClInclude Include="PropertySet.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Level.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="EntityRegister.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="EntityRegistry.h">
+    <ClInclude Include="World.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
   </ItemGroup>

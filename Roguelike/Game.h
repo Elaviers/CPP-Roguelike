@@ -16,6 +16,8 @@ private:
 	Sprite _bg;
 	Shader _shaderlsd,_shader,_fontshader;
 
+	Texture* _tileSheet;
+
 	Player* _player;
 public:
 	Game();
@@ -27,6 +29,7 @@ public:
 
 	void beginGame(const char* level);
 
+	void update();
 	void render();
 
 	void handleInput();

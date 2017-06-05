@@ -1,7 +1,6 @@
 #pragma once
-#include "Entity.h"
-
 #include <Engine/Camera2D.h>
+#include <Engine/Entity.h>
 #include <Engine/Rect.h>
 #include <Engine/Sprite.h>
 #include <SDL/SDL_events.h>

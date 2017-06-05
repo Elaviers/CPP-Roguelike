@@ -1,7 +1,6 @@
 #include "Editor.h"
 
 #include "Constants.h"
-#include "EntityRegistry.h"
 #include "FileManager.h"
 
 #include <Engine/GUI.h>
@@ -22,7 +21,7 @@ void Editor::start() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	////////////////////////////////////////////////////////////////////////
-
+	Constants::create_registry();
 	LineRenderer::init();
 	SpriteRenderer::init();
 
@@ -36,7 +35,6 @@ void Editor::start() {
 	ResourceManager::getFontRef(Constants::font_editor);
 	FT_Done_FreeType(ft);
 	///////////////////////////////////////////////////////////////////////
-	EntityRegistry::init();
 
 	_camera.SetViewportSize(screenX, screenY);
 

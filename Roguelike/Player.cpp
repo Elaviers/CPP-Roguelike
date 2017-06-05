@@ -2,8 +2,8 @@
 
 #include "Game.h"
 #include "GameData.h"
-#include "GameManager.h"
 #include "Projectile.h"
+#include "World.h"
 
 #include <Engine/GUI.H>
 #include <Engine/LineRenderer.h>
@@ -33,13 +33,13 @@ void Player::update(float frameTime) {
 	float movey = _moveY * moveSpeed * frameTime;
 
 	if (movex != 0) {
-		const Tile* collide = Tile::rectOverlaps(*GameData::level->tileData(), 64, 0, (int)(position.x + collision.min.x + movex), (int)(position.y + collision.min.y), (int)(position.x + collision.max.x + movex), (int)(position.y + collision.max.y));
+		const Tile* collide = Tile::rectOverlaps(*World::tileData(), 64, 0, (int)(position.x + collision.min.x + movex), (int)(position.y + collision.min.y), (int)(position.x + collision.max.x + movex), (int)(position.y + collision.max.y));
 		if (collide)
 			movex = (movex >= 0 ? collide->x * 64 - (position.x + collision.max.x) : (collide->x * 64 + 64) - (position.x + collision.min.x));
 	}
 
 	if (movey != 0) {
-		const Tile* collide = Tile::rectOverlaps(*GameData::level->tileData(), 64, 0, (int)(position.x + collision.min.x), (int)(position.y + collision.min.y + movey), (int)(position.x + collision.max.x), (int)(position.y + collision.max.y + movey));
+		const Tile* collide = Tile::rectOverlaps(*World::tileData(), 64, 0, (int)(position.x + collision.min.x), (int)(position.y + collision.min.y + movey), (int)(position.x + collision.max.x), (int)(position.y + collision.max.y + movey));
 		if (collide) 
 			movey = (movey >= 0 ? collide->y * 64 - (position.y + collision.max.y) : (collide->y * 64 + 64) - (position.y + collision.min.y));
 	}
@@ -74,7 +74,7 @@ void  Player::shoot() {
 
 	Projectile* p = new Projectile();
 	p->init(_playerSprite.x,_playerSprite.y + 64, 64, angle, 512, "Game/Textures/proj.png");
-	GameManager::addEntity(p);
+	World::addEntity(p);
 }
 
 void Player::keyUp(SDL_Event action) {

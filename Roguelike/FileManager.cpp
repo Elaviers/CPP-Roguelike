@@ -1,8 +1,9 @@
 ﻿#include "FileManager.h"
-#include "EntityRegistry.h"
-#include "PropertySet.h"
 #include "Types.h"
 
+#include <Engine/Entity.h>
+#include <Engine/PropertySet.h>
+#include <Engine/Registry.h>
 #include <Engine/Utility.h>
 #include <fstream>
 #include <iostream>
@@ -56,18 +57,16 @@ int FileManager::readInt(const vector<StringPair>& arr, const string& name) {
 	return -1;
 }
 
-void FileManager::readLevelFile(const char* Path, vector<Tile>& tileList, vector<Entity*>& entityList)
+bool FileManager::readLevelFile(const char* Path, vector<Tile>& tileList, vector<Entity*>& entityList)
 {
 	ifstream stream(Path, ios::binary | ios::in);
 	stream >> std::noskipws;
 
-	if (!stream.is_open())return;
+	if (!stream.is_open())return false;
 
 	std::vector<uByte>buffer((istream_iterator<unsigned char>(stream)), istream_iterator<unsigned char>());
 
 	std::cout << "(FileManager) : Beginning load..." << endl;
-	tileList.clear();
-	entityList.clear();
 
 	bool force = true;
 	bool placeEntity = false;
@@ -130,12 +129,14 @@ void FileManager::readLevelFile(const char* Path, vector<Tile>& tileList, vector
 	}
 
 	stream.close();
+
+	return true;
 }
 
-void FileManager::writeLevelFile(const std::vector<Tile>& tiles, const std::vector<Entity*>& entities, const char* path) {
+bool FileManager::writeLevelFile(const std::vector<Tile>& tiles, const std::vector<Entity*>& entities, const char* path) {
 
 	ofstream stream(path, ios::binary | ios::out);
-	if (!stream.is_open())return;
+	if (!stream.is_open())return false;
 
 	bool force = true;
 	vector<unsigned char> buffer;
@@ -214,4 +215,6 @@ void FileManager::writeLevelFile(const std::vector<Tile>& tiles, const std::vect
 	stream.close();
 
 	std::printf("(DEBUG) saved %d tiles\n", (int)tiles.size());
+
+	return true;
 }

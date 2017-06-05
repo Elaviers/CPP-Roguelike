@@ -1,15 +1,15 @@
 #include "Controller.h"
 
 #include "Constants.h"
-#include "EntityRegistry.h"
 
+#include <Engine/Entity.h>
 #include <Engine/GUI.h>
 #include <Engine/LineRenderer.h>
+#include <Engine/Registry.h>
 #include <Engine/ResourceManager.h>
 #include <Engine/SpriteRenderer.h>
 #include <iostream>
 
-Level* Controller::currentLevel;
 bool Controller::_inputLock;
 const char* Controller::levelname = "sample.lvl";
 
@@ -27,14 +27,14 @@ Controller::Controller() :
 void Controller::save() {
 	if (levelname != nullptr) {
 		std::cout << "Saving \"" << levelname << "\"...\n";
-		currentLevel->save(levelname);
+		World::save(levelname);
 	}
 }
 
 void Controller::load() {
 	if (levelname != nullptr) {
 		std::cout << "Loading \"" << levelname << "\"...\n";
-		currentLevel->load(levelname);
+		World::load(levelname);
 	}
 }
 
@@ -80,8 +80,6 @@ void Controller::init() {
 	/////////////////////////////////
 	_tiletexture = ResourceManager::getTexture("Game/Textures/tiles.png");
 	_symboltexture = ResourceManager::getTexture("Game/Textures/symbols.png");
-
-	currentLevel = &_level;
 }
 
 inline int gridSnap(int i, int snap) {
@@ -103,16 +101,16 @@ void Controller::render(float deltaTime, Camera2D& cam) {
 			Entity* ent = EntityRegistry::createEntity(_selection.id);
 			if (!ent) break;
 			ent->position = Vector2f((float)_selection.x,(float)_selection.y);
-			_level.addEntity(ent);
+			World::addEntity(ent, true);
 		}
 		else
-			_level.addTile(Tile{ _selection.layer, _selection.id, (signed char)(_selection.x / 64), (signed char)(_selection.y / 64) });
+			World::addTile(Tile{ _selection.layer, _selection.id, (signed char)(_selection.x / 64), (signed char)(_selection.y / 64) });
 		break;
 	case DELETE:
 		if (_entMode)
-			_level.removeEntity(Vector2f((float)(_selection.x / 64), (float)(_selection.y / 64)));
+			World::removeEntityAtPosition(Vector2f((float)(_selection.x / 64), (float)(_selection.y / 64)));
 		else
-			_level.removeTile(_selection.layer, (signed char)(_selection.x / 64), (signed char)(_selection.y / 64));
+			World::removeTile(_selection.layer, (signed char)(_selection.x / 64), (signed char)(_selection.y / 64));
 		break;
 	}
 
@@ -120,13 +118,13 @@ void Controller::render(float deltaTime, Camera2D& cam) {
 
 	Rect_i cameraDimensions(cam.getMin(), cam.getMax());
 	SpriteRenderer::setUVData(8, Colour(255,255,255,255));
-	_level.drawTiles(_selection.layer - 1,	true ,cameraDimensions, _tiletexture);
+	World::drawTiles(_selection.layer - 1,	true ,cameraDimensions, _tiletexture);
 	SpriteRenderer::setUVData(8, Colour(127, 255, 127, 255));
-	_level.drawTiles(_selection.layer,		false, cameraDimensions, _tiletexture);
+	World::drawTiles(_selection.layer,		false, cameraDimensions, _tiletexture);
 	SpriteRenderer::setUVData(8, Colour(255, 255, 255, 64));
-	_level.drawTiles(127,					false, cameraDimensions, _tiletexture);
+	World::drawTiles(127,					false, cameraDimensions, _tiletexture);
 
-	_level.drawEntities(SpriteRenderer::GetShader());
+	World::drawEntities(SpriteRenderer::GetShader());
 
 	if (!_usingUI)
 		if (!_entMode && _editMode != DELETE) {

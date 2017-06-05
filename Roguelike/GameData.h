@@ -1,6 +1,5 @@
 #pragma once
 #include "Game.h"
-#include "Level.h"
 
 #include <Engine/Camera2D.h>
 #include <Engine/Vector2.h>
@@ -17,5 +16,4 @@ namespace GameData {
 	extern float timeScale;
 
 	extern Camera2D* camera;
-	extern Level* level;
 }

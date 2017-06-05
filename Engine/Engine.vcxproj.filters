@@ -82,6 +82,15 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PropertySet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Registry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera2D.h">
@@ -178,6 +187,21 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Vector2.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Property.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertySet.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Register.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Registry.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

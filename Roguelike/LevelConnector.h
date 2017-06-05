@@ -1,5 +1,5 @@
 #pragma once
-#include "Entity.h"
+#include <Engine/Entity.h>
 
 class LevelConnector : public Entity {
 public:
@@ -8,7 +8,7 @@ public:
 
 	unsigned char connectionID;
 	unsigned char direction;
-
+	
 	virtual void GetProperties(PropertySet&) const;
 	virtual void SetProperties(const PropertySet&);
 };
