@@ -19,6 +19,11 @@ public:
 	void addToBuffer(std::vector<unsigned char>& buffer);
 	void getFromBuffer(std::vector<unsigned char>::iterator&);
 
+	const std::vector<Property<char>>& getChars() const { return _chars; };
+	const std::vector<Property<int>>& getInts() const { return _ints; };
+	const std::vector<Property<float>>& getFloats() const { return _floats; };
+	const std::vector<Property<std::string>>& getStrings() const { return _strings; };
+
 	bool getBool(const std::string& name) const;
 	char getChar(const std::string& name) const;
 	int getInt(const std::string& name) const;

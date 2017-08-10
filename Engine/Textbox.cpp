@@ -13,7 +13,7 @@ bool TextBox::click() {
 	if (_active != _hover) {
 		_active = _hover;
 		panel.setColour(_active ? _selectColour : _colour);
-		onStateChanged(_active);
+		if (onStateChanged) onStateChanged(_active);
 		return true;
 	}
 	return false;

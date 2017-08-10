@@ -28,27 +28,23 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -169,6 +165,7 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x64  $(TargetDir)</Command>
     <ClInclude Include="GameData.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="Editor.h" />
+    <ClInclude Include="UIPropertyListing.h" />
     <ClInclude Include="World.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="Game.h" />
@@ -176,7 +173,6 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x64  $(TargetDir)</Command>
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Projectile.h" />
-    <ClInclude Include="PropertySet.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SpawnPoint.h" />
     <ClInclude Include="Tile.h" />
@@ -189,6 +185,7 @@ xcopy /i /s /y $(SolutionDir)dependencies\DLLS\x64  $(TargetDir)</Command>
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="GameData.cpp" />
+    <ClCompile Include="UIPropertyListing.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="Game.cpp" />

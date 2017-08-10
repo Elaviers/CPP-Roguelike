@@ -81,6 +81,9 @@
     <ClCompile Include="World.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
+    <ClCompile Include="UIPropertyListing.cpp">
+      <Filter>Source Files\Editor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -131,11 +134,11 @@
     <ClInclude Include="Tile.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
-    <ClInclude Include="PropertySet.h">
-      <Filter>Header Files\Common</Filter>
-    </ClInclude>
     <ClInclude Include="World.h">
       <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="UIPropertyListing.h">
+      <Filter>Header Files\Editor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

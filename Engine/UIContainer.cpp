@@ -15,6 +15,11 @@ UIContainer::~UIContainer() {
 	std::printf("done!\n");
 }
 
+void UIContainer::deleteChildren() {
+	while (_elements.size() != 0)
+		delete _elements.back();
+}
+
 void UIContainer::removeElement(UIElement* e) {
 	_elements.erase(std::remove(_elements.begin(), _elements.end(), e), _elements.end());
 }

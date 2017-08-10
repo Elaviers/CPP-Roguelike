@@ -8,6 +8,8 @@
 #include <Engine/Textbox.h>
 #include <Engine/Texture.h>
 
+class PropertySet;
+
 namespace PlayerEnums {
 	enum EditMode { NONE, PLACE, DELETE };
 
@@ -22,6 +24,9 @@ private:
 	UIContainer _menuBar; //Parents MUST be declared before children or they will not be able to destruct properly
 	Button _loadButton,_saveButton;
 	TextBox _namebox;
+
+	UIContainer _propertyBar;
+	UIRect _propertyBarBG;
 
 	UIText _counter;
 	//////////////////////////////////
@@ -60,4 +65,6 @@ public:
 	void init();
 	void render(float deltaTime,Camera2D&);
 	void input(SDL_Event event,int);
+
+	void loadProperties(const PropertySet&);
 };

@@ -17,6 +17,4 @@ public:
 	////
 	Property<T>& operator=(const T& other) { value = other; return *this; };
 	Property<T>& operator+=(const T& other) { value += other; return *this; };
-
-	//operator T() const { return value; }; //too confusing
 };

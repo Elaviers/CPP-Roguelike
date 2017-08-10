@@ -20,8 +20,8 @@ int Window::create(std::string title, int width, int height, unsigned int flag) 
 	if (_ID == nullptr)
 		error("I could not create the window, you fool!");
 
-	SDL_GLContext context = SDL_GL_CreateContext(_ID);
-	if (context == nullptr)
+	_context = SDL_GL_CreateContext(_ID);
+	if (_context == nullptr)
 		error("I couldn't create the window context. How can this even happen?");
 
 	if (glewInit() != GLEW_OK)
@@ -36,4 +36,8 @@ void Window::swapBuffer() {
 
 void Window::setTitle(std::string t) {
 	SDL_SetWindowTitle(_ID,t.c_str());
+}
+
+void Window::useContext() {
+	SDL_GL_MakeCurrent(_ID, _context);
 }

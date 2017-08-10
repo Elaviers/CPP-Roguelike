@@ -4,9 +4,14 @@
 #include <SDL/SDL.h>
 
 extern void error(const std::string& errorString) {
-	std::cout << "\a *** " << errorString << std::endl << "Enter any key to continue...";
+#ifdef _DEBUG
+	abort();
+#else
+	std::cout << "\a *** " << errorString << std::endl;
 	int a;
 	std::cin >> a;
+#endif
+
 	SDL_Quit();
 	exit(1);
 }

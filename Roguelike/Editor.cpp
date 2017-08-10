@@ -12,6 +12,8 @@
 
 void Editor::start() {
 	SDL_Init(SDL_INIT_EVERYTHING);
+
+	////
 	_window.create("Level Editor", screenX, screenY, SDL_WINDOW_RESIZABLE);
 
 	SDL_GL_SetSwapInterval(0);
@@ -20,10 +22,12 @@ void Editor::start() {
 	glClearColor(.125, .125, .125, 1);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	LineRenderer::init(); //these create VAO/VBOs so they need to be done in this context
+	SpriteRenderer::init();
+	
 	////////////////////////////////////////////////////////////////////////
 	Constants::create_registry();
-	LineRenderer::init();
-	SpriteRenderer::init();
 
 	_fontShader.loadPreset(ShaderPreset::FONT);
 	_fontShader.link();
@@ -44,7 +48,7 @@ void Editor::start() {
 
 	////////////////////////////////////////////////////////////////////////
 	Colour c;
-	float unitSize = 64.0f;
+	int unitSize = 64;
 	int lineCount = 256;
 
 	for (int x = -lineCount; x <= lineCount; x++) {
@@ -53,7 +57,6 @@ void Editor::start() {
 		LineRenderer::addLine(-lineCount * unitSize, x * unitSize, lineCount * unitSize, x * unitSize, c);
 	}
 	////////
-	running = true;
 	while (running) {
 		_frameCounter.begin();
 
@@ -65,6 +68,7 @@ void Editor::start() {
 }
 
 void Editor::render(float deltaTime) {
+	_window.useContext();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearDepth(1);
 
@@ -76,7 +80,6 @@ void Editor::render(float deltaTime) {
 	_fontShader.setMat4("projection", _camera.getScreenMatrix());
 	GlobalUI::render(&_fontShader);
 	_fontShader.unUseProgram();
-
 
 	_window.swapBuffer();
 }

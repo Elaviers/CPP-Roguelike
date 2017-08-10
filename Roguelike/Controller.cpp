@@ -1,10 +1,12 @@
 #include "Controller.h"
 
 #include "Constants.h"
+#include "UIPropertyListing.h"
 
 #include <Engine/Entity.h>
 #include <Engine/GUI.h>
 #include <Engine/LineRenderer.h>
+#include <Engine/PropertySet.h>
 #include <Engine/Registry.h>
 #include <Engine/ResourceManager.h>
 #include <Engine/SpriteRenderer.h>
@@ -21,6 +23,8 @@ Controller::Controller() :
 	_namebox(0, 0, 1 / 3.0f, 1, NORMALISED_WIDTH | NORMALISED_HEIGHT),
 	_loadButton(1 / 3.0f, 0, 1 / 3.0f, 1, NORMALISED_X | NORMALISED_WIDTH | NORMALISED_HEIGHT),
 	_saveButton(2 / 3.0f, 0, 1 / 3.0f, 1, NORMALISED_X | NORMALISED_WIDTH | NORMALISED_HEIGHT),
+	_propertyBar(0, 32, -256, -1, NORMALISED_HEIGHT | FLIPPED_X | FLIPPED_Y),
+	_propertyBarBG(0, 0, 1, 1, NORMALISED_WIDTH | NORMALISED_HEIGHT),
 	_counter(0, 0, 1, 32, NORMALISED_WIDTH)
 {}
 
@@ -72,14 +76,21 @@ void Controller::init() {
 	_loadButton.label.setFont(Constants::font_editor);
 	_counter.setFont(Constants::font_editor);
 
+	_propertyBarBG.setColour(NormalisedColour(.75f, .75f, .75f));
+
 	GlobalUI::add(_counter);
 	GlobalUI::add(_menuBar);
-	_menuBar.addElement(_namebox);
-	_menuBar.addElement(_loadButton);
-	_menuBar.addElement(_saveButton);
+		_menuBar.addElement(_namebox);
+		_menuBar.addElement(_loadButton);
+		_menuBar.addElement(_saveButton);
+	GlobalUI::add(_propertyBar);
+		_propertyBar.addElement(_propertyBarBG);
+
 	/////////////////////////////////
 	_tiletexture = ResourceManager::getTexture("Game/Textures/tiles.png");
 	_symboltexture = ResourceManager::getTexture("Game/Textures/symbols.png");
+
+	loadProperties(PropertySet()); //temp
 }
 
 inline int gridSnap(int i, int snap) {
@@ -100,7 +111,7 @@ void Controller::render(float deltaTime, Camera2D& cam) {
 		if (_entMode) {
 			Entity* ent = EntityRegistry::createEntity(_selection.id);
 			if (!ent) break;
-			ent->position = Vector2f((float)_selection.x,(float)_selection.y);
+			ent->position = Vector2f((float)_selection.x, (float)_selection.y);
 			World::addEntity(ent, true);
 		}
 		else
@@ -117,12 +128,12 @@ void Controller::render(float deltaTime, Camera2D& cam) {
 	SpriteRenderer::UseProgram(cam);
 
 	Rect_i cameraDimensions(cam.getMin(), cam.getMax());
-	SpriteRenderer::setUVData(8, Colour(255,255,255,255));
-	World::drawTiles(_selection.layer - 1,	true ,cameraDimensions, _tiletexture);
+	SpriteRenderer::setUVData(8, Colour(255, 255, 255, 255));
+	World::drawTiles(_selection.layer - 1, true, cameraDimensions, _tiletexture);
 	SpriteRenderer::setUVData(8, Colour(127, 255, 127, 255));
-	World::drawTiles(_selection.layer,		false, cameraDimensions, _tiletexture);
+	World::drawTiles(_selection.layer, false, cameraDimensions, _tiletexture);
 	SpriteRenderer::setUVData(8, Colour(255, 255, 255, 64));
-	World::drawTiles(127,					false, cameraDimensions, _tiletexture);
+	World::drawTiles(127, false, cameraDimensions, _tiletexture);
 
 	World::drawEntities(SpriteRenderer::GetShader());
 
@@ -131,10 +142,10 @@ void Controller::render(float deltaTime, Camera2D& cam) {
 			SpriteRenderer::setUVData(8, Colour(255, 255, 255, 127));
 			SpriteRenderer::drawSprite(_tiletexture, (float)_selection.x, (float)_selection.y, 64.f, 64.f, 0.0f, _selection.id);
 		}
-		/*else if (_entMode && _editMode != DELETE) {
-			SpriteRenderer::setUVData(4, Colour(255, 255, 255, 127));
-			SpriteRenderer::drawSprite(_symboltexture, (float)_selection.x, (float)_selection.y, 64.f, 64.f, 0.0f, _selection.id);
-		}*/
+	/*else if (_entMode && _editMode != DELETE) {
+		SpriteRenderer::setUVData(4, Colour(255, 255, 255, 127));
+		SpriteRenderer::drawSprite(_symboltexture, (float)_selection.x, (float)_selection.y, 64.f, 64.f, 0.0f, _selection.id);
+	}*/
 
 	SpriteRenderer::UnuseProgram();
 
@@ -196,7 +207,7 @@ void Controller::input(SDL_Event event, int screenh)
 		}
 
 		if (_entMode) {
-			_counter = "EntID : " + std::to_string(_selection.id) + " (" + EntityRegistry::getNameOfID(_selection.id) +")";
+			_counter = "EntID : " + std::to_string(_selection.id) + " (" + EntityRegistry::getNameOfID(_selection.id) + ")";
 		}
 		else
 			_counter = "TileID : " + std::to_string(_selection.id) + "|Layer : " + std::to_string(_selection.layer);
@@ -215,4 +226,42 @@ void Controller::input(SDL_Event event, int screenh)
 		else if (event.wheel.y < 0)
 			_CameraScale = -0.1f;
 	}
+}
+
+void Controller::loadProperties(const PropertySet& properties) {
+	//_propertyBar.deleteChildren();
+
+	auto chars = properties.getChars();
+	auto ints = properties.getInts();
+	auto floats = properties.getFloats();
+	auto strings = properties.getStrings();
+
+	UIPropertyListing* current;
+	int i = 0;
+
+	for (auto it = chars.begin(); it != chars.end(); it++) {
+		current = new UIPropertyListing(0, i++ * 32, 1, 32, FLIPPED_Y | NORMALISED_X);
+		current->text.setText("(c) " + it->getName());
+		_propertyBar.addElement(current);
+	}
+
+	for (auto it = ints.begin(); it != ints.end(); it++) {
+		current = new UIPropertyListing(0, i++ * 32, 1, 32, FLIPPED_Y | NORMALISED_X);
+		current->text.setText("(i) " + it->getName());
+		_propertyBar.addElement(current);
+	}
+
+	for (auto it = floats.begin(); it != floats.end(); it++) {
+		current = new UIPropertyListing(0, i++ * 32, 1, 32, FLIPPED_Y | NORMALISED_X);
+		current->text.setText("(f) " + it->getName());
+		_propertyBar.addElement(current);
+	}
+
+	for (auto it = floats.begin(); it != floats.end(); it++) {
+		current = new UIPropertyListing(0, i++ * 32, 1, 32, FLIPPED_Y | NORMALISED_X);
+		current->text.setText("(s) " + it->getName());
+		_propertyBar.addElement(current);
+	}
+
+	
 }

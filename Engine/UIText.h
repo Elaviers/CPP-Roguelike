@@ -17,6 +17,7 @@ namespace GUI {
 	public:
 		inline void push(char c) { _text.push_back(c); };
 		inline void pop() { _text.pop_back(); };
+		inline void setText(const std::string& text) { _text = text; }
 		inline const std::string& getText() { return _text; };
 
 		void setColour(const NormalisedColour &colour) { _colour = colour; };
@@ -24,7 +25,7 @@ namespace GUI {
 
 		void render(Shader*) override;
 
-		const std::string& operator=(const std::string& rhs) { _text = rhs; return _text; };
+		const std::string& operator=(const std::string& rhs) { _text = rhs; return _text; }; //This is dumb
 
 		UIText(float x, float y, float w, float h, unsigned char f) : UIElement(x, y, w, h, f) {};
 		UIText() {};

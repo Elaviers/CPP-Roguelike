@@ -12,7 +12,7 @@ std::vector<Tile> World::_tiles;
 std::vector<Entity*> World::_entities;
 int World::_tileSize = 64;
 
-std::vector<Entity*>::iterator World::_iterator = _entities.begin();
+std::vector<Entity*>::iterator World::_iterator;
 
 void World::addTile(const Tile& tile) {
 	if (tile.x > 123 || tile.x < -124 || tile.y > 123 || tile.y < -124)return;
@@ -124,6 +124,6 @@ void World::drawEntities(Shader& shader) {
 void World::updateEntities(float deltatime) {
 	_iterator = _entities.begin();
 
- 	for (; _iterator != _entities.end(); _iterator++)
+ 	for (; _iterator < _entities.end(); _iterator++) //Using < in case reallocation shrinks vector
 		(*_iterator)->update(deltatime);
 }
