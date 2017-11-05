@@ -1,4 +1,6 @@
-﻿#include "Editor.h"
+﻿#define GLEW_STATIC
+
+#include "Editor.h"
 #include "Game.h"
 #include "GameData.h"
 

@@ -2,8 +2,6 @@
 #include <SDL/SDL_video.h>
 #include <string>
 
-//enum windowFlags { HIDDEN = 0x1,FULLSCREEN = 0x2,BORDERLESS = 0x3 };
-
 class Window
 {
 public:
