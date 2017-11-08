@@ -2,7 +2,6 @@
 
 #include "RenderType.h"
 #include "Shader.h"
-
 #include <GL/glew.h>
 
 using namespace GUI;

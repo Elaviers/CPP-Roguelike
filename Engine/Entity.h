@@ -1,9 +1,9 @@
 #pragma once
 #include "Registry.h"
 #include "Vector2.h"
-#include <string>
 
 class PropertySet;
+class String;
 class Shader;
 
 class Entity
@@ -17,7 +17,7 @@ public:
 	Vector2f position;
 
 	const unsigned char getID() const;
-	const std::string getName() const;
+	const String getName() const;
 
 	//Virtual stuff
 	virtual void init() {};

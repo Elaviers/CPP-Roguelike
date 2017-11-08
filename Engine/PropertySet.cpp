@@ -1,9 +1,11 @@
 #include "PropertySet.h"
 
+#include "String.h"
+
 #include <cstring> //for memcpy (hacky)
 
 template <class T>
-T findValue(const std::vector<Property<T>>& vector, const std::string& name) {
+inline T findValue(const std::vector<Property<T>>& vector, const String& name) {
 	for (auto it = vector.begin(); it != vector.end(); it++)
 		if (it->getName() == name)
 			it->getValue();
@@ -45,9 +47,13 @@ void PropertySet::addToBuffer(std::vector<unsigned char>& buffer) {
 	}
 
 	for (auto it = _strings.begin(); it != _strings.end(); it++) {
-		for (auto i = it->getValue().begin(); i < it->getValue().end(); i++)
+		size_t place = buffer.size() - 1; //Null char at end of buffer
+		buffer.resize(buffer.size() + it->getValue().getLength()); //Enlarge buffer
+		strcpy_s((char*)&buffer[place], it->getValue().getSize(), it->getValue().getData());
+
+		/*for (auto i = it->getValue().begin(); i < it->getValue().end(); i++)
 			buffer.push_back((unsigned char)*i);
-		buffer.push_back(0); //null char for end
+		buffer.push_back(0); //null char for end*/
 	}
 }
 
@@ -81,34 +87,34 @@ void PropertySet::getFromBuffer(std::vector<unsigned char>::iterator& charit) {
 	//Load strings here
 }
 
-bool PropertySet::getBool(const std::string& name) const {
+bool PropertySet::getBool(const String& name) const {
 	return findValue(_chars, name) == 0 ? false : true;
 }
-char PropertySet::getChar(const std::string& name) const {
+char PropertySet::getChar(const String& name) const {
 	return findValue(_chars, name);
 }
-int PropertySet::getInt(const std::string& name) const {
+int PropertySet::getInt(const String& name) const {
 	return findValue(_ints, name);
 }
-float PropertySet::getFloat(const std::string& name) const {
+float PropertySet::getFloat(const String& name) const {
 	return findValue(_floats, name);
 }
-const std::string PropertySet::getString(const std::string& name) const {
+const String PropertySet::getString(const String& name) const {
 	return findValue(_strings, name);
 }
 
-void PropertySet::setBool(const std::string& name, bool value) {
+void PropertySet::setBool(const String& name, bool value) {
 	_chars.push_back(Property<char>(name, value ? 1 : 0));
 }
-void PropertySet::setChar(const std::string& name, char value) {
+void PropertySet::setChar(const String& name, char value) {
 	_chars.push_back(Property<char>(name, value));
 }
-void PropertySet::setInt(const std::string& name, int value) {
+void PropertySet::setInt(const String& name, int value) {
 	_ints.push_back(Property<int>(name, value));
 }
-void PropertySet::setFloat(const std::string& name, float value) {
+void PropertySet::setFloat(const String& name, float value) {
 	_floats.push_back(Property<float>(name, value));
 }
-void PropertySet::setString(const std::string& name, const std::string& value) {
-	_strings.push_back(Property<std::string>(name, value));
+void PropertySet::setString(const String& name, const String& value) {
+	_strings.push_back(Property<String>(name, value));
 }

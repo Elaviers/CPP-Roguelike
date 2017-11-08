@@ -1,10 +1,8 @@
 #pragma once
 #include "UIElement.h"
-
 #include <vector>
 
-namespace GUI {
-	class UIContainer : public UIElement
+class UIContainer : public UIElement
 	{
 	protected:
 		std::vector<UIElement*> _elements;
@@ -22,5 +20,4 @@ namespace GUI {
 		bool click() override;
 		bool isOverlapping(const int x, const int y) override;//returns true if any of the children of this root overlap with the point given
 		void calculate() override;
-	};
-}
+};

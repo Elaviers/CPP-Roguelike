@@ -2,7 +2,6 @@
 
 #include "Constants.h"
 #include "FileManager.h"
-
 #include <Engine/GUI.h>
 #include <Engine/LineRenderer.h>
 #include <Engine/ResourceManager.h>
@@ -13,7 +12,6 @@
 void Editor::start() {
 	SDL_Init(SDL_INIT_EVERYTHING);
 
-	////
 	_window.create("Level Editor", screenX, screenY, SDL_WINDOW_RESIZABLE);
 
 	SDL_GL_SetSwapInterval(0);

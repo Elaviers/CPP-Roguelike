@@ -11,7 +11,7 @@
 
 bool u, d, l, r;
 
-void Player::init(int x,int y,int size,int crosshairSize,std::string texture, std::string texture1) {
+void Player::init(int x,int y,int size,int crosshairSize,const char* texture, const char* texture1) {
 	_crosshair.init(0, 0, (float)crosshairSize, (float)crosshairSize, false, texture);
 	_crosshair.setOrigin(0,0);
 	_playerSprite.UVGridDivisions = 3;
@@ -32,6 +32,7 @@ void Player::update(float frameTime) {
 	float movex = _moveX * moveSpeed * frameTime;
 	float movey = _moveY * moveSpeed * frameTime;
 
+	/*	Collision is temporarily disabled because of isometric projection
 	if (movex != 0) {
 		const Tile* collide = Tile::rectOverlaps(*World::tileData(), 64, 0, (int)(position.x + collision.min.x + movex), (int)(position.y + collision.min.y), (int)(position.x + collision.max.x + movex), (int)(position.y + collision.max.y));
 		if (collide)
@@ -43,6 +44,7 @@ void Player::update(float frameTime) {
 		if (collide) 
 			movey = (movey >= 0 ? collide->y * 64 - (position.y + collision.max.y) : (collide->y * 64 + 64) - (position.y + collision.min.y));
 	}
+	*/
 
 	position.x += movex;
 	position.y += movey;

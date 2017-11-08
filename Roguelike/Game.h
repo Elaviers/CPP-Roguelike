@@ -1,6 +1,5 @@
 #pragma once
 #include "Player.h"
-
 #include <Engine/Shader.h>
 #include <Engine/Sprite.h>
 #include <Engine/Timer.h>
@@ -9,16 +8,18 @@
 class Game
 {
 private:
-	Window _window;
-	Timer _frameTimer;
-	bool _running;
+	Window		_window;
+	Timer		_frameTimer;
+	bool		_running;
 	/////////////////////
-	Sprite _bg;
-	Shader _shaderlsd,_shader,_fontshader;
+	Sprite		_bg;
+	Shader		_shaderlsd,_shader,_fontshader;
 
-	Texture* _tileSheet;
+	Texture*	_tileSheet;
 
-	Player* _player;
+	Player*		_player;
+
+	glm::mat4	_isomatrix;
 public:
 	Game();
 	~Game() {};

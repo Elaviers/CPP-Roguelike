@@ -1,6 +1,5 @@
 #pragma once
 #include <SDL/SDL_video.h>
-#include <string>
 
 class Window
 {
@@ -8,9 +7,9 @@ public:
 	Window();
 	~Window();
 
-	int create(std::string title, int width, int height, unsigned int flag);
+	int create(const char* title, int width, int height, unsigned int flag);
 	void swapBuffer();
-	void setTitle(std::string title);
+	void setTitle(const char* title);
 	int getWidth() { return _w; };
 	int getHeight() { return _h; };
 	SDL_Window* GetWindowID() { return _ID; };

@@ -1,9 +1,8 @@
 #include "SpriteRenderer.h"
 
-#include "Camera2D.h"
+#include "Camera.h"
 #include "Texture.h"
 #include "Utility.h"
-
 #include <GL/glew.h>
 #include <GLM/gtc/matrix_transform.hpp>
 
@@ -33,15 +32,6 @@ void SpriteRenderer::drawSprite(Shader& shader, const Texture &t, float x, float
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glBindVertexArray(0);
 	glActiveTexture(0);
-}
-
-void SpriteRenderer::UseProgram(const Camera2D& cam) {
-	_shader.useProgram();
-	_shader.setMat4("projection", cam.getCameraMatrix());
-}
-
-void SpriteRenderer::UnuseProgram() {
-	_shader.unUseProgram();
 }
 
 void SpriteRenderer::setIndex(int index) {

@@ -3,9 +3,9 @@
 #include "World.h"
 
 #include <SDL/SDL_events.h>
-#include <Engine/Camera2D.h>
-#include <Engine/Button.h>
-#include <Engine/Textbox.h>
+#include <Engine/Camera.h>
+#include <Engine/UIButton.h>
+#include <Engine/UITextbox.h>
 #include <Engine/Texture.h>
 
 class PropertySet;
@@ -22,8 +22,8 @@ class Controller
 {
 private:
 	UIContainer _menuBar; //Parents MUST be declared before children or they will not be able to destruct properly
-	Button _loadButton,_saveButton;
-	TextBox _namebox;
+	UIButton _loadButton, _saveButton;
+	UITextBox _namebox;
 
 	UIContainer _propertyBar;
 	UIRect _propertyBarBG;
@@ -40,7 +40,7 @@ private:
 		int y;
 	} _selection;
 
-	Texture _tiletexture,_symboltexture;
+	Texture _tiletexture, _symboltexture;
 
 	bool _usingUI;
 
@@ -52,8 +52,8 @@ private:
 	//PlayerEnums::PlacementEmun _placeMode;
 
 	bool MovementInputs[4];
-	
-	void setMovement(PlayerEnums::Direction,bool);
+
+	void setMovement(PlayerEnums::Direction, bool);
 
 	static void save(), load(), setInputState(bool);
 public:
@@ -63,8 +63,8 @@ public:
 	~Controller() {};
 
 	void init();
-	void render(float deltaTime,Camera2D&);
-	void input(SDL_Event event,int);
+	void render(float deltaTime, Camera&);
+	void input(SDL_Event event, int);
 
 	void loadProperties(const PropertySet&);
 };

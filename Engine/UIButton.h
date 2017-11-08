@@ -3,8 +3,7 @@
 #include "UIRect.h"
 #include "UIText.h"
 
-namespace GUI {
-	class Button : public UIContainer {
+class UIButton : public UIContainer {
 	private:
 		bool _active;
 		NormalisedColour _colour, _hoverColour;
@@ -12,8 +11,8 @@ namespace GUI {
 		void(*_event_onClick)(UIElement *caller);
 		void(*_event_onClick_basic)();
 	public:
-		Button(float x, float y, float width, float height, unsigned char flags);
-		virtual ~Button() { std::printf("Destroy Button (%p)\n", this); };
+		UIButton(float x, float y, float width, float height, unsigned char flags);
+		virtual ~UIButton() { std::printf("Destroy Button (%p)\n", this); };
 
 		void setColour(const NormalisedColour& c) { _colour = c; panel.setColour(c); };
 		void setHoverColour(const NormalisedColour& c) { _hoverColour = c; };
@@ -26,5 +25,4 @@ namespace GUI {
 
 		void bind_onClick(void(*function)(UIElement *caller)) { _event_onClick = function; };
 		void bind_onClick(void(*function)()) { _event_onClick_basic = function; };
-	};
-}
+};

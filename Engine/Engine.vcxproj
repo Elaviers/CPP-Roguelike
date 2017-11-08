@@ -189,7 +189,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Camera2D.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="ErrorHandling.cpp" />
     <ClCompile Include="Font.cpp" />
@@ -203,12 +203,13 @@
     <ClCompile Include="PicoPNG.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="ShaderPresetDefinitions.cpp" />
-    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="UIButton.cpp" />
     <ClCompile Include="Registry.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteBatch.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
-    <ClCompile Include="Textbox.cpp" />
+    <ClCompile Include="String.cpp" />
+    <ClCompile Include="UITextbox.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureCache.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -221,8 +222,8 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Button.h" />
-    <ClInclude Include="Camera2D.h" />
+    <ClInclude Include="UIButton.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Colour.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Entity.h" />
@@ -246,7 +247,8 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteBatch.h" />
     <ClInclude Include="SpriteRenderer.h" />
-    <ClInclude Include="Textbox.h" />
+    <ClInclude Include="String.h" />
+    <ClInclude Include="UITextbox.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureCache.h" />
     <ClInclude Include="Timer.h" />

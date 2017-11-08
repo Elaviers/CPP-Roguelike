@@ -5,7 +5,6 @@
 #include <Engine/Texture.h>
 #include <Engine/Vector2.h>
 #include <glm/vec2.hpp>
-#include <string>
 
 class Projectile : public Entity
 {
@@ -17,7 +16,7 @@ public:
 	Projectile();
 	~Projectile() {};
 
-	void init(float x, float y, float size,float direction,float speed, std::string);
+	void init(float x, float y, float size, float direction, float speed, const char* texture_path);
 	void update(float DeltaTime) override;
 	void render(Shader& s) override;
 };

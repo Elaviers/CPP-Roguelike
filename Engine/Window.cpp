@@ -11,12 +11,12 @@ Window::Window() {
 Window::~Window() {
 }
 
-int Window::create(std::string title, int width, int height, unsigned int flag) {
+int Window::create(const char* title, int width, int height, unsigned int flag) {
 	_w = width; _h = height;
 
 	unsigned int windowFlag = SDL_WINDOW_OPENGL | flag;
 
-	_ID = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _w, _h, windowFlag);
+	_ID = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _w, _h, windowFlag);
 	if (_ID == nullptr)
 		error("I could not create the window, you fool!");
 
@@ -34,8 +34,8 @@ void Window::swapBuffer() {
 	SDL_GL_SwapWindow(_ID);
 }
 
-void Window::setTitle(std::string t) {
-	SDL_SetWindowTitle(_ID,t.c_str());
+void Window::setTitle(const char* t) {
+	SDL_SetWindowTitle(_ID, t);
 }
 
 void Window::useContext() {

@@ -1,18 +1,19 @@
 #pragma once
-#include <string>
 #include <vector>
+
+class String;
 
 template <class T>
 class Property {
 protected:
-	std::string name;
+	String name;
 	T value;
 public:
-	Property(const std::string& name) : name(name) {};
-	Property(const std::string& name, const T& value) : name(name), value(value) {};
+	Property(const String& name) : name(name) {};
+	Property(const String& name, const T& value) : name(name), value(value) {};
 	virtual ~Property() {};
 	////
-	const std::string& getName() const { return name; };
+	const String& getName() const { return name; };
 	const T& getValue() const { return value; };
 	////
 	Property<T>& operator=(const T& other) { value = other; return *this; };

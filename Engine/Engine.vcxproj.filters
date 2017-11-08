@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Camera2D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ErrorHandling.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -73,12 +70,6 @@
     <ClCompile Include="UIText.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Textbox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -91,11 +82,20 @@
     <ClCompile Include="Registry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="String.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UIButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UITextbox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera2D.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="ErrorHandling.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -177,12 +177,6 @@
     <ClInclude Include="Colour.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Textbox.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -202,6 +196,18 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Registry.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="String.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="UIButton.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="UITextbox.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

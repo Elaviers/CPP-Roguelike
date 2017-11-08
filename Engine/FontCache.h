@@ -1,7 +1,8 @@
 #pragma once
 #include "Font.h"
-
 #include <map>
+
+class String;
 
 class FontCache
 {
@@ -10,8 +11,8 @@ public:
 	~FontCache();
 
 	void setLibrary(FT_Library& library);
-	Font* getFont(const std::string& path);
+	Font* getFont(const char* path);
 private:
-	std::map<std::string,Font> _fontMap;
+	std::map<String, Font> _fontMap;
 	FT_Library* FT_LIB;
 };

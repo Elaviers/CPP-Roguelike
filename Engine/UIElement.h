@@ -14,8 +14,9 @@ namespace GUI {
 		FLIPPED_X = 0x10,
 		FLIPPED_Y = 0x20
 	};
+}
 
-	class UIElement //Base UI element which ultimately attempts to store two Vector2s representing the normalised coordinates of the bounding box.
+class UIElement //Base UI element which ultimately attempts to store two Vector2s representing the normalised coordinates of the bounding box.
 	{
 	protected:
 		UIElement* _parent;
@@ -24,7 +25,7 @@ namespace GUI {
 		unsigned char _flags;
 		//construction
 		UIElement(float x, float y, float w, float h, unsigned char flags);
-		UIElement() : UIElement(0, 0, 1, 1, NORMALISED_WIDTH | NORMALISED_HEIGHT) {};
+		UIElement() : UIElement(0, 0, 1, 1, GUI::NORMALISED_WIDTH | GUI::NORMALISED_HEIGHT) {};
 	public:
 		virtual ~UIElement();
 		//Basic setters
@@ -48,5 +49,4 @@ namespace GUI {
 		virtual bool click() { return false; }; //returns whether or not to 'consume' input
 		virtual bool isOverlapping(const int px, const int py); //Checks if specified point overlaps with the element's bounds
 		virtual void calculate(); //recalculates the normalised coordinates for any not-normalised variables.
-	};
-}
+};

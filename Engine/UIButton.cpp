@@ -1,15 +1,15 @@
-#include "Button.h"
+#include "UIButton.h"
 
 using namespace GUI;
 
-Button::Button(float x, float y, float w, float h, unsigned char flags) :
+UIButton::UIButton(float x, float y, float w, float h, unsigned char flags) :
 	UIContainer(x, y, w, h, flags)
 {
 	addElement(panel, false);
 	addElement(label, false);
 };
 
-bool Button::isOverlapping(int x, int y) {
+bool UIButton::isOverlapping(int x, int y) {
 	_active = panel.isOverlapping(x, y);
 
 	panel.setColour(_active ? _hoverColour : _colour);
@@ -17,7 +17,7 @@ bool Button::isOverlapping(int x, int y) {
 	return _active;
 }
 
-bool Button::click() {
+bool UIButton::click() {
 	if (_active) {
 		if (_event_onClick_basic != nullptr)
 			_event_onClick_basic();

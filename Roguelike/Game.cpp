@@ -7,22 +7,22 @@
 #include "Player.h"
 #include "UIWindow.h"
 #include "World.h"
-
-#include <bass.h>
-#include <ft2build.h>
-#include FT_FREETYPE_H
-#include <GL/glew.h>
 #include <Engine/ErrorHandling.h>
 #include <Engine/GUI.h>
 #include <Engine/LineRenderer.h>
 #include <Engine/ResourceManager.h>
 #include <Engine/SpriteRenderer.h>
+#include <bass.h>
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include <GL/glew.h>
+#include <GLM/gtc/matrix_transform.hpp>
 #include <SDL/SDL.h>
 
 /////////////////////////////////
 Game::Game() : _running(true) {}
 
-inline void log(std::string l) { printf("%s", l.c_str()); }
+inline void log(String l) { printf(l.getData()); }
 
 HSTREAM music, music2;
 
@@ -102,7 +102,7 @@ void Game::start() {
 
 	GlobalUI::setCameraSize(GameData::screenDimensions.x, GameData::screenDimensions.y);
 
-	GameData::camera = new Camera2D();
+	GameData::camera = new Camera();
 	GameData::camera->SetViewportSize(GameData::screenDimensions.x, GameData::screenDimensions.y);
 
 
@@ -161,7 +161,11 @@ void Game::loop() {
 		update();
 		render();
 
-		if (frameNumber % 10 == 0)_window.setTitle("Boring Title (" + std::to_string(_frameTimer.getFramerate()) + " FPS, Time is " + std::to_string(GameData::runTime) + ") (X:" + std::to_string(GameData::mousePosition.x) + " Y:" + std::to_string(GameData::mousePosition.y) + ')');
+		if (frameNumber % 10 == 0)_window.setTitle(
+					(	"Boring Title (" + String::convert(_frameTimer.getFramerate()) + 
+						" FPS, Time is " + String::convert(GameData::runTime) + 
+						") (X:" + String::convert(GameData::mousePosition.x) + 
+						" Y:" + String::convert(GameData::mousePosition.y) + ')').getData());
 
 		_frameTimer.end();
 	}
@@ -181,6 +185,9 @@ void Game::update() {
 }
 
 void Game::render() {
+	_isomatrix = glm::rotate(GameData::camera->getCameraMatrix(), 0.78539f, glm::vec3(0, 0, 1)); //Z-Rot by 45 degrees
+	_isomatrix[1][1] *= cosf(0.61547f);		//X-Rot by arcsin(30 degrees)
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearDepth(1);
 
@@ -194,7 +201,7 @@ void Game::render() {
 	cameradims = Rect_i(GameData::camera->getMin(),GameData::camera->getMax());
 
 	////////////////////////////////////////////////
-	SpriteRenderer::UseProgram(*GameData::camera);
+	SpriteRenderer::UseProgram(_isomatrix);
 	World::drawTiles(0, true, cameradims, *_tileSheet);
 	SpriteRenderer::UnuseProgram();
 
@@ -204,7 +211,7 @@ void Game::render() {
 	World::drawEntities(_shader);
 	_shader.unUseProgram();
 
-	SpriteRenderer::UseProgram(*GameData::camera);
+	SpriteRenderer::UseProgram(_isomatrix);
 	World::drawTiles(127, false, cameradims, *_tileSheet);
 	SpriteRenderer::UnuseProgram();
 	////////////////////////////////////////////////

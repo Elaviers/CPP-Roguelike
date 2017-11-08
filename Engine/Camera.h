@@ -3,11 +3,11 @@
 
 #include <GLM/mat4x4.hpp>
 
-class Camera2D
+class Camera
 {
 public:
-	Camera2D();
-	~Camera2D();
+	Camera();
+	~Camera();
 
 	void setPosition(Vector2f newPosition);	//Sets position (vec2)
 	void move(float x, float y);	//Moves camera

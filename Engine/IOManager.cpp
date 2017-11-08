@@ -1,14 +1,13 @@
 #include "IOManager.h"
 
 #include "ErrorHandling.h"
-
 #include <fstream>
 #include <windows.h>
 
-bool IOManager::readFileToBuffer(const std::string &location, std::vector<unsigned char> &buffer) {
+bool IOManager::readFileToBuffer(const char *location, std::vector<unsigned char> &buffer) {
 	std::ifstream file(location, std::ios::binary);
 	if (file.fail()) {
-		perror(location.c_str());
+		perror(location);
 		return false;
 	}
 
@@ -26,13 +25,13 @@ bool IOManager::readFileToBuffer(const std::string &location, std::vector<unsign
 	return true;
 }
 
-std::vector<std::string> IOManager::getFilesInDirectory(const char* path,const char* extension) {
-	std::vector<std::string> ret;
+std::vector<String> IOManager::getFilesInDirectory(const char* path,const char* extension) {
+	std::vector<String> ret;
 
-	std::string fullPath = path + std::string("\\*.") + extension;
+	String fullPath = String(path) + "\\*." + extension;
 
 	WIN32_FIND_DATA data;
-	HANDLE handle = FindFirstFile(fullPath.c_str(), &data);
+	HANDLE handle = FindFirstFile(fullPath.getData(), &data);
 	if (handle != INVALID_HANDLE_VALUE) {
 		do {
 			ret.push_back(data.cFileName);

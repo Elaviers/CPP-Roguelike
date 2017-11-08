@@ -1,6 +1,5 @@
 #pragma once
 #include "Vertex.h"
-
 #include <GL/glew.h>
 #include <GLM/glm.hpp>
 #include <vector>

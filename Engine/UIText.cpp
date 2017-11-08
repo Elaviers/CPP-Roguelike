@@ -6,7 +6,7 @@
 
 using namespace GUI;
 
-void UIText::setFont(const std::string& path) {
+void UIText::setFont(const char* path) {
 	_font = ResourceManager::getFontRef(path);
 }
 
@@ -18,6 +18,6 @@ void UIText::render(Shader *shader) {
 
 	if (shader && shader->Channel == RenderTypes::FONT)
 		_font->drawString(_text, _min.x * cameraScale.x, _min.y * cameraScale.y,
-		(_text.length() * cameraScale.y * getHeight() > cameraScale.x * getWidth()) ? (int)((cameraScale.x * getWidth()) / _text.length()) : (int)(cameraScale.y * getHeight()),
+		(_text.getLength() * cameraScale.y * getHeight() > cameraScale.x * getWidth()) ? (int)((cameraScale.x * getWidth()) / _text.getLength()) : (int)(cameraScale.y * getHeight()),
 			_colour.vec4(), *shader);
 }

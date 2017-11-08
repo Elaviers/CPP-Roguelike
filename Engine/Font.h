@@ -5,6 +5,7 @@
 #include <glm/vec4.hpp>
 #include <map>
 
+class String;
 class Shader;
 typedef unsigned int GLuint;
 
@@ -30,7 +31,7 @@ public:
 
 	int getPointSize() { return _pointsize; };
 	void init(FT_Library& lib,const char* path,int);	//Creates an FT Face, creates the character map, and configures texture properties
-	void drawString(const std::string& text, float x, float y, float scale);	//Renders a string to the screen. Call from within a shader program!
-	void drawString(const std::string& text, float x, float y, glm::vec4 Colour, Shader& s) { drawString(text, x, y, _pointsize, Colour, s); }; //Renders a string to the screen. Call from within a shader program!
-	void drawString(const std::string& text, float x, float y, int pointsize, glm::vec4 Colour, Shader& s); //Renders a string to the screen. Call from within a shader program!
+	void drawString(const String& text, float x, float y, float scale);	//Renders a string to the screen. Call from within a shader program!
+	void drawString(const String& text, float x, float y, glm::vec4 Colour, Shader& s) { drawString(text, x, y, _pointsize, Colour, s); }; //Renders a string to the screen. Call from within a shader program!
+	void drawString(const String& text, float x, float y, int pointsize, glm::vec4 Colour, Shader& s); //Renders a string to the screen. Call from within a shader program!
 };

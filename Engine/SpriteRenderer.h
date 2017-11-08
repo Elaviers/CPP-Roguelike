@@ -1,10 +1,8 @@
 #pragma once
 #include "Shader.h"
 #include "Vertex.h"
-
 #include <glm/glm.hpp>
 
-class Camera2D;
 class Texture;
 
 class SpriteRenderer
@@ -22,8 +20,8 @@ public:
 	static void init();
 
 	static Shader& GetShader() { return _shader; };
-	static void UseProgram(const Camera2D&);
-	static void UnuseProgram();
+	inline static void UseProgram(const glm::mat4& matrix) { _shader.useProgram(); _shader.setMat4("projection", matrix); };
+	inline static void UnuseProgram() { _shader.unUseProgram(); };
 
 	inline static void drawSprite(const Texture& Texture, float x, float y, float width, float height, float angle = 0.0f, int Index = 0) {
 		drawSprite(_shader, Texture, x, y, width, height, angle, Index);

@@ -11,6 +11,6 @@ const unsigned char Entity::getID() const {
 	return _register ? _register->getID() : 255;
 }
 
-const std::string Entity::getName() const { 
+const String Entity::getName() const { 
 	return _register ? _register->getName() : "Entity";
 }

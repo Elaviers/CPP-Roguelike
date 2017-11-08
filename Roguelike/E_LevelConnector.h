@@ -1,10 +1,10 @@
 #pragma once
 #include <Engine/Entity.h>
 
-class LevelConnector : public Entity {
+class E_LevelConnector : public Entity {
 public:
-	LevelConnector();
-	~LevelConnector();
+	E_LevelConnector();
+	~E_LevelConnector();
 
 	unsigned char connectionID;
 	unsigned char direction;

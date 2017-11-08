@@ -2,7 +2,7 @@
 
 std::map<unsigned char, EntityRegister*> EntityRegistry::_registry;
 
-const std::string EntityRegistry::getNameOfID(unsigned char id) {
+const String EntityRegistry::getNameOfID(unsigned char id) {
 	auto it = _registry.find(id);
 
 	if (it == _registry.end())

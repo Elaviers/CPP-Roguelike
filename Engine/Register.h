@@ -1,27 +1,26 @@
 #pragma once
-#include <string>
+#include "String.h"
 
 template <class T>
 class Register
 {
-private:
-	unsigned char _id;
-	std::string _name;
+	unsigned char	_id;
+	String			_name;
 protected:
-	Register(unsigned char id, const std::string& name) : _id(id), _name(name) {};
+	Register(unsigned char id, const String& name) : _id(id), _name(name) {};
 public:
 	virtual ~Register() {};
 	virtual T* create() = 0;
 	virtual const bool isType(const T*) = 0;
 
 	const unsigned char getID() { return _id; };
-	const std::string getName() { return _name; };
+	const String getName() { return _name; };
 };
 
 template <class Base,class T>
 class FullRegister : public Register<Base> {
 public:
-	FullRegister(unsigned char id, const std::string& name) : Register(id,name) {};
+	FullRegister(unsigned char id, const String& name) : Register(id,name) {};
 	virtual ~FullRegister() {};
 
 	virtual Base* create() { return new T; };

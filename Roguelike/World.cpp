@@ -1,12 +1,13 @@
 #include "World.h"
 
 #include "FileManager.h"
-
-#include <algorithm>
 #include <Engine/Entity.h>
 #include <Engine/IOManager.h>
 #include <Engine/ResourceManager.h>
+#include <Engine/Rect.h>
 #include <Engine/SpriteRenderer.h>
+#include <GLM\gtc\matrix_transform.hpp>
+#include <algorithm>
 
 std::vector<Tile> World::_tiles;
 std::vector<Entity*> World::_entities;
@@ -111,7 +112,8 @@ void World::drawTiles(signed char maxlayer, bool resetiterator, const Rect_i& ca
 		_tileIndex = 0;
 
 	for (auto it = _tiles.begin() + _tileIndex; it != _tiles.end() && it->layer <= maxlayer; it++, _tileIndex++) {
-		if (it->x * _tileSize < cameradimensions.max.x && it->y * _tileSize < cameradimensions.max.y && it->x * _tileSize + _tileSize > cameradimensions.min.x && it->y * _tileSize + _tileSize > cameradimensions.min.y)
+		//if (it->x * _tileSize < cameradimensions.max.x && it->y * _tileSize < cameradimensions.max.y && it->x * _tileSize + _tileSize > cameradimensions.min.x && it->y * _tileSize + _tileSize > cameradimensions.min.y)
+		//This statement is disabled because it assumes a certain projection
 			SpriteRenderer::drawSprite(texture, (float)(it->x * _tileSize), (float)(it->y * _tileSize), (float)_tileSize, (float)_tileSize, 0.f, it->id);
 	}
 }

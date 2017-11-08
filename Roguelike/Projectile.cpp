@@ -1,18 +1,16 @@
 #include "Projectile.h"
 
 #include "World.h"
-
 #include <bass.h>
 #include <Engine/Constants.h>
+#include <Engine/LineRenderer.h>
 #include <Engine/SpriteRenderer.h>
 #include <Engine/ResourceManager.h>
 #include <math.h>
 
-#include <Engine/LineRenderer.h>
-
 Projectile::Projectile() { }
 
-void Projectile::init(float x, float y, float s, float direction, float speed, std::string path) {
+void Projectile::init(float x, float y, float s, float direction, float speed, const char* path) {
 	position = Vector2f{ x,y };
 	_size = s;
 	_direction = Vector2f(std::cos(direction * mathConstants::pi_f / 180), std::sin(direction * mathConstants::pi_f / 180));

@@ -2,7 +2,6 @@
 
 #include "Constants.h"
 #include "UIPropertyListing.h"
-
 #include <Engine/Entity.h>
 #include <Engine/GUI.h>
 #include <Engine/LineRenderer.h>
@@ -13,7 +12,7 @@
 #include <iostream>
 
 bool Controller::_inputLock;
-const char* Controller::levelname = "sample.lvl";
+const char* Controller::levelname;
 
 using namespace PlayerEnums;
 
@@ -31,14 +30,15 @@ Controller::Controller() :
 void Controller::save() {
 	if (levelname != nullptr) {
 		std::cout << "Saving \"" << levelname << "\"...\n";
-		World::save(levelname);
+		World::save((String("Game/Levels/") + levelname).getData());
 	}
 }
 
 void Controller::load() {
 	if (levelname != nullptr) {
 		std::cout << "Loading \"" << levelname << "\"...\n";
-		World::load(levelname);
+		
+		World::load((String("Game/Levels/") + levelname).getData());
 	}
 }
 
@@ -50,25 +50,25 @@ void Controller::setInputState(bool typing) {
 }
 
 void Controller::init() {
-	_namebox.label = "Sample.lvl";
+	_namebox.label.setText("Sample.level");
 	_namebox.setColour(NormalisedColour(0, 0, 1));
 	_namebox.setSelectColour(NormalisedColour(0, 0, 0.5));
 	_namebox.label.setColour(NormalisedColour(1, 1, 1, 1));
 	_namebox.onStateChanged = setInputState;
 
-	_loadButton.label = "LOAD";
+	_loadButton.label.setText("LOAD");
 	_loadButton.label.setColour(NormalisedColour(0, 0, 0, 1));
 	_loadButton.setColour(NormalisedColour(1, 1, 0));
 	_loadButton.setHoverColour(NormalisedColour(1, 0, 0));
 	_loadButton.bind_onClick(load);
 
-	_saveButton.label = "SAVE";
+	_saveButton.label.setText("SAVE");
 	_saveButton.label.setColour(NormalisedColour(0, 0, 0, 1));
 	_saveButton.setColour(NormalisedColour(1, 1, 0));
 	_saveButton.setHoverColour(NormalisedColour(1, 0, 0));
 	_saveButton.bind_onClick(save);
 
-	_counter = "TileID : 0|Layer : 0";
+	_counter.setText("TileID : 0|Layer : 0");
 	_counter.setColour(NormalisedColour(1, 1, 1, 1));
 
 	_namebox.label.setFont(Constants::font_editor);
@@ -83,14 +83,16 @@ void Controller::init() {
 		_menuBar.addElement(_namebox);
 		_menuBar.addElement(_loadButton);
 		_menuBar.addElement(_saveButton);
-	GlobalUI::add(_propertyBar);
-		_propertyBar.addElement(_propertyBarBG);
+	//GlobalUI::add(_propertyBar);
+	//	_propertyBar.addElement(_propertyBarBG);
 
 	/////////////////////////////////
 	_tiletexture = ResourceManager::getTexture("Game/Textures/tiles.png");
 	_symboltexture = ResourceManager::getTexture("Game/Textures/symbols.png");
 
 	loadProperties(PropertySet()); //temp
+
+	levelname = _namebox.label.getText().getData();
 }
 
 inline int gridSnap(int i, int snap) {
@@ -99,7 +101,7 @@ inline int gridSnap(int i, int snap) {
 	else return i - snap - (i % snap);
 }
 
-void Controller::render(float deltaTime, Camera2D& cam) {
+void Controller::render(float deltaTime, Camera& cam) {
 	cam.move(_moveX * speed * deltaTime, _moveY * speed * deltaTime);
 
 	Vector2f f = cam.screentoWorld(_mouseX, _mouseY);
@@ -125,7 +127,7 @@ void Controller::render(float deltaTime, Camera2D& cam) {
 		break;
 	}
 
-	SpriteRenderer::UseProgram(cam);
+	SpriteRenderer::UseProgram(cam.getCameraMatrix());
 
 	Rect_i cameraDimensions(cam.getMin(), cam.getMax());
 	SpriteRenderer::setUVData(8, Colour(255, 255, 255, 255));
@@ -168,7 +170,7 @@ void Controller::input(SDL_Event event, int screenh)
 
 	if (event.type == SDL_TEXTINPUT) {
 		_namebox.textInput(event.text.text[0]);
-		levelname = _namebox.label.getText().c_str();
+		levelname = _namebox.label.getText().getData();
 	}
 	else if (event.type == SDL_MOUSEBUTTONDOWN) {
 		if (!_usingUI)
@@ -184,7 +186,7 @@ void Controller::input(SDL_Event event, int screenh)
 	else if (event.type == SDL_MOUSEBUTTONUP) {
 		_editMode = NONE;
 	}
-	else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_BACKSPACE && _namebox.label.getText().length() > 0) {
+	else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_BACKSPACE && _namebox.label.getText().getLength() > 0) {
 		_namebox.label.pop();
 	}
 
@@ -207,10 +209,10 @@ void Controller::input(SDL_Event event, int screenh)
 		}
 
 		if (_entMode) {
-			_counter = "EntID : " + std::to_string(_selection.id) + " (" + EntityRegistry::getNameOfID(_selection.id) + ")";
+			_counter.setText("EntID : " + String::convert(_selection.id) + " (" + EntityRegistry::getNameOfID(_selection.id) + ")");
 		}
 		else
-			_counter = "TileID : " + std::to_string(_selection.id) + "|Layer : " + std::to_string(_selection.layer);
+			_counter.setText("TileID : " + String::convert(_selection.id) + "|Layer : " + String::convert(_selection.layer));
 	}
 	else if (event.type == SDL_KEYUP) {
 		switch (event.key.keysym.sym) {

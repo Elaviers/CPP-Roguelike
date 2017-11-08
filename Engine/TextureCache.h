@@ -1,7 +1,8 @@
 #pragma once
 #include "Texture.h"
-
 #include <map>
+
+class String;
 
 class TextureCache
 {
@@ -9,7 +10,7 @@ public:
 	TextureCache();
 	~TextureCache();
 
-	Texture* getTexture(const std::string& path);
+	Texture* getTexture(const char* path);
 private:
-	std::map<std::string, Texture> textureMap;
+	std::map<String, Texture> textureMap;
 };

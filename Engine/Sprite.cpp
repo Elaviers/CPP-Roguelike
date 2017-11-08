@@ -2,7 +2,6 @@
 
 #include "ResourceManager.h"
 #include "Shader.h"
-
 #include <GL/glew.h>
 #include <GLM/trigonometric.hpp>
 #include <iostream>
@@ -21,7 +20,7 @@ Sprite::~Sprite() {
 		glDeleteVertexArrays(1, &_vaoID);
 }
 
-void Sprite::init(float xp, float yp,float w,float h,bool isStatic,const std::string& path) {
+void Sprite::init(float xp, float yp,float w,float h,bool isStatic,const char* path) {
 	_static = isStatic;
 	x = xp;
 	y = yp;

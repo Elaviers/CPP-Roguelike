@@ -54,7 +54,7 @@ void LineRenderer::clear() {
 	_vertices.clear();
 }
 
-void LineRenderer::render(const Camera2D& c) {
+void LineRenderer::render(const Camera& c) {
 	if (initialised) {
 		_shader.useProgram();
 		_shader.setMat4("projection", c.getCameraMatrix());

@@ -2,7 +2,6 @@
 #include "NormalisedColour.h"
 #include "UIElement.h"
 
-namespace GUI {
 	class UIRect : public UIElement
 	{
 	private:
@@ -15,5 +14,4 @@ namespace GUI {
 		UIRect(float x, float y, float w, float h, unsigned char f) : UIElement(x, y, w, h, f) {};
 		UIRect() {};
 		~UIRect() {};
-	};
-}
+};

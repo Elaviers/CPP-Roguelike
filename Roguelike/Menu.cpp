@@ -4,7 +4,6 @@
 #include "GameData.h"
 #include "UI.h"
 #include "UIWindow.h"
-
 #include <Engine/GUI.h>
 #include <iostream>
 #include <windows.h>
@@ -22,7 +21,7 @@ void Quit_OnClick() {
 }
 
 void Level_OnClick(UIElement* caller) {
-	GameData::gameInstance->beginGame((std::string("Game/Levels/") + static_cast<UI_Button*>(caller)->label.getText()).c_str());
+	GameData::gameInstance->beginGame((String("Game/Levels/") + static_cast<UI_Button*>(caller)->label.getText()).getData());
 	GlobalUI::clear();
 }
 
@@ -38,12 +37,12 @@ void Menu::init() {
 	menu_Play->setHeight(-32);
 	menu_Play->setY(32);
 	menu_Play->label.setFont(Constants::font);
-	menu_Play->label = "Play";
+	menu_Play->label.setText("Play");
 	menu_Play->bind_onClick(openLS);
 
 	UI_Button *menu_Quit = new UI_Button();
 	menu_Quit->label.setFont(Constants::font);
-	menu_Quit->label = "Quit";
+	menu_Quit->label.setText("Quit");
 	menu_Quit->bind_onClick(Quit_OnClick);
 
 	mainMenu->addElement(menu_Play);
@@ -51,7 +50,7 @@ void Menu::init() {
 
 	UI_Button *crashButton = new UI_Button();
 	crashButton->label.setFont(Constants::font);
-	crashButton->label = "I bet this button will crash your computer";
+	crashButton->label.setText("I bet this button will crash your computer");
 	crashButton->setColour(NormalisedColour(1, 1, 1, 0));
 	crashButton->setX(0);
 	crashButton->setY(0);
@@ -62,9 +61,6 @@ void Menu::init() {
 
 	GlobalUI::add(crashButton);
 
-	////////////////////////////////////////////
-
-	////////////////////////////////////////////
 	Menu::setEnabled(true);
 }
 

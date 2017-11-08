@@ -58,10 +58,8 @@ glm::vec2 Utility::getOffsetOfUVIndex(int index,int divisions) {
 	return glm::vec2(x,y);
 }
 
-using namespace std;
-
-void Utility::splitString(const string& s, char c, vector<string>& v) {
-	string::size_type i = 0;
+void Utility::splitString(const String& s, char c, std::vector<String>& v) {
+	/*string::size_type i = 0;
 	string::size_type j = s.find(c);
 
 	while (j != string::npos) {
@@ -71,5 +69,5 @@ void Utility::splitString(const string& s, char c, vector<string>& v) {
 
 		if (j == string::npos)
 			v.push_back(s.substr(i, s.length()));
-	}
+	}*/
 }

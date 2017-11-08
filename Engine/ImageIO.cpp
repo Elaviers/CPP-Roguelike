@@ -3,10 +3,12 @@
 #include "ErrorHandling.h"
 #include "IOManager.h"
 #include "PicoPNG.h"
-
 #include <Gl/glew.h>
 
-Texture ImageIO::loadPNG(std::string path) {
+//Temporary, for to_string
+#include <string>
+
+Texture ImageIO::loadPNG(const char* path) {
 	unsigned long width, height;
 	Texture texture;
 
@@ -20,7 +22,7 @@ Texture ImageIO::loadPNG(std::string path) {
 	return texture;
 }
 
-std::vector<unsigned char> ImageIO::loadPNGRaw(const std::string& path, unsigned long &width, unsigned long &height) {
+std::vector<unsigned char> ImageIO::loadPNGRaw(const char* path, unsigned long &width, unsigned long &height) {
 	Texture texture = {};
 	std::vector<unsigned char> in;
 	std::vector<unsigned char> out;
@@ -29,7 +31,7 @@ std::vector<unsigned char> ImageIO::loadPNGRaw(const std::string& path, unsigned
 
 	int s = decodePNG(out, width, height, &(in[0]), in.size());
 
-	if (s != 0) error("Wow, that PNG was hard to decode. Error code " + std::to_string(s) + ".");
+	if (s != 0) error((String)"Wow, that PNG was hard to decode. Error code " + (std::to_string(s)).c_str() + ".");
 
 	return out;
 }

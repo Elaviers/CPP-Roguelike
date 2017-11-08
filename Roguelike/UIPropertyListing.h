@@ -2,16 +2,16 @@
 #include <Engine/UIContainer.h>
 #include <Engine/UIRect.h>
 #include <Engine/UIText.h>
-#include <Engine/Textbox.h>
+#include <Engine/UITextbox.h>
 
-class UIPropertyListing : public GUI::UIContainer
+class UIPropertyListing : public UIContainer
 {
 public:
 	UIPropertyListing(float x, float y, float w, float h, unsigned char f);
 	virtual ~UIPropertyListing() {};
 
-	GUI::UIRect rect;
-	GUI::UIText text;
-	GUI::TextBox textBox;
+	UIRect rect;
+	UIText text;
+	UITextBox textBox;
 };
 
