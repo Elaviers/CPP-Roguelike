@@ -1,9 +1,2 @@
 # CPP-Roguelike
-
-Wololo
-Wololo
-*Wololo*
-*Wololo*
-***Ayo yo yo***
-***Ayo yo yo***
-Wololo
+## The old, unfinished version of https://github.com/Elaviers/Roguelike
